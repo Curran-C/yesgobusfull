@@ -1,0 +1,33 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    // width: 100%;
+    padding: 50px 100px;
+    .left {
+        display: flex;
+        gap: 40px;
+        align-items: center;
+        width: 40%;
+        font-weight: 800;
+        font-size: 15px;
+        img {
+            height: 20%;
+            width: 20%;
+        }
+        a {
+            span {
+                &:hover {
+                    color: #fd5901;
+                    cursor: pointer;
+                }
+            }
+        }
+    }
+
+    .right {
+    }
+    .hamburger {
+        display: none;
+    }
+}

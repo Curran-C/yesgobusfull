@@ -1,0 +1,142 @@
+.landingPage {
+  .left {
+    color: white;
+  }
+  .hero {
+    height: 75vh;
+    width: 100%;
+    .heroImg {
+      position: absolute;
+      top: 0px;
+      z-index: -10;
+      width: 100%;
+      filter: brightness(30%);
+      // height: 90vh;
+      // object-fit: cover;
+    }
+    .heroContainer {
+      margin-left: 100px;
+      display: flex;
+      gap: 20px;
+      flex-direction: column;
+      .title {
+        h1 {
+          color: white;
+          font-size: 40px;
+          margin-top: 40px;
+        }
+        h1:nth-child(2) {
+          margin-top: 2px;
+          color: #fd5901;
+        }
+      }
+      h2 {
+        color: white;
+        font-weight: 400;
+        width: 40%;
+      }
+      .border {
+        display: flex;
+        align-items: center;
+        border: 2px solid #fd5901;
+        background: white;
+        padding: 0px 30px;
+        justify-content: space-evenly;
+        border-radius: 25px;
+        height: 200px;
+        width: 90%;
+        .infoCard {
+          .infotitle {
+            color: #448fff;
+          }
+        }
+        .buttons {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          button {
+            border-radius: 0px;
+          }
+          button:nth-child(2) {
+            background: #d1d1d1;
+            color: black;
+          }
+        }
+      }
+    }
+  }
+
+  .popularBusTicket {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    .wrapper {
+      display: flex;
+      justify-content: space-evenly;
+      width: 90%;
+      .titleContainer {
+        justify-content: center;
+      }
+      .infoCard {
+        width: 200px;
+        img {
+          height: 60px;
+          margin-bottom: 20px;
+        }
+        .infotitle {
+          font-size: 20px;
+        }
+        .infosubtitle {
+          font-size: 12px;
+
+          font-weight: 200;
+        }
+      }
+    }
+  }
+
+  .exclusiveOffers {
+    padding: 50px;
+    .offers {
+      margin-top: 30px;
+      display: flex;
+      justify-content: space-evenly;
+    }
+  }
+
+  .govBuses {
+    padding: 50px;
+    .govBusesContainer {
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #d0d0d0;
+      align-items: center;
+      margin-top: 30px;
+      padding: 30px 20px;
+      .infoCard {
+        width: 200px;
+        img {
+          height: 150px;
+        }
+        .infosubtitle {
+          font-size: 15px;
+          font-weight: 500;
+        }
+      }
+    }
+  }
+
+  .popularBusRoutes {
+    padding: 50px;
+    .popularBusRoutesContainer {
+      display: flex;
+      justify-content: space-between;
+      border: 1px solid #d0d0d0;
+      align-items: center;
+      margin-top: 30px;
+      padding: 30px 20px;
+      flex-wrap: wrap;
+    }
+  }
+}

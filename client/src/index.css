@@ -1,0 +1,70 @@
+html {
+  scroll-behavior: smooth;
+  overflow-x: hidden;
+  position: relative;
+}
+
+body {
+  font-family: "Poppins", sans-serif;
+  color: #2f2d38;
+  overflow-x: hidden;
+  margin: 0px;
+  position: relative;
+  /* display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+}
+
+button,
+input,
+textarea {
+  font-family: "Poppins", sans-serif;
+}
+
+button:hover {
+  cursor: pointer;
+}
+p:hover,
+h1:hover,
+h2:hover,
+h3:hover {
+  cursor: default;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5 {
+  margin: 0;
+}
+:root {
+  /* fonts */
+  --h7-16px-paragraph-text: "Josefin Sans";
+
+  /* font sizes */
+  --h5-25-size: 25px;
+  --h7-16px-paragraph-text-size: 16px;
+  --font-size-12xl-3: 31.3px;
+  --h6-20-size: 20px;
+  --font-size-29xl-8: 48.8px;
+
+  /* Colors */
+  --white: #fff;
+  --black: #232233;
+  --gray-paragraph: #6c6c72;
+  --royal-blue: #5956e9;
+  --royal-blue1: #5851ea;
+
+  /* border radiuses */
+  --br-9xs: 4px;
+  --br-3xs: 10px;
+  --br-21xl: 40px;
+  --br-8xs: 5px;
+
+  /* Effects */
+  --effect-2: 0px 10px 100px rgba(0, 0, 0, 0.24);
+  --effect-1: 0px 1px 10px rgba(0, 0, 0, 0.1);
+}
