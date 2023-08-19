@@ -14,6 +14,10 @@ const cabBookingSchema = new Schema(
 			ref: 'Cab',
 			required: true
 		},
+		bookingType: {
+			type: String,
+			required: true
+		},
 		travellerName: {
 			type: String,
 			required: true
