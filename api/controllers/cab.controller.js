@@ -1,10 +1,10 @@
-import Cab from "../modals/cab.modal.js";
+import { getCabDetails } from '../service/cab.service.js';
 
-//get cab details
-export const getCabDetails = async (req, res) => {
+export const getCabDetailsController = async (req, res) => {
   try {
-    const {cabModel, seatingCapacity, cabType, priceFrom, priceTo, fromLocation} = req.query;
+    const { cabModel, seatingCapacity, cabType, priceFrom, priceTo, fromLocation } = req.query;
     let query = {};
+
     if (cabModel) {
       query.cabModel = cabModel;
     }
@@ -21,17 +21,14 @@ export const getCabDetails = async (req, res) => {
     } else if (priceTo) {
       query.estimatedKmPrice = { $lte: parseFloat(priceTo) };
     }
-    if(fromLocation) {
+    if (fromLocation) {
       query.location = fromLocation.toLowerCase();
     }
-    query.cab_status = "Active";
-    const cabDetails = await Cab.find(query);
-    if(cabDetails.length === 0) {
-      return res.status(200).send({message: "No Cabs Found"});
-    }
-    res.status(200).send({message: "Cab details retrived successfully", data: cabDetails});
+
+    const result = await getCabDetails(query);
+
+    res.status(result.status).json({ message: result.message, data: result.data });
   } catch (err) {
-    console.log(err);
-    res.status(500).send({ message: err });
+    res.status(500).json({ message: "An error occurred while fetching cab details" });
   }
 };

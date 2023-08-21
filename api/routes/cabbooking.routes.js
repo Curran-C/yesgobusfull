@@ -1,8 +1,8 @@
 import express from "express";
 import {
-    createCabBooking,
-    getCabBookingsByUser,
-    cancelCabBooking
+    createCabBookingController,
+    getCabBookingsByUserController,
+    cancelCabBookingController
 } from "../controllers/cabBooking.controller.js";
 import { authenticateUser } from "../middleware/authenticateUser.js";
 
@@ -10,8 +10,8 @@ const router = express.Router();
 
 router.use(authenticateUser);
 
-router.post("/create", createCabBooking);
-router.get("/getCabBookingsByUser/:id", getCabBookingsByUser);
-router.patch("/cancelCabBooking/:bookingId", cancelCabBooking);
+router.post("/create", createCabBookingController);
+router.get("/getCabBookingsByUser/:id", getCabBookingsByUserController);
+router.patch("/cancelCabBooking/:bookingId", cancelCabBookingController);
 
 export default router;

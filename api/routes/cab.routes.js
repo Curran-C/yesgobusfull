@@ -1,13 +1,13 @@
 import express from "express";
 import {
-  getCabDetails,
+  getCabDetailsController,
 } from "../controllers/cab.controller.js";
-// import { authenticateUser } from "../middleware/authenticateUser.js";
+import { authenticateUser } from "../middleware/authenticateUser.js";
 
 const router = express.Router();
 
-// router.use(authenticateUser);
+router.use(authenticateUser);
 
-router.get("/getCabDetails", getCabDetails);
+router.get("/getCabDetails", getCabDetailsController);
 
 export default router;
