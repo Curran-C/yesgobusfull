@@ -1,4 +1,5 @@
 import CabBooking from "../modals/cabbooking.modal.js";
+import Cab from "../modals/cab.modal.js";
 
 export const createCabBooking = async (bookingData) => {
   try {
@@ -8,7 +9,8 @@ export const createCabBooking = async (bookingData) => {
       userId,
     });
     await newCabBooking.save();
-    
+    const cabId = bookingData.cabId;
+    await Cab.findByIdAndUpdate(cabId, { cab_status: "booked" });
     return {
       status: 200,
       message: "Cab booking created successfully",
@@ -61,7 +63,8 @@ export const cancelCabBooking = async (bookingId) => {
         message: "Booking not found",
       };
     }
-    
+    const cabId = canceledBooking.cabId;
+    await Cab.findByIdAndUpdate(cabId, { cab_status: "available" });
     return {
       status: 200,
       message: "Booking canceled successfully",

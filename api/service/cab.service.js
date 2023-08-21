@@ -2,7 +2,7 @@ import Cab from "../modals/cab.modal.js";
 
 export const getCabDetails = async (query) => {
   try {
-    query.cab_status = "Active";
+    query.cab_status = "available";
     const cabDetails = await Cab.find(query);
     
     if (cabDetails.length === 0) {
