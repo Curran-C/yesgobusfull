@@ -1,0 +1,26 @@
+.TitleAndText {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    .titleContainer {
+        justify-content: center;
+    }
+    .texts {
+        display: flex;
+        gap: 30px;
+        flex-direction: column;
+        padding: 30px;
+        border: 1px solid lightgray;
+    }
+    .unseen {
+        display: none;
+    }
+    .seen {
+        display: block;
+        .lists {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+        }
+    }
+}

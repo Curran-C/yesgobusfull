@@ -12,7 +12,7 @@
       width: 100%;
       filter: brightness(30%);
       // height: 90vh;
-      // object-fit: cover;
+      object-fit: cover;
     }
     .heroContainer {
       margin-left: 100px;
@@ -102,6 +102,8 @@
       margin-top: 30px;
       display: flex;
       justify-content: space-evenly;
+      flex-wrap: wrap;
+      gap: 10px;
     }
   }
 
@@ -109,7 +111,9 @@
     padding: 50px;
     .govBusesContainer {
       display: flex;
-      justify-content: space-between;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
       border: 1px solid #d0d0d0;
       align-items: center;
       margin-top: 30px;
@@ -130,13 +134,135 @@
   .popularBusRoutes {
     padding: 50px;
     .popularBusRoutesContainer {
+      justify-content: center;
       display: flex;
-      justify-content: space-between;
+      gap: 20px;
       border: 1px solid #d0d0d0;
       align-items: center;
       margin-top: 30px;
       padding: 30px 20px;
       flex-wrap: wrap;
+    }
+  }
+
+  .whyChooseYesGoBus {
+    background: #f6f6f6;
+    padding: 50px;
+    .titleContainer {
+      justify-content: center;
+    }
+    .whyChooseYesGoBusContainer {
+      display: flex;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      align-items: start;
+      margin-top: 30px;
+      .infoCard {
+        width: 120px;
+        img {
+          box-shadow: 1px 1px 5px lightgray;
+          height: 50px;
+          padding: 30px;
+          background-color: white;
+        }
+        .infotitle {
+          font-size: 25px;
+        }
+        .infosubtitle {
+          font-size: 11px;
+          font-weight: 300;
+        }
+      }
+    }
+  }
+
+  .customerReviews {
+    padding: 50px;
+    .customerReviewsContainer {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 30px;
+    }
+  }
+
+  .about {
+    padding: 50px;
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+  }
+
+  .aboveFooter {
+    display: flex;
+    align-items: start;
+    justify-content: space-evenly;
+    background: #ebebeb;
+    padding: 50px;
+    .reachUs {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      span {
+        font-weight: 600;
+        font-size: 18px;
+      }
+      p {
+        font-weight: 300;
+        font-size: 12px;
+      }
+      a {
+        color: #fd5901;
+      }
+    }
+  }
+}
+
+@media (max-width: 1440px) {
+  .landingPage {
+    .hero {
+      height: 90vh;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .landingPage {
+    .aboveFooter {
+      flex-direction: column;
+      align-items: center;
+      gap: 50px;
+      hr {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .landingPage {
+    .popularBusTicket {
+      .wrapper {
+        flex-wrap: wrap;
+      }
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .landingPage {
+    .hero {
+      height: auto;
+      margin-bottom: 50px;
+      .heroContainer {
+        margin-left: 0px;
+        text-align: center;
+        align-items: center;
+        .border {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+      }
     }
   }
 }

@@ -1,0 +1,15 @@
+.aboveFooterImages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 300px;
+    .images {
+        display: flex;
+        gap: 20px;
+        img {
+            // height: 30px;
+        }
+    }
+}

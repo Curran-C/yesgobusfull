@@ -16,6 +16,22 @@ import bus3 from "./bus3.png";
 import bus4 from "./bus4.png";
 import bus5 from "./bus5.png";
 import bus6 from "./bus6.png";
+import routes from "./routes.svg";
+import orangeBus from "./orange bus.svg";
+import custcare from "./custcare.svg";
+import filledticket from "./ticket.png";
+import smile from "./smile.png";
+import star from "./star.png";
+import blacklogo from "./logoblack.png";
+import visa from "./visa.svg";
+import mastercard from "./mastercard.svg";
+import rupay from "./rupay.png";
+import playstore from "./playstore.png";
+import applestore from "./applestore.png";
+import fb from "./fb.png";
+import insta from "./insta.png";
+import twitter from "./twitter.png";
+import linkedin from "./linkedin.png";
 
 export {
   heroimage,
@@ -36,4 +52,20 @@ export {
   bus5,
   bus6,
   graybus,
+  routes,
+  orangeBus,
+  custcare,
+  filledticket,
+  smile,
+  star,
+  blacklogo,
+  insta,
+  twitter,
+  linkedin,
+  visa,
+  mastercard,
+  rupay,
+  playstore,
+  applestore,
+  fb,
 };

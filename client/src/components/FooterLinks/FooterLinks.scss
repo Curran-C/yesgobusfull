@@ -1,0 +1,20 @@
+.footerLinks {
+    display: flex;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    h1 {
+        font-size: 20px;
+    }
+    .links {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        a {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+        }
+    }
+}
