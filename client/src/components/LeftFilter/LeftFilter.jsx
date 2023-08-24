@@ -1,5 +1,7 @@
 import "./LeftFilter.scss";
 import LeftFilterBox from "../LeftFilterBox/LeftFilterBox";
+import { RangeSlider } from "rsuite";
+import "rsuite/dist/rsuite.css";
 
 const LeftFilter = () => {
   return (
@@ -40,6 +42,13 @@ const LeftFilter = () => {
           title={"Bus Partner"}
           points={["1", "2", "3"]}
           count={[12, 16, 78]}
+        />
+        <p>Price:</p>
+        <RangeSlider
+          style={{ marginTop: "30px" }}
+          max={50}
+          defaultValue={[10, 40]}
+          constraint={([start, end]) => start <= 25 && end >= 35}
         />
       </div>
     </div>
