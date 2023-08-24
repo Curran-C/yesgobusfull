@@ -1,0 +1,15 @@
+.ColumnNames {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .tableTitles {
+        display: flex;
+        gap: 300px;
+        background: rgba(0, 137, 240, 0.11);
+        padding: 30px 10px;
+        div {
+            display: flex;
+            gap: 45px;
+        }
+    }
+}

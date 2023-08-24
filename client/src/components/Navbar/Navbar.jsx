@@ -1,15 +1,17 @@
 import { useState } from "react";
 import { hamburger, logo } from "../../assets";
+import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 
 import "./Navbar.scss";
 
 const Navbar = () => {
   const [showMenu, setShowMenu] = useState(false);
+  const navigate = useNavigate();
 
   const menu = (
     <div className="burger-menu">
-      <a>
+      <a href="/busbooking">
         <span>Home</span>
       </a>
       <a>
@@ -33,7 +35,7 @@ const Navbar = () => {
       {/* navlinks */}
       <div className="left">
         <img src={logo} alt="" />
-        <a>
+        <a href="/busbooking">
           <span>Bus Ticket</span>
         </a>
         <a>

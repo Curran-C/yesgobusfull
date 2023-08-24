@@ -1,11 +1,13 @@
-import { KYC, LandingPage } from "./pages";
+import { BusBooking, KYC, LandingPage } from "./pages";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   return (
-    <>
-      {/* <LandingPage /> */}
-      {/* <KYC /> */}
-      <LandingPage />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/busbooking" element={<BusBooking />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

@@ -1,0 +1,31 @@
+.RoutesTitle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .locations {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        h1 {
+            font-size: 30px;
+            font-weight: 500;
+        }
+        h3 {
+            font-size: 15px;
+            color: #7c7c7c;
+        }
+    }
+
+    .buttons {
+        display: flex;
+        .dayButton {
+            padding: 5px 30px;
+            border: none;
+            color: #7c7c7c;
+        }
+        .highlighted {
+            background-color: #fd5901;
+            color: white;
+        }
+    }
+}

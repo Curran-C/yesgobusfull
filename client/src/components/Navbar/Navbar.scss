@@ -16,6 +16,8 @@
             width: 20%;
         }
         a {
+            text-decoration: none;
+            color: white;
             span {
                 &:hover {
                     color: #fd5901;

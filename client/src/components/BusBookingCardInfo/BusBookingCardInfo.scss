@@ -1,0 +1,35 @@
+.BusBookingCardInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    .busName {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .rating {
+            background: white;
+            gap: 0px;
+            font-size: 12px;
+            .stars {
+                background: #00f06e;
+                padding: 2px 5px;
+                display: flex;
+                align-items: center;
+                width: 30px;
+                justify-content: space-evenly;
+                color: white;
+            }
+            .reviewCount {
+                border: 1px solid #00f06e;
+                padding: 3.5px 1px;
+                font-weight: 300;
+                font-size: 10px;
+            }
+        }
+    }
+    .subtitle {
+        color: #a6a6a6;
+        font-size: 12px;
+    }
+}
