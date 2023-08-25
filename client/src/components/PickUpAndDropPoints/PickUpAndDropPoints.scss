@@ -1,0 +1,18 @@
+.PickUpAndDropPoints {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 5px 10px;
+    p {
+        font-size: 12px;
+        color: #7a7a7a;
+    }
+    .locationOne {
+        font-size: 13px;
+        font-weight: 400;
+    }
+    .locationTwo {
+        font-size: 13px;
+        font-weight: 600;
+    }
+}

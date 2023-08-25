@@ -1,7 +1,9 @@
+import { useState } from "react";
 import { livelocation } from "../../assets/busbooking";
 import BusBookingCardInfo from "../BusBookingCardInfo/BusBookingCardInfo";
 import DropDown from "../DropDown/DropDown";
 import "./BusBookingCard.scss";
+import Seats from "../Seats/Seats";
 
 const BusBookingCard = ({
   title,
@@ -16,7 +18,18 @@ const BusBookingCard = ({
   reachLocation,
   price,
   seatsLeft,
+  pickUpTimes,
+  pickUpLocationOne,
+  pickUpLocationTwo,
+  dropTimes,
+  dropLocationOne,
+  dropLocationTwo,
+  noOfRows,
+  noOfSeatsPerRow,
+  backSeat,
 }) => {
+  const [showSeats, setShowSeats] = useState(false);
+
   return (
     <div className="BusBookingCard">
       <h1>{title}</h1>
@@ -33,7 +46,12 @@ const BusBookingCard = ({
             <BusBookingCardInfo img={true} subtitle={travelTime} />
             <BusBookingCardInfo title={reachLocation} subtitle={reachTime} />
             <p className="price">₹{price}</p>
-            <BusBookingCardInfo button={true} subtitle={seatsLeft} />
+            <BusBookingCardInfo
+              setShowSeats={setShowSeats}
+              showSeats={showSeats}
+              button={true}
+              subtitle={seatsLeft}
+            />
           </div>
         </div>
         <hr />
@@ -50,6 +68,19 @@ const BusBookingCard = ({
           <DropDown title="Reviews" text="Lorem" />
         </div>
       </div>
+      {showSeats && (
+        <Seats
+          pickUpTimes={pickUpTimes}
+          pickUpLocationOne={pickUpLocationOne}
+          pickUpLocationTwo={pickUpLocationTwo}
+          dropTimes={dropTimes}
+          dropLocationOne={dropLocationOne}
+          dropLocationTwo={dropLocationTwo}
+          noOfRows={noOfRows}
+          noOfSeatsPerRow={noOfSeatsPerRow}
+          backSeat={backSeat}
+        />
+      )}
     </div>
   );
 };

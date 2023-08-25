@@ -1,9 +1,16 @@
 import "./LeftFilter.scss";
 import LeftFilterBox from "../LeftFilterBox/LeftFilterBox";
-import { RangeSlider } from "rsuite";
-import "rsuite/dist/rsuite.css";
+import Slider from "@mui/material/Slider";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
 const LeftFilter = () => {
+  const [range, setRange] = useState([50, 150]);
+
+  const handleSliderChange = (event, newRange) => {
+    setRange(newRange);
+  };
+
   return (
     <div className="leftFilter">
       <h4>Filter</h4>
@@ -43,13 +50,21 @@ const LeftFilter = () => {
           points={["1", "2", "3"]}
           count={[12, 16, 78]}
         />
-        <p>Price:</p>
-        <RangeSlider
-          style={{ marginTop: "30px" }}
-          max={50}
-          defaultValue={[10, 40]}
-          constraint={([start, end]) => start <= 25 && end >= 35}
-        />
+        <div className="priceRange">
+          <Typography gutterBottom>Price Range</Typography>
+          <Slider
+            value={range}
+            onChange={handleSliderChange}
+            valueLabelDisplay="auto"
+            min={0}
+            max={200}
+            step={1}
+          />
+          <div className="range-labels">
+            <span>₹ {range[0]}</span>
+            <span>₹ {range[1]}</span>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -18,6 +18,41 @@ const BusBooking = () => {
 
   const [noOfBuses, setNoOfBuses] = useState(150);
 
+  //pickup
+  const pickUpTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
+  const pickUpLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
+  const pickUpLocationTwo = [
+    "INFOSYS GATE NO 2,134,33",
+    "Wipro GATE NO 2,134,33",
+    "Bus stand NO 2,134,33",
+  ];
+
+  //drop
+  const dropTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
+  const dropLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
+  const dropLocationTwo = [
+    "INFOSYS GATE NO 2,134,33",
+    "Wipro GATE NO 2,134,33",
+    "Bus stand NO 2,134,33",
+  ];
+
+  //dates
+  const today = new Date();
+  const dates = [];
+
+  for (let i = 0; i <= 6; i++) {
+    const nextDate = new Date(today);
+    nextDate.setDate(today.getDate() + i);
+    dates.push(
+      nextDate.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        weekday: "short",
+      })
+    );
+  }
+  console.log(dates);
+
   return (
     <div className="busBooking">
       <Navbar />
@@ -33,6 +68,11 @@ const BusBooking = () => {
         </div>
 
         <div className="right">
+          <div className="dates">
+            {dates.map((date) => (
+              <p className="date">{date}</p>
+            ))}
+          </div>
           <div className="exclusiveOffers">
             <Title title={"Offers"} />
             <div className="offers">
@@ -81,6 +121,15 @@ const BusBooking = () => {
               travelTime={"3hr 20min"}
               seatsLeft={"27 seats left"}
               price={800}
+              pickUpTimes={pickUpTimes}
+              pickUpLocationOne={pickUpLocationOne}
+              pickUpLocationTwo={pickUpLocationTwo}
+              dropTimes={dropTimes}
+              dropLocationOne={dropLocationOne}
+              dropLocationTwo={dropLocationTwo}
+              noOfRows={4}
+              noOfSeatsPerRow={6}
+              backSeat={true}
             />
 
             <BusBookingCard
@@ -96,6 +145,15 @@ const BusBooking = () => {
               travelTime={"3hr 20min"}
               seatsLeft={"27 seats left"}
               price={800}
+              pickUpTimes={pickUpTimes}
+              pickUpLocationOne={pickUpLocationOne}
+              pickUpLocationTwo={pickUpLocationTwo}
+              dropTimes={dropTimes}
+              dropLocationOne={dropLocationOne}
+              dropLocationTwo={dropLocationTwo}
+              noOfRows={4}
+              noOfSeatsPerRow={6}
+              backSeat={true}
             />
 
             <BusBookingCard
@@ -111,6 +169,15 @@ const BusBooking = () => {
               travelTime={"3hr 20min"}
               seatsLeft={"27 seats left"}
               price={800}
+              pickUpTimes={pickUpTimes}
+              pickUpLocationOne={pickUpLocationOne}
+              pickUpLocationTwo={pickUpLocationTwo}
+              dropTimes={dropTimes}
+              dropLocationOne={dropLocationOne}
+              dropLocationTwo={dropLocationTwo}
+              noOfRows={4}
+              noOfSeatsPerRow={6}
+              backSeat={true}
             />
 
             <BusBookingCard
@@ -126,6 +193,15 @@ const BusBooking = () => {
               travelTime={"3hr 20min"}
               seatsLeft={"27 seats left"}
               price={800}
+              pickUpTimes={pickUpTimes}
+              pickUpLocationOne={pickUpLocationOne}
+              pickUpLocationTwo={pickUpLocationTwo}
+              dropTimes={dropTimes}
+              dropLocationOne={dropLocationOne}
+              dropLocationTwo={dropLocationTwo}
+              noOfRows={4}
+              noOfSeatsPerRow={6}
+              backSeat={true}
             />
 
             <BusBookingCard
@@ -141,6 +217,15 @@ const BusBooking = () => {
               travelTime={"3hr 20min"}
               seatsLeft={"27 seats left"}
               price={800}
+              pickUpTimes={pickUpTimes}
+              pickUpLocationOne={pickUpLocationOne}
+              pickUpLocationTwo={pickUpLocationTwo}
+              dropTimes={dropTimes}
+              dropLocationOne={dropLocationOne}
+              dropLocationTwo={dropLocationTwo}
+              noOfRows={4}
+              noOfSeatsPerRow={6}
+              backSeat={true}
             />
           </div>
         </div>

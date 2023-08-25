@@ -16,6 +16,18 @@
         }
         .right {
             width: 80%;
+            .dates {
+                display: flex;
+                gap: 10px;
+                padding: 30px;
+                .date {
+                    border: 1px solid #d0d0d0;
+                    padding: 20px 20px;
+                    &:hover {
+                        cursor: pointer;
+                    }
+                }
+            }
             .exclusiveOffers {
                 padding: 50px;
                 h1 {
