@@ -95,5 +95,61 @@
                 }
             }
         }
+        .continue {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .price {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            .selectedSeat {
+                span {
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+                p {
+                    font-size: 13px;
+                    font-weight: 400;
+                }
+            }
+            p {
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .seats {
+        .seatsRight {
+            .bus {
+                .driver {
+                    width: 15%;
+                }
+                .seatsContainer {
+                    padding: 10px;
+                    .seatsOne,
+                    .seatsTwo {
+                        .row {
+                            img {
+                                height: 18px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .seats {
+        flex-direction: column;
+        .seatsLeft,
+        .seatsRight {
+            width: 100%;
+        }
     }
 }

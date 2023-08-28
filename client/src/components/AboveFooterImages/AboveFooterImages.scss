@@ -13,3 +13,12 @@
         }
     }
 }
+
+@media (max-width: 426px) {
+    .aboveFooterImages {
+        width: 90%;
+        .title {
+            text-align: center;
+        }
+    }
+}

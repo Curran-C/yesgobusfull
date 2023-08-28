@@ -13,3 +13,17 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .ColumnNames {
+        .tableTitles {
+            gap: 10px;
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .ColumnNames {
+        display: none;
+    }
+}

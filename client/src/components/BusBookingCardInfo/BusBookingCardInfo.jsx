@@ -15,8 +15,8 @@ const BusBookingCardInfo = ({
   return (
     <div className="BusBookingCardInfo">
       <div className="busName">
-        {title && <p>{title}</p>}
-        {img && <img src={rightarrow} />}
+        {title && <p className="title">{title}</p>}
+        {img && <img className="img" src={rightarrow} />}
         {button && (
           <Button onClicked={() => setShowSeats(!showSeats)} text={"Select"} />
         )}

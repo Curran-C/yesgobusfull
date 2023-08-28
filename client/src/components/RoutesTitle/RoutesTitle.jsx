@@ -8,9 +8,11 @@ const RoutesTitle = ({ locationOne, locationTwo, date }) => {
   return (
     <div className="RoutesTitle">
       <div className="locations">
-        <h1>{locationOne}</h1>
-        <img src={rightarrow} alt="" />
-        <h1>{locationTwo}</h1>
+        <div className="toandfrom">
+          <h1>{locationOne}</h1>
+          <img src={rightarrow} alt="" />
+          <h1>{locationTwo}</h1>
+        </div>
         <hr />
         <h3>{date}</h3>
       </div>

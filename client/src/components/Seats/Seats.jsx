@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import {
   available,
   booked,
@@ -10,6 +11,7 @@ import {
 import PickUpAndDropPoints from "../PickUpAndDropPoints/PickUpAndDropPoints";
 import SeatLegend from "../SeatLegend/SeatLegend";
 import "./Seats.scss";
+import Button from "../Button/Button";
 
 const Seats = ({
   pickUpTimes,
@@ -23,7 +25,6 @@ const Seats = ({
   backSeat,
 }) => {
   // * variables
-
   let rows = [];
   let seatsPerRow = [];
   let count = 1;
@@ -31,6 +32,8 @@ const Seats = ({
   //* states
   const [selectedImageOne, setSelectedImageOne] = useState(null);
   const [selectedImageTwo, setSelectedImageTwo] = useState(null);
+  const naviagate = useNavigate();
+
   //*loops
   for (let i = 1; i <= noOfRows; i++) {
     rows.push(i);
@@ -88,11 +91,13 @@ const Seats = ({
             img={ladiesbooked}
           />
         </div>
+
         <div className="filters">
           <p className="filter">All</p>
           <p className="filter">₹700</p>
           <p className="filter">₹800</p>
         </div>
+
         <div className="bus">
           <div className="driver">
             <img src={driver} alt="driver" />
@@ -135,6 +140,21 @@ const Seats = ({
               })}
             </div>
           </div>
+        </div>
+
+        <div className="continue">
+          <Button
+            onClicked={() => naviagate("/busbooking/payment")}
+            text={"Continue"}
+          />
+        </div>
+
+        <div className="price">
+          <div className="selectedSeat">
+            <span>Selected Seat:</span>
+            <p>E 05</p>
+          </div>
+          <p>₹800</p>
         </div>
       </div>
     </div>

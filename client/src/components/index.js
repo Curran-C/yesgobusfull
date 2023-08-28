@@ -12,6 +12,9 @@ import BusRoute from "./BusRoute/BusRoute";
 import RoutesTitle from "./RoutesTitle/RoutesTitle";
 import ColumnNames from "./ColumnNames/ColumnNames";
 import BusBookingCard from "./BusBookingCard/BusBookingCard";
+import SimpleCard from "./SimpleCard/SimpleCard";
+import BusBookingCardInfo from "./BusBookingCardInfo/BusBookingCardInfo";
+import Input from "./Input/Input";
 
 export {
   Navbar,
@@ -28,4 +31,7 @@ export {
   RoutesTitle,
   ColumnNames,
   BusBookingCard,
+  BusBookingCardInfo,
+  SimpleCard,
+  Input,
 };

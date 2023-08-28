@@ -5,3 +5,21 @@
     justify-content: space-evenly;
     padding: 20px 30px;
 }
+
+@media (max-width: 768px) {
+    .BusRoute {
+        flex-wrap: wrap;
+        button {
+            margin-top: 30px;
+        }
+    }
+}
+@media (max-width: 426px) {
+    .BusRoute {
+        justify-content: space-between;
+        buttpn {
+            margin-top: 0px;
+            
+        }
+    }
+}

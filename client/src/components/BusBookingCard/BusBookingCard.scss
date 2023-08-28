@@ -15,8 +15,7 @@
             display: flex;
             align-items: center;
             padding: 20px;
-            justify-content: start;
-            gap: 150px;
+            justify-content: space-between;
             .price {
                 color: #fd5901;
                 font-weight: 700;
@@ -45,6 +44,37 @@
             display: flex;
             gap: 30px;
             padding: 20px;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .BusBookingCard {
+        .cardContainer {
+            .cardWrapper {
+                .otherCards {
+                    gap: 20px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .BusBookingCard {
+        .cardContainer {
+            .cardWrapper {
+                flex-direction: column;
+                .otherCards {
+                    flex-wrap: wrap;
+                    justify-content: center;
+                }
+            }
+            .dropDowns {
+                gap: 10px;
+                padding: 10px;
+                flex-wrap: wrap;
+            }
         }
     }
 }

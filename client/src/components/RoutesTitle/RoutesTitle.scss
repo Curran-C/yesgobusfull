@@ -6,6 +6,10 @@
         display: flex;
         align-items: center;
         gap: 10px;
+        .toandfrom {
+            display: flex;
+            gap: 10px;
+        }
         h1 {
             font-size: 30px;
             font-weight: 500;
@@ -26,6 +30,36 @@
         .highlighted {
             background-color: #fd5901;
             color: white;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .RoutesTitle {
+        .locations {
+            flex-direction: column;
+            align-items: start;
+            gap: 2px;
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .RoutesTitle {
+        flex-direction: column;
+        .locations {
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            h1 {
+                font-size: 20px;
+            }
+            hr {
+                display: none;
+            }
+        }
+        .buttons {
+            margin-top: 20px;
         }
     }
 }

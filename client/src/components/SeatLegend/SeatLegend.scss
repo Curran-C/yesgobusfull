@@ -11,3 +11,14 @@
         width: 40px;
     }
 }
+
+@media (max-width: 768px) {
+    .SeatLegend {
+        span {
+            font-size: 12px;
+        }
+        .subtitle {
+            font-size: 9px;
+        }
+    }
+}

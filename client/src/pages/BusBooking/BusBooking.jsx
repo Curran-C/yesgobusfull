@@ -14,8 +14,6 @@ import { offer1 } from "../../assets/homepage";
 import { useState } from "react";
 
 const BusBooking = () => {
-  const date = new Date();
-
   const [noOfBuses, setNoOfBuses] = useState(150);
 
   //pickup
@@ -37,12 +35,12 @@ const BusBooking = () => {
   ];
 
   //dates
-  const today = new Date();
+  const date = new Date();
   const dates = [];
 
   for (let i = 0; i <= 6; i++) {
-    const nextDate = new Date(today);
-    nextDate.setDate(today.getDate() + i);
+    const nextDate = new Date(date);
+    nextDate.setDate(date.getDate() + i);
     dates.push(
       nextDate.toLocaleString("en-US", {
         month: "short",

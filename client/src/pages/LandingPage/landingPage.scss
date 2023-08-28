@@ -43,7 +43,7 @@
         padding: 0px 30px;
         justify-content: space-evenly;
         border-radius: 25px;
-        height: 200px;
+        min-height: 200px;
         width: 90%;
         .infoCard {
           .infotitle {
@@ -241,6 +241,11 @@
 
 @media (max-width: 768px) {
   .landingPage {
+    .hero {
+      .heroImg {
+        height: 500px;
+      }
+    }
     .popularBusTicket {
       .wrapper {
         flex-wrap: wrap;
@@ -262,6 +267,42 @@
           flex-wrap: wrap;
           gap: 10px;
         }
+      }
+    }
+  }
+}
+
+@media (max-width: 426px) {
+  .landingPage {
+    .hero {
+      height: 700px;
+      .heroImg {
+        height: 500px;
+      }
+      .heroContainer {
+        .title {
+          h1 {
+            font-size: 25px;
+          }
+        }
+        h2 {
+          font-size: 20px;
+          width: 100%;
+        }
+        .border {
+          margin-top: 20px;
+          padding: 30px 10px;
+        }
+      }
+    }
+    .popularBusTicket,
+    .exclusiveOffers,
+    .govBuses,
+    .popularBusRoutes,
+    .whyChooseYesGoBus,
+    .customerReviews {
+      .wrapper {
+        width: 100%;
       }
     }
   }

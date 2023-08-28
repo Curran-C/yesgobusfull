@@ -10,6 +10,8 @@ import FooterLinks from "../FooterLinks/FooterLinks";
 import "./Footer.scss";
 
 const Footer = () => {
+  const date = new Date();
+
   return (
     <div className="footer">
       <div className="footerContainer">
@@ -36,7 +38,7 @@ const Footer = () => {
           images={[fbdark, instagramdark, twitterdark, linkedindark]}
         />
 
-        <div className="subscribe">
+        {/* <div className="subscribe">
           <AboveFooterImages
             title={"Subscribe to our yesgobus"}
             subtitle={"Subscribe to our yesgobus and get more updates"}
@@ -45,9 +47,9 @@ const Footer = () => {
             <input type="email" name="" id="" />
             <Button text={"Join Now"} />
           </form>
-        </div>
+        </div> */}
       </div>
-      <p className="rights">2023 - All right deserved</p>
+      <p className="rights">{date.getFullYear()} - All right deserved</p>
     </div>
   );
 };

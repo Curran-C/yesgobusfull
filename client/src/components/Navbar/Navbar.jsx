@@ -11,10 +11,10 @@ const Navbar = () => {
 
   const menu = (
     <div className="burger-menu">
-      <a href="/busbooking">
+      <a href="/">
         <span>Home</span>
       </a>
-      <a>
+      <a href="/busbooking">
         <span>Bus Ticket</span>
       </a>
       <a>
@@ -50,7 +50,7 @@ const Navbar = () => {
       </div>
 
       <div className="right">
-        <a href="https://yesgobusnew.web.app/">
+        <a href="/login">
           <Button text="Join as Cab Driver" />
         </a>
       </div>

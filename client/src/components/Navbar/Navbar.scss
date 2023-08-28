@@ -87,3 +87,14 @@
         }
     }
 }
+
+@media (max-width: 426px) {
+    .navbar {
+        padding: 10px 10px;
+    }
+    .burger {
+        .hamburger {
+            height: 20px;
+        }
+    }
+}

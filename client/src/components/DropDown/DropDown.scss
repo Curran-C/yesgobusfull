@@ -27,3 +27,12 @@
         cursor: pointer;
     }
 }
+
+@media (max-width: 426px) {
+    .DropDown {
+        .dropdownContainer {
+            gap: 5px;
+            width: 100px;
+        }
+    }
+}
