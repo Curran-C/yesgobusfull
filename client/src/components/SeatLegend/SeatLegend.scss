@@ -1,0 +1,24 @@
+.SeatLegend {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    .subtitle {
+        font-size: 12px;
+        color: #dadada;
+    }
+    img {
+        height: 20px;
+        width: 40px;
+    }
+}
+
+@media (max-width: 768px) {
+    .SeatLegend {
+        span {
+            font-size: 12px;
+        }
+        .subtitle {
+            font-size: 9px;
+        }
+    }
+}

@@ -1,0 +1,38 @@
+.DropDown {
+    position: relative;
+    .dropdownContainer {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        font-size: 12px;
+        font-weight: 400;
+        color: #909090;
+        img {
+            height: 5px;
+        }
+    }
+    .dropdownText {
+        p {
+            font-size: 12px;
+            font-weight: 400;
+            color: #909090;
+            position: absolute;
+            top: 30px;
+            box-shadow: 1px 1px 5px #909090;
+            background-color: #fff;
+            padding: 30px;
+        }
+    }
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+@media (max-width: 426px) {
+    .DropDown {
+        .dropdownContainer {
+            gap: 5px;
+            width: 100px;
+        }
+    }
+}

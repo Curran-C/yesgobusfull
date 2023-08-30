@@ -1,0 +1,61 @@
+.BusBookingCardInfo {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    .busName {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        .rating {
+            background: white;
+            gap: 0px;
+            font-size: 12px;
+            .stars {
+                background: #00f06e;
+                padding: 2px 5px;
+                display: flex;
+                align-items: center;
+                width: 30px;
+                justify-content: space-evenly;
+                color: white;
+            }
+            .reviewCount {
+                border: 1px solid #00f06e;
+                padding: 3.5px 1px;
+                min-width: 60px;
+                font-weight: 300;
+                font-size: 10px;
+            }
+        }
+    }
+    .subtitle {
+        color: #a6a6a6;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 768px) {
+    .BusBookingCardInfo {
+        .busName {
+            flex-direction: column;
+            .title {
+                font-size: 13px;
+            }
+            .img {
+                height: 13px;
+            }
+            .rating {
+                .stars {
+                    width: 15px;
+                }
+                .reviewCount {
+                    width: 45px;
+                }
+            }
+        }
+        .subtitle {
+            font-size: 11px;
+        }
+    }
+}

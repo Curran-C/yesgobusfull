@@ -6,3 +6,12 @@
         color: #fd5901;
     }
 }
+
+@media (max-width: 426px) {
+    .titleContainer {
+        width: 300px;
+        h1 {
+            font-size: 24px;
+        }
+    }
+}

@@ -1,0 +1,37 @@
+.TitleAndText {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    .titleContainer {
+        justify-content: center;
+    }
+    .texts {
+        display: flex;
+        gap: 30px;
+        flex-direction: column;
+        padding: 30px;
+        border: 1px solid lightgray;
+    }
+    .unseen {
+        display: none;
+    }
+    .seen {
+        display: block;
+        .lists {
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: space-evenly;
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .TitleAndText {
+        .seen {
+            .lists {
+                justify-content: start;
+            }
+        }
+    }
+}

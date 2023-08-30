@@ -10,3 +10,10 @@
         box-shadow: 0px 0px 5px 1px #fd5901;
     }
 }
+
+@media (max-width: 426px) {
+    .button {
+        padding: 10px 15px;
+        font-size: 12px;
+    }
+}

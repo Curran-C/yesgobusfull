@@ -1,0 +1,17 @@
+.rating {
+    display: flex;
+    align-items: center;
+    // width: 60px;
+    // height: 10px;
+    gap: 5px;
+    padding: 1px 10px;
+    border-radius: 10px;
+    background-color: #00f06e;
+    .star {
+        height: 10px;
+        margin: 0;
+    }
+    .rate {
+        color: white;
+    }
+}

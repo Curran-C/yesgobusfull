@@ -19,3 +19,12 @@
         letter-spacing: 1px;
     }
 }
+
+@media (max-width: 426px) {
+    .infotitle {
+        font-size: 13px;
+    }
+    .infosubtitle {
+        font-size: 12px;
+    }
+}

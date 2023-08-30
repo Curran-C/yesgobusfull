@@ -1,0 +1,41 @@
+.SimpleCard {
+    display: flex;
+    width: 50%;
+    flex-direction: column;
+    padding: 30px;
+    border-radius: 5px;
+    box-shadow: 1px 1px 5px #dadada;
+    border: 1px solid #dadada;
+    gap: 20px;
+    p:nth-child(1) {
+        letter-spacing: 1px;
+        font-size: 14px;
+    }
+    p:nth-child(2) {
+        letter-spacing: 1px;
+        background-color: #fd5901e3;
+        padding: 5px 10px;
+        color: white;
+        width: 150px;
+        border-radius: 5px;
+        font-size: 14px;
+    }
+    .down {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        span:nth-child(1) {
+            font-size: 28px;
+            font-weight: 600;
+        }
+        span:nth-child(2) {
+            color: #939393;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .SimpleCard {
+        width: 100%;
+    }
+}

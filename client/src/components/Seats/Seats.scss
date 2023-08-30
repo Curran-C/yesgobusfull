@@ -1,0 +1,155 @@
+.seats {
+    display: flex;
+    gap: 20px;
+    margin-top: 20px;
+    h5 {
+        margin-bottom: 10px;
+    }
+    .seatsLeft {
+        width: 50%;
+        .seatsLeftContainer {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid #ededed;
+            height: 250px;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            margin-bottom: 30px;
+            // gap: 20px;
+            .title {
+                background: #ededed;
+                padding: 15px 5px;
+                font-size: 16px;
+                letter-spacing: 1px;
+                font-weight: 500;
+                color: #828282;
+            }
+            hr {
+                width: 100%;
+                margin: 2.5px;
+            }
+        }
+    }
+    .seatsRight {
+        width: 50%;
+        .legend {
+            display: flex;
+            justify-content: space-between;
+        }
+        .filters {
+            display: flex;
+            gap: 20px;
+            margin-top: 30px;
+            font-size: 12px;
+            .filter {
+                padding: 5px 20px;
+                background: rgba(225, 225, 225, 0.59);
+                border-radius: 5px;
+                &:hover {
+                    cursor: pointer;
+                }
+            }
+            .highlighted {
+                color: white;
+                background: rgba(253, 89, 1, 0.59);
+            }
+        }
+        .bus {
+            margin-top: 30px;
+            height: 300px;
+            display: flex;
+            border: 1px solid #828282;
+            .driver {
+                height: 300px;
+                width: 10%;
+                background: rgba(253, 89, 1, 0.19);
+                display: flex;
+                align-items: start;
+                justify-content: center;
+                img {
+                    margin-top: 20px;
+                }
+            }
+            .seatsContainer {
+                width: 90%;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                padding: 20px;
+                .seatsOne,
+                .seatsTwo {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 20px;
+                    align-items: center;
+                    .row {
+                        display: flex;
+                        justify-content: space-around;
+                        width: 100%;
+                        img {
+                            &:hover {
+                                cursor: pointer;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .continue {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .price {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            .selectedSeat {
+                span {
+                    font-size: 15px;
+                    font-weight: 500;
+                }
+                p {
+                    font-size: 13px;
+                    font-weight: 400;
+                }
+            }
+            p {
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .seats {
+        .seatsRight {
+            .bus {
+                .driver {
+                    width: 15%;
+                }
+                .seatsContainer {
+                    padding: 10px;
+                    .seatsOne,
+                    .seatsTwo {
+                        .row {
+                            img {
+                                height: 18px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .seats {
+        flex-direction: column;
+        .seatsLeft,
+        .seatsRight {
+            width: 100%;
+        }
+    }
+}
