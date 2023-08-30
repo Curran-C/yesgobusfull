@@ -1,103 +1,104 @@
 .Login {
     display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    .images {
-        display: flex;
-        flex-direction: column;
-        .logo {
-            margin-top: 30px;
-            margin-left: 30px;
-            height: 50px;
-            width: 100px;
-        }
-        .img {
-            height: 700px;
-        }
+    flex-direction: column;
+    overflow-x: hidden;
+    padding: 20px;
+    .logo {
+        height: 50px;
+        width: 100px;
     }
-    hr {
-        width: 0px;
-        height: 500px;
-        margin: 0;
-    }
-    .loginright {
+    .loginContainer {
         display: flex;
-        flex-direction: column;
         align-items: center;
-        // margin-left: 180px;
-        gap: 20px;
-        width: 40%;
-        .titles {
+        justify-content: space-evenly;
+        .img {
+            height: 600px;
+        }
+
+        hr {
+            width: 0px;
+            height: 500px;
+            margin: 0;
+        }
+        .loginright {
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            margin-left: -40px;
-            align-items: start;
-            p {
-                font-size: 18px;
+            align-items: center;
+            // margin-left: 180px;
+            gap: 20px;
+            width: 40%;
+            .titles {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                margin-left: -40px;
+                align-items: start;
+                p {
+                    font-size: 18px;
+                    span {
+                        color: #fd5901;
+                    }
+                }
+                h1 {
+                    font-size: 35px;
+                }
+            }
+            .Input {
+                gap: 8px;
+                #in {
+                    width: 400px;
+                    border: 1px solid #fd5901;
+                }
+            }
+
+            .or {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+                hr {
+                    height: 0px;
+                    width: 80px;
+                }
+            }
+
+            .links {
+                display: flex;
+                align-items: start;
+                flex-direction: column;
+                gap: 10px;
+                .linksContainer {
+                    display: flex;
+                    gap: 10px;
+                    .link {
+                        display: flex;
+                        gap: 10px;
+                        align-items: center;
+                        padding: 10px 20px;
+                        border: 1px solid #dadada;
+                        img {
+                            height: 30px;
+                        }
+                        span:nth-child(1) {
+                            color: #ea4335;
+                        }
+                        span:nth-child(2) {
+                            color: #1877f2;
+                        }
+                        span:nth-child(3) {
+                            color: #007bb5;
+                        }
+                        &:hover {
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+            p:nth-child(6) {
+                color: #a1a1a1;
+                font-size: 13px;
                 span {
                     color: #fd5901;
                 }
-            }
-            h1 {
-                font-size: 35px;
-            }
-        }
-        .Input {
-            gap: 8px;
-            #in {
-                width: 400px;
-                border: 1px solid #fd5901;
-            }
-        }
-
-        .or {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            hr {
-                height: 0px;
-                width: 80px;
-            }
-        }
-
-        .links {
-            display: flex;
-            align-items: start;
-            flex-direction: column;
-            gap: 10px;
-            .linksContainer {
-                display: flex;
-                gap: 10px;
-                .link {
-                    display: flex;
-                    gap: 10px;
-                    align-items: center;
-                    padding: 10px 20px;
-                    border: 1px solid #dadada;
-                    img {
-                        height: 30px;
-                    }
-                    span:nth-child(1) {
-                        color: #ea4335;
-                    }
-                    span:nth-child(2) {
-                        color: #1877f2;
-                    }
-                    span:nth-child(3) {
-                        color: #007bb5;
-                    }
-                    &:hover {
-                        cursor: pointer;
-                    }
-                }
-            }
-        }
-        p:nth-child(6) {
-            color: #a1a1a1;
-            font-size: 13px;
-            span {
-                color: #fd5901;
             }
         }
     }
@@ -105,10 +106,83 @@
 
 @media (max-width: 1024px) {
     .Login {
-        .images {
-            align-items: start;
+        .loginContainer {
+            margin-top: 30px;
             .img {
                 display: none;
+            }
+            hr {
+                display: none;
+            }
+            .loginright {
+                .titles {
+                    align-items: center;
+                    text-align: center;
+                    width: 300px;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .Login {
+        .loginContainer {
+            margin-top: 30px;
+            .img {
+                display: none;
+            }
+            hr {
+                display: none;
+            }
+            .loginright {
+                .titles {
+                    align-items: center;
+                    text-align: center;
+                    width: 300px;
+                    margin-left: 0px;
+                }
+                .Input {
+                    #in {
+                        width: 300px;
+                    }
+                }
+                .links {
+                    align-items: center;
+                    .linksContainer {
+                        flex-wrap: wrap;
+                        align-items: center;
+                        justify-content: center;
+                        .link {
+                            align-items: center;
+                            justify-content: space-evenly;
+                            width: 200px;
+                        }
+                    }
+                }
+                p {
+                    width: 300px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 321px) {
+    .Login {
+        .loginContainer {
+            .loginright {
+                .titles {
+                    align-items: center;
+                    text-align: center;
+                    width: 300px;
+                }
+                .Input {
+                    #in {
+                        width: 250px;
+                    }
+                }
             }
         }
     }
