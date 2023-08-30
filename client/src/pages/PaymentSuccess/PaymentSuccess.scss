@@ -1,0 +1,59 @@
+.PaymentSuccess {
+    display: flex;
+    justify-content: center;
+    height: 90vh;
+    align-items: center;
+    h1 {
+        color: #00f06e;
+    }
+    p {
+        color: #909090;
+    }
+    .container {
+        border: 1px solid #909090;
+        border-radius: 25px;
+        padding: 50px;
+        width: 500px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        hr {
+            width: 100%;
+        }
+        .amount {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 20px;
+            .paid {
+                display: flex;
+                justify-content: space-between;
+            }
+        }
+        .buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 20px;
+            button:nth-child(2) {
+                background-color: #909090;
+                color: white;
+            }
+        }
+    }
+}
+
+@media (max-width: 321px) {
+    .PaymentSuccess {
+        .container {
+            padding: 10px;
+            width: 280px;
+            img {
+                height: 55px;
+            }
+            h1 {
+                font-size: 20px;
+            }
+        }
+    }
+}

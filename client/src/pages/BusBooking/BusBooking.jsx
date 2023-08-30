@@ -71,7 +71,7 @@ const BusBooking = () => {
               <p className="date">{date}</p>
             ))}
           </div>
-          <div className="exclusiveOffers">
+          {/* <div className="exclusiveOffers">
             <Title title={"Offers"} />
             <div className="offers">
               <OffersCard
@@ -96,7 +96,7 @@ const BusBooking = () => {
                 date={"31st july, 2023"}
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="wrapper">
             <RoutesTitle

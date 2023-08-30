@@ -121,7 +121,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="exclusiveOffers">
+      {/* <div className="exclusiveOffers">
         <Title title={"Exclusive Offers"} subtitle={"view more"} />
         <div className="offers">
           <OffersCard
@@ -146,7 +146,7 @@ const LandingPage = () => {
             date={"31st july, 2023"}
           />
         </div>
-      </div>
+      </div> */}
 
       <div className="govBuses">
         <Title title={"Government Buses"} subtitle={"view more"} />
