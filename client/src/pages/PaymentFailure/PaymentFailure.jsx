@@ -5,7 +5,7 @@ import { Button } from "../../components";
 const PaymentFailure = () => {
   return (
     <div>
-      <div className="PaymentSuccess">
+      <div className="PaymentFailure">
         <div className="container">
           <img src={failed} alt="" />
           <h1>Payment Failure</h1>
