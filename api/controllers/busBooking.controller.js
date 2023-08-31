@@ -5,6 +5,8 @@ import {
   blockSeat,
   bookSeat,
   cancelTicket,
+  getBusFilters,
+  getBusDetails,
 } from "../service/buBooking.service.js";
 
 export const getCityListController = async (req, res) => {
@@ -82,5 +84,33 @@ export const cancelTicketController = async (req, res) => {
       status: 500,
       message: "An error occurred while cancelling ticket"
     })
+  }
+};
+
+export const getBusFiltersController = async (req, res) => {
+  try {
+    const response = await getBusFilters(req.query);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while getting filters"
+    })
+  }
+};
+
+export const getBusDetailsController = async (req, res) => {
+  try {
+    const searchArgs = req.body;
+    const filters = req.params;
+    const response = await getBusDetails(searchArgs, filters);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while getting bus details with filters",
+    });
   }
 };
