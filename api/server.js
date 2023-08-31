@@ -7,6 +7,7 @@ import cors from "cors";
 import userRoutes from "./routes/user.routes.js"
 import cabRoutes from "./routes/cab.routes.js";
 import cabBookingRoutes from "./routes/cabbooking.routes.js";
+import busBookingRoutes from "./routes/busBooking.routes.js";
 
 dotenv.config();
 const app = express();
@@ -30,6 +31,7 @@ app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 app.use("/api/user", userRoutes);
 app.use("/api/cab", cabRoutes);
 app.use("/api/cabBooking", cabBookingRoutes);
+app.use("/api/busBooking", busBookingRoutes);
 
 app.listen(PORT, () => {
   connect();

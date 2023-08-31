@@ -41,9 +41,13 @@ const cabSchema = new Schema(
       type: Number,
       required: true
     },
+    hourlyRentalPrice: {
+      type: Number,
+      required: true
+    },
     taxPercentage: {
       type: Number,
-      // required: true
+      required: true
     },
     fuelType: {
       type: String,
@@ -55,7 +59,7 @@ const cabSchema = new Schema(
     },
     cab_status: {
       type: String,
-      required: true
+      default: "available"
     }
   },
   {
