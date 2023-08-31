@@ -15,6 +15,7 @@ import BusBookingCard from "./BusBookingCard/BusBookingCard";
 import SimpleCard from "./SimpleCard/SimpleCard";
 import BusBookingCardInfo from "./BusBookingCardInfo/BusBookingCardInfo";
 import Input from "./Input/Input";
+import Card from "./Card/Card";
 
 export {
   Navbar,
@@ -34,4 +35,5 @@ export {
   BusBookingCardInfo,
   SimpleCard,
   Input,
+  Card,
 };

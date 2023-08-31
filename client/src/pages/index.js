@@ -5,6 +5,7 @@ import Payment from "./Payment/Payment";
 import Login from "./Login/Login";
 import PaymentSuccess from "./PaymentSuccess/PaymentSuccess";
 import PaymentFailure from "./PaymentFailure/PaymentFailure";
+import ContactUs from "./ContactUs/ContactUs";
 
 export {
   LandingPage,
@@ -14,4 +15,5 @@ export {
   Login,
   PaymentSuccess,
   PaymentFailure,
+  ContactUs,
 };
