@@ -49,7 +49,9 @@ const Footer = () => {
           </form>
         </div> */}
       </div>
-      <p className="rights">{date.getFullYear()} - All right deserved</p>
+      <p className="rights">
+        {date.getFullYear()} - Shine GoBus Private Limited
+      </p>
     </div>
   );
 };

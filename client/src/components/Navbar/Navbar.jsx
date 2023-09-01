@@ -20,9 +20,9 @@ const Navbar = () => {
       <a>
         <span>Cabs</span>
       </a>
-      <a>
+      {/* <a>
         <span>Offers</span>
-      </a>
+      </a> */}
       <a href="/contactus">
         <span>Contact Us</span>
       </a>
@@ -34,16 +34,16 @@ const Navbar = () => {
       {/*logo*/}
       {/* navlinks */}
       <div className="left">
-        <img src={logo} alt="" />
+        <img onClick={() => navigate("/")} src={logo} alt="" />
         <a href="/busbooking">
           <span>Bus Ticket</span>
         </a>
         <a>
           <span>Cabs</span>
         </a>
-        <a>
+        {/* <a>
           <span>Offers</span>
-        </a>
+        </a> */}
         <a href="/contactus">
           <span>Contact Us</span>
         </a>
