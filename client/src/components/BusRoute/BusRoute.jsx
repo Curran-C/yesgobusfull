@@ -4,11 +4,15 @@ import BusRouteCard from "../BusRouteCard/BusRouteCard";
 import Button from "../Button/Button";
 import "./BusRoute.scss";
 
-const BusRoute = ({ locationOne, locationTwo, departureDate, returnDate }) => {
+const BusRoute = ({ locationOne, locationTwo, departureDate, returnDate, onSearch }) => {
   const [LocationOne, setLocationOne] = useState(locationOne);
   const [LocationTwo, setLocationTwo] = useState(locationTwo);
   const [DepartureDate, setDepartureDate] = useState(departureDate);
   const [ReturnDate, setReturnDate] = useState(returnDate);
+
+  const handleSearch = () => {
+    onSearch(LocationOne, LocationTwo, DepartureDate, ReturnDate);
+  };
 
   return (
     <div className="BusRoute">
@@ -35,7 +39,7 @@ const BusRoute = ({ locationOne, locationTwo, departureDate, returnDate }) => {
         setLocation={setReturnDate}
         date={true}
       />
-      <Button text={"Search"} />
+      <Button text={"Search"} onClicked={handleSearch} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   available,
@@ -12,8 +12,14 @@ import PickUpAndDropPoints from "../PickUpAndDropPoints/PickUpAndDropPoints";
 import SeatLegend from "../SeatLegend/SeatLegend";
 import "./Seats.scss";
 import Button from "../Button/Button";
+import axios from "axios";
 
 const Seats = ({
+  routeScheduleId,
+  inventoryType,
+  sourceCity,
+  destinationCity,
+  doj,
   pickUpTimes,
   pickUpLocationOne,
   pickUpLocationTwo,
@@ -23,17 +29,24 @@ const Seats = ({
   noOfRows,
   noOfSeatsPerRow,
   backSeat,
+  travelTime,
+  reachTime,
+  pickUpTime,
+  busType,
+  busName,
+  price
 }) => {
   // * variables
   let rows = [];
   let seatsPerRow = [];
   let count = 1;
-
+  console.log(routeScheduleId, inventoryType, sourceCity, destinationCity, doj);
   //* states
   const [selectedImageOne, setSelectedImageOne] = useState(null);
   const [selectedImageTwo, setSelectedImageTwo] = useState(null);
   const naviagate = useNavigate();
-
+  const [selectedBoardingPoint, setSelectedBoardingPoint] = useState("");
+  const [selectedDroppingPoint, setSelectedDroppingPoint] = useState("");
   //*loops
   for (let i = 1; i <= noOfRows; i++) {
     rows.push(i);
@@ -41,18 +54,44 @@ const Seats = ({
   for (let i = 1; i <= noOfSeatsPerRow; i++) {
     seatsPerRow.push(i);
   }
+
+  useEffect(() => {
+    const getSeats = async () => {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
+          {
+            sourceCity: sourceCity,
+            destinationCity: destinationCity,
+            doj: doj,
+            inventoryType: inventoryType,
+            routeScheduleId: routeScheduleId,
+          }
+        );
+        console.log("Seat Details:",response.data.seats);
+      } catch (error) {
+        alert("Something went wrong");
+        console.error("omething went wrong:", error);
+      }
+    }
+    getSeats();
+  }, []);
+
+
   return (
     <div className="seats">
       <div className="seatsLeft">
         <h5>Select Pickup and Drop Points</h5>
         <div className="seatsLeftContainer">
           <span className="title">PICKUP POINT</span>
-          {pickUpTimes?.map((pickUpTime, index) => (
+          {pickUpLocationOne?.map((boardingPoint, index) => (
             <>
               <PickUpAndDropPoints
-                time={pickUpTime}
-                locationOne={pickUpLocationOne[index]}
-                locationTwo={pickUpLocationTwo[index]}
+                key={boardingPoint.id}
+                time={boardingPoint.time}
+                locationOne={boardingPoint.location}
+              // locationTwo={boardingPoint.location}
+                // onClick={setSelectedBoardingPoint(boardingPoint)}
               />
               <hr />
             </>
@@ -61,12 +100,14 @@ const Seats = ({
 
         <div className="seatsLeftContainer">
           <span className="title">DROP POINT</span>
-          {dropTimes?.map((dropTime, index) => (
+          {dropLocationOne?.map((droppingPoint, index) => (
             <>
               <PickUpAndDropPoints
-                time={dropTime}
-                locationOne={dropLocationOne[index]}
-                locationTwo={dropLocationTwo[index]}
+                key={droppingPoint.id}
+                time={droppingPoint.time}
+                locationOne={droppingPoint.location}
+              // locationTwo={droppingPoint.location}
+              // onClick={setSelectedDroppingPoint(droppingPoint.location)}
               />
               <hr />
             </>
@@ -143,8 +184,8 @@ const Seats = ({
         </div>
 
         <div className="continue">
-          <Button
-            onClicked={() => naviagate("/busbooking/payment")}
+          <Button 
+            onClicked={() => naviagate(`/busbooking/payment?sourceCity=${sourceCity}&destinationCity=${destinationCity}&routeScheduleId=${routeScheduleId}&inventoryType=${inventoryType},&doj=${doj}&pickUpTime=${pickUpTime}&reachTime=${pickUpTime}&travelTime=${travelTime}&busType=${busType}&busName=${busName}&price=${price}`)}
             text={"Continue"}
           />
         </div>

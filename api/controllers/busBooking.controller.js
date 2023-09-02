@@ -7,6 +7,7 @@ import {
   cancelTicket,
   getBusFilters,
   getBusDetails,
+  bookBus,
 } from "../service/buBooking.service.js";
 
 export const getCityListController = async (req, res) => {
@@ -111,6 +112,19 @@ export const getBusDetailsController = async (req, res) => {
     return res.status(500).send({
       status: 500,
       message: "An error occurred while getting bus details with filters",
+    });
+  }
+};
+
+export const bookBusController = async (req, res) => {
+  try {
+    const response = await bookBus(req.body);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while booking bus",
     });
   }
 };
