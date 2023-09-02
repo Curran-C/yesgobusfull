@@ -33,14 +33,33 @@ const Login = () => {
   const handlePhChange = (e) => {
     setShowOTP(false);
     if (isMobilenumber(e.target.value)) setShowOTP(true);
-    setLoginData()
+    setLoginData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+    console.log(loginData);
   };
-  
+
+  const handleOtherLoginChanges = (e) => {
+    setLoginData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+    console.log(loginData);
+  };
+
   const handlePhChangeSingup = (e) => {
     setShowOTP(false);
     if (isMobilenumber(e.target.value)) setShowOTP(true);
-    setCreateAccountData()
-  }
+    setCreateAccountData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+  };
+
+  const handleOtherSignupChanges = (e) => {
+    setCreateAccountData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
+    console.log(createAccountData);
+  };
 
   const login = (
     <>
@@ -58,7 +77,7 @@ const Login = () => {
         title={"Enter Password / OTP"}
         type={"password"}
         placeholder={"Enter Password / OTP"}
-        onChanged={setLoginData}
+        onChanged={handleOtherLoginChanges}
         givenName={"password"}
       />
     </>
@@ -66,8 +85,11 @@ const Login = () => {
 
   const createAccount = (
     <>
-      <Input title={"Full Name"} type={"text"} placeholder={"Full Name"}
-        onChanged={setCreateAccountData}
+      <Input
+        title={"Full Name"}
+        type={"text"}
+        placeholder={"Full Name"}
+        onChanged={handleOtherSignupChanges}
         givenName={"fullName"}
       />
       <Input
@@ -77,21 +99,24 @@ const Login = () => {
         onChanged={handlePhChangeSingup}
         givenName={"phoneNumber"}
       />
-          {showOTP && (
-          <>
-            <Button text={"Send OTP"} />
-            <Input title={"Verify OTP"} type={"number"} />
-          </>
-        )}
+      {showOTP && (
+        <>
+          <Button text={"Send OTP"} />
+          <Input title={"Verify OTP"} type={"number"} />
+        </>
+      )}
       <Input
         title={"Email"}
         type={"email"}
         placeholder={"Email"}
-        onChanged={setCreateAccountData}
+        onChanged={handleOtherSignupChanges}
         givenName={"email"}
       />
-      <Input title={"Password"} type={"password"} placeholder={"password"}
-        onChanged={setCreateAccountData}
+      <Input
+        title={"Password"}
+        type={"password"}
+        placeholder={"password"}
+        onChanged={handleOtherSignupChanges}
         givenName={"password"}
       />
     </>
@@ -105,7 +130,7 @@ const Login = () => {
           `${import.meta.env.VITE_BASE_URL}/api/user/signin`,
           {
             emailMobile: loginData.emailMobile,
-            password: loginData.password
+            password: loginData.password,
           }
         );
         if (response.status === 200) {
@@ -130,8 +155,7 @@ const Login = () => {
           alert("Account created");
           setShowLogin(!showLogin);
           setShowCreateAccount(!showCreateAccount);
-        }
-        else if (response.status === 406){
+        } else if (response.status === 406) {
           console.log("User already exists");
         }
       } catch (error) {
@@ -139,7 +163,7 @@ const Login = () => {
         console.error("Error registering user:", error);
       }
     }
-  }
+  };
 
   return (
     <div className="Login">
