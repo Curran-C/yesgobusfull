@@ -18,8 +18,8 @@ const Login = () => {
 
   // functions
   const isMobilenumber = (num) => {
-    let pattern = /^[6789]\d{9}$/;
-    return pattern.test(num);
+    let isIndianNumber = /^[6789]\d{9}$/;
+    return isIndianNumber.test(num);
   };
 
   const handleLoginChange = () => {
