@@ -50,7 +50,7 @@ import "./landingPage.scss";
 const LandingPage = () => {
   return (
     <div className="landingPage">
-      <Navbar />
+      <Navbar page={"home"} />
       <div className="hero">
         <img src={heroimage} alt="" className="heroImg" />
         <div className="heroContainer">

@@ -34,10 +34,15 @@ const Payment = () => {
   const busType = queryParams.get("busType");
   const busName = queryParams.get("busName");
   const price = queryParams.get("price");
+  // to be removed
+  const priceArray = price.split(" - ");
+  console.log(priceArray);
+  const tax = parseInt(priceArray[0]) * 0.18;
+  const totalAmount = parseInt(priceArray[0]) + tax;
 
   const date = new Date();
   const handlePayment = async () => {
-
+    console.log(userData);
     try {
       const requestBody = {
         sourceCity: sourceCity,
@@ -48,29 +53,29 @@ const Payment = () => {
         customerLastName: userData.fullName,
         customerEmail: userData.email,
         customerPhone: userData.mobile,
-        customerGender: userData.gender,
+        // customerGender: userData.gender,
         customerAge: userData.age,
         emergencyPhNumber: userData.alternativeNumber,
-        customerAddress: userData.address,
-        customerState: userData.state,
-        totalAmount: price,
+        totalAmount: parseInt(totalAmount),
       };
       
       const bookResponse = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
         requestBody
       );
-      alert(bookResponse.status);
+      // if (bookResponse.status === 200) alert("Bookin");
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
         {
-          amount: 10,
-          redirectUrl: `https://yesgobus.com/busbooking/payment/success`
+          amount: parseInt(totalAmount),
+          redirectUrl: `https://yesgobus.com/busbooking/payment/success`,
         }
       );
-      window.location.replace(response.data.data.instrumentResponse.redirectInfo.url);
+      window.location.replace(
+        response.data.data.instrumentResponse.redirectInfo.url
+      );
     } catch (error) {
-      alert("Something went wrong");
+      console.log(error);
       console.error("omething went wrong:", error);
     }
   }
@@ -80,7 +85,6 @@ const Payment = () => {
       return { ...prev, [e.target.name]: e.target.value };
     });
   };
-
 
   return (
     <div className="Payment">
@@ -156,13 +160,20 @@ const Payment = () => {
               onChanged={handleInputChange}
               givenName={"age"}
               />
-              <Input
+              {/* <Input title={"Age"} type={"number"} placeholder={"40"} /> */}
+              {/* <Input
                 title={"Gender"}
                 type={"text"}
                 placeholder={"Male / Female / Other"}
-                onChanged={handleInputChange}
-                givenName={"gender"}
-              />
+              /> */}
+              <div className="genderContainer">
+                <label htmlFor="gender">Gender</label>
+                <select name="" id="gender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -195,32 +206,21 @@ const Payment = () => {
           </div>
 
           {/* Picode Details */}
-          <div className="details">
-            <span>Your Pincode and state</span>
+          {/* <div className="details">
+            <span>Enter Contact Details</span>
             <div className="detailsContainer">
-              <Input title={"Pincode"} type={"number"} placeholder={"560"} 
-              onChanged={handleInputChange}
-              givenName={"pincode"}
-              />
-              <Input
-                title={"State"}
-                type={"text"}
-                placeholder={"State"}
-                onChanged={handleInputChange}
-                givenName={"state"}
-              />
+              <Input title={"Pincode"} type={"number"} placeholder={"560"} />
+              <Input title={"State"} type={"text"} placeholder={"Karnataka"} />
               <Input
                 title={"Address"}
                 type={"text"}
-                placeholder={"Address"}
-                onChanged={handleInputChange}
-                givenName={"address"}
+                placeholder={"Address (optional)"}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Trip Type */}
-          <div className="tripType">
+          {/* <div className="tripType">
             <span>Trip Type</span>
             <hr />
             <div className="checks">
@@ -241,7 +241,7 @@ const Payment = () => {
                 <label htmlFor="checkTwo">Business</label>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="containerright">
           <div className="paymentCard">
@@ -250,23 +250,23 @@ const Payment = () => {
             <div className="prices">
               <div className="price">
                 <p>Total Basefare</p>
-                <p>{"₹"+price}</p>
+                <p>{"₹"+priceArray[0]}</p>
               </div>
               <hr />
               <div className="price">
                 <p>Tax</p>
-                <p>₹30</p>
+                <p>{tax}</p>
               </div>
               <hr />
               <div className="price">
                 <p>Total Basefare</p>
-                <p>₹830</p>
+                <p>{totalAmount}</p>
               </div>
               <hr />
             </div>
           </div>
 
-          <div className="paymentCard">
+          {/* <div className="paymentCard">
             <h2>OFFERS</h2>
             <div className="promo">
               <div className="heading">
@@ -276,8 +276,8 @@ const Payment = () => {
               <hr />
               <input type="text" name="" id="" placeholder="Enter your code" />
             </div>
-          </div>
-          <Button text={"Pay Amount ₹830"} onClicked={handlePayment}/>
+          </div> */}
+          <Button text={`Pay Amount ₹${totalAmount}`} onClicked={handlePayment} />
         </div>
       </div>
       <div className="popularBusRoutes">

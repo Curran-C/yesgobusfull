@@ -4,8 +4,9 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 
 import "./Navbar.scss";
+import { blacklogo } from "../../assets/homepage";
 
-const Navbar = () => {
+const Navbar = ({ page }) => {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
@@ -15,9 +16,9 @@ const Navbar = () => {
         <span>Home</span>
       </a>
       <a href="/busbooking">
-        <span>Bus Ticket</span>
+        <span>Bus</span>
       </a>
-      <a>
+      <a href="/comingsoon">
         <span>Cabs</span>
       </a>
       {/* <a>
@@ -34,11 +35,25 @@ const Navbar = () => {
       {/*logo*/}
       {/* navlinks */}
       <div className="left">
-        <img onClick={() => navigate("/")} src={logo} alt="" />
+        {page === "home" ? (
+          <img
+            className="logo"
+            onClick={() => navigate("/")}
+            src={logo}
+            alt=""
+          />
+        ) : (
+          <img
+            className="blacklogo"
+            onClick={() => navigate("/")}
+            src={blacklogo}
+            alt=""
+          />
+        )}
         <a href="/busbooking">
-          <span>Bus Ticket</span>
+          <span>Bus</span>
         </a>
-        <a>
+        <a href="/comingsoon">
           <span>Cabs</span>
         </a>
         {/* <a>
