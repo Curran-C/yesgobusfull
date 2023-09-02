@@ -43,6 +43,22 @@
                     font-size: 35px;
                 }
             }
+            .otp {
+                display: flex;
+                align-items: end;
+                gap: 20px;
+                .Input {
+                    #in {
+                        width: 280px;
+                    }
+                }
+            }
+            .otp2 {
+                display: flex;
+                flex-direction: column;
+                align-items: end;
+                gap: 20px;
+            }
             .Input {
                 gap: 8px;
                 #in {
@@ -120,6 +136,20 @@
                     text-align: center;
                     width: 300px;
                 }
+                .otp {
+                    display: flex;
+                    align-items: end;
+                    gap: 20px;
+                    .Input {
+                        #in {
+                            width: 280px;
+                        }
+                    }
+                    button {
+                        font-size: 13px;
+                        width: 100px;
+                    }
+                }
             }
         }
     }
@@ -145,6 +175,17 @@
                 .Input {
                     #in {
                         width: 300px;
+                    }
+                }
+                .otp {
+                    display: flex;
+                    align-items: end;
+                    flex-direction: column;
+                    gap: 20px;
+                    .Input {
+                        #in {
+                            width: 300px;
+                        }
                     }
                 }
                 .links {
@@ -181,6 +222,17 @@
                 .Input {
                     #in {
                         width: 250px;
+                    }
+                }
+                .otp {
+                    display: flex;
+                    align-items: end;
+                    flex-direction: column;
+                    gap: 20px;
+                    .Input {
+                        #in {
+                            width: 250px;
+                        }
                     }
                 }
             }

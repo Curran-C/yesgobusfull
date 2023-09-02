@@ -17,21 +17,43 @@ const Login = () => {
   const [showCreateAccount, setShowCreateAccount] = useState(false);
   const [loginData, setLoginData] = useState({});
   const [createAccountData, setCreateAccountData] = useState({});
+  const [showOTP, setShowOTP] = useState(false);
+
+  // functions
+  const isMobilenumber = (num) => {
+    let pattern = /^[6789]\d{9}$/;
+    return pattern.test(num);
+  };
 
   const handleLoginChange = () => {
     setShowLogin(!showLogin);
     setShowCreateAccount(!showCreateAccount);
   };
 
+  const handlePhChange = (e) => {
+    setShowOTP(false);
+    if (isMobilenumber(e.target.value)) setShowOTP(true);
+    setLoginData()
+  };
+  
+  const handlePhChangeSingup = (e) => {
+    setShowOTP(false);
+    if (isMobilenumber(e.target.value)) setShowOTP(true);
+    setCreateAccountData()
+  }
+
   const login = (
     <>
-      <Input
-        title={"Enter Mobile Number / Email"}
-        type={"text"}
-        placeholder={"Enter Mobile Number / Email"}
-        onChanged={setLoginData}
-        givenName={"emailMobile"}
-      />
+      <div className={showOTP && "otp"}>
+        <Input
+          title={"Enter Mobile Number / Email"}
+          type={"text"}
+          placeholder={"Enter Mobile Number / Email"}
+          onChanged={handlePhChange}
+          givenName={"emailMobile"}
+        />
+        {showOTP && <Button text={"Send OTP"} />}
+      </div>
       <Input
         title={"Enter Password / OTP"}
         type={"password"}
@@ -52,9 +74,15 @@ const Login = () => {
         title={"Mobile Number"}
         type={"number"}
         placeholder={"+91 0000 0000 00"}
-        onChanged={setCreateAccountData}
+        onChanged={handlePhChangeSingup}
         givenName={"phoneNumber"}
       />
+          {showOTP && (
+          <>
+            <Button text={"Send OTP"} />
+            <Input title={"Verify OTP"} type={"number"} />
+          </>
+        )}
       <Input
         title={"Email"}
         type={"email"}
@@ -66,7 +94,6 @@ const Login = () => {
         onChanged={setCreateAccountData}
         givenName={"password"}
       />
-      <Input title={"Confim Password"} type={"text"} placeholder={"password"} />
     </>
   );
 
@@ -129,12 +156,18 @@ const Login = () => {
             {showLogin ? (
               <p>
                 Dont have an account?
-                <span onClick={handleLoginChange}> Create an account</span>
+                <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
+                  {" "}
+                  Create an account
+                </span>
               </p>
             ) : (
               <p>
                 Already have an account?
-                <span onClick={handleLoginChange}> Click to Login</span>
+                <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
+                  {" "}
+                  Click to Login
+                </span>
               </p>
             )}
           </div>
