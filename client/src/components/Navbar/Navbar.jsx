@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { hamburger, logo } from "../../assets";
+import { blackhamburger, hamburger, logo } from "../../assets";
 import { useNavigate } from "react-router-dom";
 import Button from "../Button/Button";
 
@@ -66,17 +66,26 @@ const Navbar = ({ page }) => {
 
       <div className="right">
         <a href="/login">
-          <Button text="Join as Cab Driver" />
+          <Button text="Login / Signup" />
         </a>
       </div>
 
       {/* burger menu */}
-      <img
-        className="hamburger"
-        onClick={() => setShowMenu(!showMenu)}
-        src={hamburger}
-        alt=""
-      />
+      {page === "home" ? (
+        <img
+          className="hamburger"
+          onClick={() => setShowMenu(!showMenu)}
+          src={hamburger}
+          alt=""
+        />
+      ) : (
+        <img
+          className="hamburger"
+          onClick={() => setShowMenu(!showMenu)}
+          src={blackhamburger}
+          alt=""
+        />
+      )}
       {showMenu && menu}
     </nav>
   );
