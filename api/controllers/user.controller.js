@@ -11,9 +11,9 @@ export const signUpController = async (req, res) => {
 
 export const signInController = async (req, res) => {
   try {
-    const { email, password } = req.body;
-    const result = await signIn(email, password);
+    const { emailMobile, password } = req.body;
     
+    const result = await signIn(emailMobile, password);
     if (result.status === 200) {
       res.cookie("token", result.token, {
         // httpOnly: true, 
