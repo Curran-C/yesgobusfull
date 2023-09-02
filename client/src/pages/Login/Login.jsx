@@ -9,11 +9,14 @@ import "./Login.scss";
 import { Button, Input } from "../../components";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(true);
   const [showCreateAccount, setShowCreateAccount] = useState(false);
+  const [loginData, setLoginData] = useState({});
+  const [createAccountData, setCreateAccountData] = useState({});
   const [showOTP, setShowOTP] = useState(false);
 
   // functions
@@ -30,7 +33,14 @@ const Login = () => {
   const handlePhChange = (e) => {
     setShowOTP(false);
     if (isMobilenumber(e.target.value)) setShowOTP(true);
+    setLoginData()
   };
+  
+  const handlePhChangeSingup = (e) => {
+    setShowOTP(false);
+    if (isMobilenumber(e.target.value)) setShowOTP(true);
+    setCreateAccountData()
+  }
 
   const login = (
     <>
@@ -40,6 +50,7 @@ const Login = () => {
           type={"text"}
           placeholder={"Enter Mobile Number / Email"}
           onChanged={handlePhChange}
+          givenName={"emailMobile"}
         />
         {showOTP && <Button text={"Send OTP"} />}
       </div>
@@ -47,31 +58,88 @@ const Login = () => {
         title={"Enter Password / OTP"}
         type={"password"}
         placeholder={"Enter Password / OTP"}
+        onChanged={setLoginData}
+        givenName={"password"}
       />
     </>
   );
 
   const createAccount = (
     <>
-      <Input title={"Full Name"} type={"text"} placeholder={"Full Name"} />
-      <div className={showOTP && "otp2"}>
-        <Input
-          title={"Mobile Number"}
-          type={"number"}
-          placeholder={"+91 0000 0000 00"}
-          onChanged={handlePhChange}
-        />
-        {showOTP && (
+      <Input title={"Full Name"} type={"text"} placeholder={"Full Name"}
+        onChanged={setCreateAccountData}
+        givenName={"fullName"}
+      />
+      <Input
+        title={"Mobile Number"}
+        type={"number"}
+        placeholder={"+91 0000 0000 00"}
+        onChanged={handlePhChangeSingup}
+        givenName={"phoneNumber"}
+      />
+          {showOTP && (
           <>
             <Button text={"Send OTP"} />
             <Input title={"Verify OTP"} type={"number"} />
           </>
         )}
-      </div>
-      <Input title={"Password"} type={"password"} placeholder={"password"} />
-      <Input title={"Confim Password"} type={"text"} placeholder={"password"} />
+      <Input
+        title={"Email"}
+        type={"email"}
+        placeholder={"Email"}
+        onChanged={setCreateAccountData}
+        givenName={"email"}
+      />
+      <Input title={"Password"} type={"password"} placeholder={"password"}
+        onChanged={setCreateAccountData}
+        givenName={"password"}
+      />
     </>
   );
+
+  const handleSubmit = async () => {
+    if (showLogin) {
+      console.log(loginData);
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/user/signin`,
+          {
+            emailMobile: loginData.emailMobile,
+            password: loginData.password
+          }
+        );
+        if (response.status === 200) {
+          const token = response.data.token;
+          localStorage.setItem("token", token);
+          alert("Login Successfull");
+          navigate("/");
+        } else {
+          alert("Invalid credentials");
+        }
+      } catch (error) {
+        alert("Something went wrong");
+        console.error("Error registering user:", error);
+      }
+    } else {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/user/signup`,
+          createAccountData
+        );
+        if (response.status === 200) {
+          alert("Account created");
+          setShowLogin(!showLogin);
+          setShowCreateAccount(!showCreateAccount);
+        }
+        else if (response.status === 406){
+          console.log("User already exists");
+        }
+      } catch (error) {
+        alert("Something went wrong");
+        console.error("Error registering user:", error);
+      }
+    }
+  }
 
   return (
     <div className="Login">
@@ -133,7 +201,7 @@ const Login = () => {
             <span> Privacy Policy</span>
           </p>
 
-          <Button text={"Continue"} onClicked={() => navigate("/")} />
+          <Button text={"Continue"} onClicked={handleSubmit} />
         </div>
       </div>
     </div>

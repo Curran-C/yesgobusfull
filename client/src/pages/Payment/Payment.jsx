@@ -15,10 +15,25 @@ import {
 import { livelocation } from "../../assets/busbooking";
 import AboveFooterImages from "../../components/AboveFooterImages/AboveFooterImages";
 import { offer } from "../../assets/payment";
+import axios from "axios";
 
 const Payment = () => {
   const date = new Date();
-
+  const handlePayment = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
+        {
+          amount: 10,
+          redirectUrl: `https://yesgobus.com/busbooking/payment/success`
+        }
+      );
+      window.location.replace(response.data.data.instrumentResponse.redirectInfo.url);
+    } catch (error) {
+      alert("Something went wrong");
+      console.error("omething went wrong:", error);
+    }
+  }
   return (
     <div className="Payment">
       <Navbar />
@@ -194,7 +209,7 @@ const Payment = () => {
               <input type="text" name="" id="" placeholder="Enter your code" />
             </div>
           </div>
-          <Button text={"Pay Amount ₹830"} />
+          <Button text={"Pay Amount ₹830"} onClicked={handlePayment}/>
         </div>
       </div>
       <div className="popularBusRoutes">

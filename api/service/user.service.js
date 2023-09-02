@@ -4,7 +4,9 @@ import jwt from "jsonwebtoken";
 
 export const signUp = async (userData) => {
   try {
-    const existingUser = await User.findOne({ email: userData.email });
+    const existingUser = await User.findOne({
+      $or: [{ email: userData.email }, { phoneNumber: userData.phoneNumber }],
+    });
     if (!existingUser) {
       const hashedPassword = bcrypt.hashSync(userData.password, 5);
       const newUser = new User({
@@ -20,7 +22,7 @@ export const signUp = async (userData) => {
       };
     } else {
       return {
-        status: 200,
+        status: 409,
         message: "User already exists",
       };
     }
@@ -33,9 +35,12 @@ export const signUp = async (userData) => {
   }
 };
 
-export const signIn = async (email, password) => {
+export const signIn = async (emailMobile, password) => {
   try {
-    const existingUser = await User.findOne({ email });
+    const existingUser = await User.findOne({
+      $or: [{ email: emailMobile }, { phoneNumber: emailMobile }],
+    });
+
     if (!existingUser) {
       return {
         status: 401,
