@@ -144,7 +144,7 @@ const Payment = () => {
           </div>
 
           {/* Picode Details */}
-          <div className="details">
+          {/* <div className="details">
             <span>Enter Contact Details</span>
             <div className="detailsContainer">
               <Input title={"Pincode"} type={"number"} placeholder={"560"} />
@@ -155,7 +155,7 @@ const Payment = () => {
                 placeholder={"Address (optional)"}
               />
             </div>
-          </div>
+          </div> */}
 
           {/* Trip Type */}
           {/* <div className="tripType">
@@ -204,7 +204,7 @@ const Payment = () => {
             </div>
           </div>
 
-          <div className="paymentCard">
+          {/* <div className="paymentCard">
             <h2>OFFERS</h2>
             <div className="promo">
               <div className="heading">
@@ -214,7 +214,7 @@ const Payment = () => {
               <hr />
               <input type="text" name="" id="" placeholder="Enter your code" />
             </div>
-          </div>
+          </div> */}
           <Button text={"Pay Amount ₹830"} onClicked={handlePayment} />
         </div>
       </div>
