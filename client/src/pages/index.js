@@ -6,6 +6,7 @@ import Login from "./Login/Login";
 import PaymentSuccess from "./PaymentSuccess/PaymentSuccess";
 import PaymentFailure from "./PaymentFailure/PaymentFailure";
 import ContactUs from "./ContactUs/ContactUs";
+import ComingSoon from "./ComingSoon/ComingSoon";
 
 export {
   LandingPage,
@@ -16,4 +17,5 @@ export {
   PaymentSuccess,
   PaymentFailure,
   ContactUs,
+  ComingSoon,
 };

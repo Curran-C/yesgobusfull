@@ -55,18 +55,18 @@ const BusBookingCard = ({
           </div>
         </div>
         <hr />
-        <div className="liveLocation">
+        <div style={{ marginBottom: "10px" }} className="liveLocation">
           <img src={livelocation} alt="" />
           <span>Live tracking</span>
         </div>
-        <hr />
-        <div className="dropDowns">
+        {/* <hr /> */}
+        {/* <div className="dropDowns">
           <DropDown title="Policy" text="Lorem" />
           <DropDown title="Photos" text="Lorem" />
           <DropDown title="Aminities" text="Lorem" />
           <DropDown title="Pickup & Drop" text="Lorem" />
           <DropDown title="Reviews" text="Lorem" />
-        </div>
+        </div> */}
       </div>
       {showSeats && (
         <Seats

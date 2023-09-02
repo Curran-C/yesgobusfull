@@ -25,15 +25,17 @@ const Payment = () => {
         `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
         {
           amount: 10,
-          redirectUrl: `https://yesgobus.com/busbooking/payment/success`
+          redirectUrl: `https://yesgobus.com/busbooking/payment/success`,
         }
       );
-      window.location.replace(response.data.data.instrumentResponse.redirectInfo.url);
+      window.location.replace(
+        response.data.data.instrumentResponse.redirectInfo.url
+      );
     } catch (error) {
       alert("Something went wrong");
       console.error("omething went wrong:", error);
     }
-  }
+  };
   return (
     <div className="Payment">
       <Navbar />
@@ -103,11 +105,19 @@ const Payment = () => {
                 placeholder={"Full name"}
               />
               <Input title={"Age"} type={"number"} placeholder={"40"} />
-              <Input
+              {/* <Input
                 title={"Gender"}
                 type={"text"}
                 placeholder={"Male / Female / Other"}
-              />
+              /> */}
+              <div className="genderContainer">
+                <label htmlFor="gender">Gender</label>
+                <select name="" id="gender">
+                  <option value="Male">Male</option>
+                  <option value="Female">Female</option>
+                  <option value="Other">Other</option>
+                </select>
+              </div>
             </div>
           </div>
 
@@ -138,21 +148,17 @@ const Payment = () => {
             <span>Enter Contact Details</span>
             <div className="detailsContainer">
               <Input title={"Pincode"} type={"number"} placeholder={"560"} />
+              <Input title={"State"} type={"text"} placeholder={"Karnataka"} />
               <Input
-                title={"Mobile Number"}
-                type={"number"}
-                placeholder={"1234567890"}
-              />
-              <Input
-                title={"Altername Number"}
-                type={"number"}
-                placeholder={"1234567890"}
+                title={"Address"}
+                type={"text"}
+                placeholder={"Address (optional)"}
               />
             </div>
           </div>
 
           {/* Trip Type */}
-          <div className="tripType">
+          {/* <div className="tripType">
             <span>Trip Type</span>
             <hr />
             <div className="checks">
@@ -173,7 +179,7 @@ const Payment = () => {
                 <label htmlFor="checkTwo">Business</label>
               </div>
             </div>
-          </div>
+          </div> */}
         </div>
         <div className="containerright">
           <div className="paymentCard">
@@ -209,7 +215,7 @@ const Payment = () => {
               <input type="text" name="" id="" placeholder="Enter your code" />
             </div>
           </div>
-          <Button text={"Pay Amount ₹830"} onClicked={handlePayment}/>
+          <Button text={"Pay Amount ₹830"} onClicked={handlePayment} />
         </div>
       </div>
       <div className="popularBusRoutes">
