@@ -14,19 +14,35 @@ const Login = () => {
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(true);
   const [showCreateAccount, setShowCreateAccount] = useState(false);
+  const [showOTP, setShowOTP] = useState(false);
+
+  // functions
+  const isMobilenumber = (num) => {
+    let pattern = /^[6789]\d{9}$/;
+    return pattern.test(num);
+  };
 
   const handleLoginChange = () => {
     setShowLogin(!showLogin);
     setShowCreateAccount(!showCreateAccount);
   };
 
+  const handlePhChange = (e) => {
+    setShowOTP(false);
+    if (isMobilenumber(e.target.value)) setShowOTP(true);
+  };
+
   const login = (
     <>
-      <Input
-        title={"Enter Mobile Number / Email"}
-        type={"text"}
-        placeholder={"Enter Mobile Number / Email"}
-      />
+      <div className={showOTP && "otp"}>
+        <Input
+          title={"Enter Mobile Number / Email"}
+          type={"text"}
+          placeholder={"Enter Mobile Number / Email"}
+          onChanged={handlePhChange}
+        />
+        {showOTP && <Button text={"Send OTP"} />}
+      </div>
       <Input
         title={"Enter Password / OTP"}
         type={"password"}
@@ -38,11 +54,20 @@ const Login = () => {
   const createAccount = (
     <>
       <Input title={"Full Name"} type={"text"} placeholder={"Full Name"} />
-      <Input
-        title={"Mobile Number"}
-        type={"number"}
-        placeholder={"+91 0000 0000 00"}
-      />
+      <div className={showOTP && "otp2"}>
+        <Input
+          title={"Mobile Number"}
+          type={"number"}
+          placeholder={"+91 0000 0000 00"}
+          onChanged={handlePhChange}
+        />
+        {showOTP && (
+          <>
+            <Button text={"Send OTP"} />
+            <Input title={"Verify OTP"} type={"number"} />
+          </>
+        )}
+      </div>
       <Input title={"Password"} type={"password"} placeholder={"password"} />
       <Input title={"Confim Password"} type={"text"} placeholder={"password"} />
     </>
@@ -63,12 +88,18 @@ const Login = () => {
             {showLogin ? (
               <p>
                 Dont have an account?
-                <span onClick={handleLoginChange}> Create an account</span>
+                <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
+                  {" "}
+                  Create an account
+                </span>
               </p>
             ) : (
               <p>
                 Already have an account?
-                <span onClick={handleLoginChange}> Click to Login</span>
+                <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
+                  {" "}
+                  Click to Login
+                </span>
               </p>
             )}
           </div>

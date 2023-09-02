@@ -1,5 +1,5 @@
 import { call, message } from "../../assets/contact";
-import { Card, Navbar } from "../../components";
+import { Card, Footer, Navbar } from "../../components";
 import "./ContactUs.scss";
 
 const ContactUs = () => {
@@ -38,6 +38,7 @@ const ContactUs = () => {
           />
         </div>
       </div>
+      <Footer />
     </div>
   );
 };
