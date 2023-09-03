@@ -16,15 +16,58 @@ import { livelocation } from "../../assets/busbooking";
 import AboveFooterImages from "../../components/AboveFooterImages/AboveFooterImages";
 import { offer } from "../../assets/payment";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const Payment = () => {
+  const [userData, setUserData] = useState({});
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search); 
+  const sourceCity = queryParams.get("sourceCity");
+  const destinationCity = queryParams.get("destinationCity");
+  const routeScheduleId = queryParams.get("routeScheduleId");
+  const inventoryType = queryParams.get("inventoryType");
+  const doj = queryParams.get("doj");
+  const pickUpTime = queryParams.get("pickUpTime");
+  const reachTime = queryParams.get("reachTime");
+  const travelTime = queryParams.get("travelTime");
+  const busType = queryParams.get("busType");
+  const busName = queryParams.get("busName");
+  const price = queryParams.get("price");
+  // to be removed
+  const priceArray = price.split(" - ");
+  console.log(priceArray);
+  const tax = parseInt(priceArray[0]) * 0.18;
+  const totalAmount = parseInt(priceArray[0]) + tax;
+
   const date = new Date();
   const handlePayment = async () => {
+    console.log(userData);
     try {
+      const requestBody = {
+        sourceCity: sourceCity,
+        destinationCity: destinationCity,
+        doj: doj,
+        routeScheduleId: routeScheduleId,
+        customerName: userData.fullName,
+        customerLastName: userData.fullName,
+        customerEmail: userData.email,
+        customerPhone: userData.mobile,
+        // customerGender: userData.gender,
+        customerAge: userData.age,
+        emergencyPhNumber: userData.alternativeNumber,
+        totalAmount: parseInt(totalAmount),
+      };
+      
+      const bookResponse = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
+        requestBody
+      );
+      // if (bookResponse.status === 200) alert("Bookin");
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
         {
-          amount: 10,
+          amount: parseInt(totalAmount),
           redirectUrl: `https://yesgobus.com/busbooking/payment/success`,
         }
       );
@@ -32,17 +75,24 @@ const Payment = () => {
         response.data.data.instrumentResponse.redirectInfo.url
       );
     } catch (error) {
-      alert("Something went wrong");
+      console.log(error);
       console.error("omething went wrong:", error);
     }
+  }
+
+  const handleInputChange = (e) => {
+    setUserData((prev) => {
+      return { ...prev, [e.target.name]: e.target.value };
+    });
   };
+
   return (
     <div className="Payment">
       <Navbar />
       <BusRoute
-        locationOne={"Mysore"}
-        locationTwo={"Bangalore"}
-        departureDate={"03 Jun"}
+        locationOne={sourceCity}
+        locationTwo={destinationCity}
+        departureDate={pickUpTime}
         returnDate={"- - -"}
       />
 
@@ -50,23 +100,23 @@ const Payment = () => {
         <div className="containerleft">
           <h5>Review your booking</h5>
           <RoutesTitle
-            locationOne={"Bangalore"}
-            locationTwo={"Mangalore"}
-            date={date.toDateString()}
+            locationOne={sourceCity}
+            locationTwo={destinationCity}
+            date={doj}
           />
 
           <div className="reviewsCard">
             <div className="reviewleft">
               <BusBookingCardInfo
-                title={"YesGoBus"}
-                subtitle={"TATA A/C Sleeper (2+1)"}
+                title={busName}
+                subtitle={busType}
                 rating={5}
                 reviews={100}
               />
               <div className="to">
-                <BusBookingCardInfo title={"Bangalore"} subtitle={"19:00"} />
-                <BusBookingCardInfo img={true} subtitle={"3hr 20min"} />
-                <BusBookingCardInfo title={"Mangalore"} subtitle={"23:30"} />
+                <BusBookingCardInfo title={sourceCity} subtitle={pickUpTime} />
+                <BusBookingCardInfo img={true} subtitle={travelTime} />
+                <BusBookingCardInfo title={destinationCity} subtitle={reachTime} />
               </div>
               <div className="liveLocation">
                 <img src={livelocation} alt="" />
@@ -103,8 +153,14 @@ const Payment = () => {
                 title={"Full Name"}
                 type={"text"}
                 placeholder={"Full name"}
+                onChanged={handleInputChange}
+                givenName={"fullName"}
               />
-              <Input title={"Age"} type={"number"} placeholder={"40"} />
+              <Input title={"Age"} type={"number"} placeholder={"40"} 
+              onChanged={handleInputChange}
+              givenName={"age"}
+              />
+              {/* <Input title={"Age"} type={"number"} placeholder={"40"} /> */}
               {/* <Input
                 title={"Gender"}
                 type={"text"}
@@ -129,16 +185,22 @@ const Payment = () => {
                 title={"Email"}
                 type={"text"}
                 placeholder={"example@email.com"}
+                onChanged={handleInputChange}
+                givenName={"email"}
               />
               <Input
                 title={"Mobile Number"}
                 type={"number"}
                 placeholder={"1234567890"}
+                onChanged={handleInputChange}
+                givenName={"mobile"}
               />
               <Input
                 title={"Altername Number"}
                 type={"number"}
                 placeholder={"1234567890"}
+                onChanged={handleInputChange}
+                givenName={"alternativeNumber"}
               />
             </div>
           </div>
@@ -188,17 +250,17 @@ const Payment = () => {
             <div className="prices">
               <div className="price">
                 <p>Total Basefare</p>
-                <p>₹800</p>
+                <p>{"₹"+priceArray[0]}</p>
               </div>
               <hr />
               <div className="price">
                 <p>Tax</p>
-                <p>₹30</p>
+                <p>{tax}</p>
               </div>
               <hr />
               <div className="price">
                 <p>Total Basefare</p>
-                <p>₹830</p>
+                <p>{totalAmount}</p>
               </div>
               <hr />
             </div>
@@ -215,7 +277,7 @@ const Payment = () => {
               <input type="text" name="" id="" placeholder="Enter your code" />
             </div>
           </div> */}
-          <Button text={"Pay Amount ₹830"} onClicked={handlePayment} />
+          <Button text={`Pay Amount ₹${totalAmount}`} onClicked={handlePayment} />
         </div>
       </div>
       <div className="popularBusRoutes">

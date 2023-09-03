@@ -11,10 +11,12 @@ import {
   Footer,
 } from "../../components";
 import { offer1 } from "../../assets/homepage";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 const BusBooking = () => {
-  const [noOfBuses, setNoOfBuses] = useState(150);
+  const [noOfBuses, setNoOfBuses] = useState(0);
+  const [busDetails, setBusDetails] = useState([]);
 
   //pickup
   const pickUpTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
@@ -51,14 +53,85 @@ const BusBooking = () => {
   }
   console.log(dates);
 
+  let currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  currentDate = `${year}-${month}-${day}`;
+
+  const [fromLocation, setFromLocation] = useState("Mysore");
+  const [toLocation, setToLocation] = useState("Bangalore");
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+
+  useEffect(() => {
+    handleSearch("Mysore", "Bangalore", currentDate);
+  }, []);
+
+  const handleSearch = async (sourceCity, destinationCity, doj, returnDate) => {
+    setFromLocation(sourceCity);
+    setToLocation(destinationCity);
+    setSelectedDate(doj);
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBusDetails`,
+        {
+          sourceCity: sourceCity,
+          destinationCity: destinationCity,
+          doj: doj
+        }
+      );
+      setBusDetails(response.data.data);
+      setNoOfBuses(response.data.data.length);
+    } catch (error) {
+      alert("Something went wrong");
+      console.error("omething went wrong:", error);
+    }
+  };
+
+  const handleDateFilter = (date) => {
+    const monthMap = {
+      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
+      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+    };
+    const parts = date.split(", ");
+    const dayMonthYear = parts[1].split(" ");
+    const day = parseInt(dayMonthYear[1]);
+    const month = monthMap[dayMonthYear[0]];
+    const year = parseInt(new Date().getFullYear());
+    const newDate = new Date(Date.UTC(year, month, day));
+    const formattedDateString = newDate.toISOString().split('T')[0];
+    handleSearch(fromLocation, toLocation, formattedDateString);
+  }
+
+  const priceToDisplay = (fare) => {
+    const prices = fare.split(",").map(parseFloat);
+    if (prices.length === 1) {
+      return prices[0].toFixed(2);
+    } else {
+      const minPrice = Math.min(...prices).toFixed(2);
+      const maxPrice = Math.max(...prices).toFixed(2);
+      return `${minPrice} - ${maxPrice}`;
+    }
+  };
+
+  const formatTravelTime = (durationInMins) => {
+    const hours = Math.floor(durationInMins / 60);
+    const minutes = durationInMins % 60;
+    const formattedHours = hours > 0 ? `${hours}hr` : '';
+    const formattedMinutes = minutes > 0 ? ` ${minutes}min` : '';
+    return `${formattedHours}${formattedMinutes}`;
+  };
+
+
   return (
     <div className="busBooking">
       <Navbar />
       <BusRoute
-        locationOne={"Mysore"}
-        locationTwo={"Bangalore"}
-        departureDate={"03 Jun"}
+        locationOne={fromLocation}
+        locationTwo={toLocation}
+        departureDate={selectedDate}
         returnDate={"- - -"}
+        onSearch={handleSearch}
       />
       <div className="container">
         <div className="left">
@@ -68,7 +141,9 @@ const BusBooking = () => {
         <div className="right">
           <div className="dates">
             {dates.map((date) => (
-              <p className="date">{date}</p>
+              <p className="date" onClick={() => handleDateFilter(date)}>
+                {date}
+              </p>
             ))}
           </div>
           {/* <div className="exclusiveOffers">
@@ -100,13 +175,44 @@ const BusBooking = () => {
 
           <div className="wrapper">
             <RoutesTitle
-              locationOne={"Bangalore"}
-              locationTwo={"Mangalore"}
-              date={date.toDateString()}
+              locationOne={fromLocation}
+              locationTwo={toLocation}
+              date={selectedDate}
             />
             <ColumnNames noOfBuses={noOfBuses} />
 
-            <BusBookingCard
+            {busDetails.map((bus) => (
+              <BusBookingCard
+                routeScheduleId={bus.routeScheduleId}
+                inventoryType={bus.inventoryType}
+                sourceCity={fromLocation}
+                destinationCity={toLocation}
+                doj={selectedDate}
+                title={bus.operatorName}
+                busName={bus.operatorName}
+                busType={bus.busType}
+                rating={5}
+                noOfReviews={100}
+                pickUpLocation={fromLocation}
+                pickUpTime={bus.departureTime}
+                reachLocation={toLocation}
+                reachTime={bus.arrivalTime}
+                travelTime={formatTravelTime(bus.durationInMins)}
+                seatsLeft={bus.availableSeats}
+                price={priceToDisplay(bus.fare)}
+                pickUpTimes={pickUpTimes}
+                pickUpLocationOne={bus.boardingPoints}
+                pickUpLocationTwo={pickUpLocationTwo}
+                dropTimes={dropTimes}
+                dropLocationOne={bus.droppingPoints}
+                dropLocationTwo={dropLocationTwo}
+                noOfRows={4}
+                noOfSeatsPerRow={6}
+                backSeat={true}
+              />
+            ))}
+
+            {/* <BusBookingCard
               title={"YesGoBus"}
               busName={"YesGoBus"}
               busType={"TATA A/C Sleeper (2+1)"}
@@ -200,31 +306,7 @@ const BusBooking = () => {
               noOfRows={4}
               noOfSeatsPerRow={6}
               backSeat={true}
-            />
-
-            <BusBookingCard
-              title={"YesGoBus"}
-              busName={"YesGoBus"}
-              busType={"TATA A/C Sleeper (2+1)"}
-              rating={5}
-              noOfReviews={100}
-              pickUpLocation={"Bangalore"}
-              pickUpTime={"12:00"}
-              reachLocation={"Mangalore"}
-              reachTime={"13:00"}
-              travelTime={"3hr 20min"}
-              seatsLeft={"27 seats left"}
-              price={800}
-              pickUpTimes={pickUpTimes}
-              pickUpLocationOne={pickUpLocationOne}
-              pickUpLocationTwo={pickUpLocationTwo}
-              dropTimes={dropTimes}
-              dropLocationOne={dropLocationOne}
-              dropLocationTwo={dropLocationTwo}
-              noOfRows={4}
-              noOfSeatsPerRow={6}
-              backSeat={true}
-            />
+            /> */}
           </div>
         </div>
       </div>

@@ -6,6 +6,11 @@ import "./BusBookingCard.scss";
 import Seats from "../Seats/Seats";
 
 const BusBookingCard = ({
+  routeScheduleId,
+  inventoryType,
+  sourceCity,
+  destinationCity,
+  doj,
   title,
   busName,
   busType,
@@ -29,7 +34,6 @@ const BusBookingCard = ({
   backSeat,
 }) => {
   const [showSeats, setShowSeats] = useState(false);
-
   return (
     <div className="BusBookingCard">
       <h1>{title}</h1>
@@ -70,6 +74,14 @@ const BusBookingCard = ({
       </div>
       {showSeats && (
         <Seats
+          travelTime={travelTime}
+          pickUpTime={pickUpTime}
+          reachTime={reachTime}
+          routeScheduleId={routeScheduleId}
+          inventoryType={inventoryType}
+          sourceCity={sourceCity}
+          destinationCity={destinationCity}
+          doj={doj}
           pickUpTimes={pickUpTimes}
           pickUpLocationOne={pickUpLocationOne}
           pickUpLocationTwo={pickUpLocationTwo}
@@ -79,6 +91,9 @@ const BusBookingCard = ({
           noOfRows={noOfRows}
           noOfSeatsPerRow={noOfSeatsPerRow}
           backSeat={backSeat}
+          busName={busName}
+          busType={busType}
+          price={price}
         />
       )}
     </div>
