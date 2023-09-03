@@ -4,7 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
-import userRoutes from "./routes/user.routes.js"
+import userRoutes from "./routes/user.routes.js";
 import cabRoutes from "./routes/cab.routes.js";
 import cabBookingRoutes from "./routes/cabbooking.routes.js";
 import busBookingRoutes from "./routes/busBooking.routes.js";
@@ -26,7 +26,8 @@ const connect = async () => {
 //middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(cors({ origin: "https://yesgobus.com", credentials: true }));
+// app.use(cors({ origin: "http://localhost:5173", credentials: true }));
 
 //routes
 app.use("/api/user", userRoutes);
