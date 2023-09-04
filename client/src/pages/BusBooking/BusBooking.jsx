@@ -51,7 +51,6 @@ const BusBooking = () => {
       })
     );
   }
-  console.log(dates);
 
   let currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -80,7 +79,6 @@ const BusBooking = () => {
           doj: doj,
         }
       );
-      console.log(response.data);
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
     } catch (error) {
@@ -193,7 +191,7 @@ const BusBooking = () => {
 
             {busDetails?.map((bus) => (
               <BusBookingCard
-                key={routeScheduleId}
+                key={bus.routeScheduleId}
                 routeScheduleId={bus.routeScheduleId}
                 inventoryType={bus.inventoryType}
                 sourceCity={fromLocation}
