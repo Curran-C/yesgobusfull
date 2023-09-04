@@ -77,9 +77,10 @@ const BusBooking = () => {
         {
           sourceCity: sourceCity,
           destinationCity: destinationCity,
-          doj: doj
+          doj: doj,
         }
       );
+      console.log(response.data);
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
     } catch (error) {
@@ -90,8 +91,18 @@ const BusBooking = () => {
 
   const handleDateFilter = (date) => {
     const monthMap = {
-      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
     };
     const parts = date.split(", ");
     const dayMonthYear = parts[1].split(" ");
@@ -99,9 +110,9 @@ const BusBooking = () => {
     const month = monthMap[dayMonthYear[0]];
     const year = parseInt(new Date().getFullYear());
     const newDate = new Date(Date.UTC(year, month, day));
-    const formattedDateString = newDate.toISOString().split('T')[0];
+    const formattedDateString = newDate.toISOString().split("T")[0];
     handleSearch(fromLocation, toLocation, formattedDateString);
-  }
+  };
 
   const priceToDisplay = (fare) => {
     const prices = fare.split(",").map(parseFloat);
@@ -117,11 +128,10 @@ const BusBooking = () => {
   const formatTravelTime = (durationInMins) => {
     const hours = Math.floor(durationInMins / 60);
     const minutes = durationInMins % 60;
-    const formattedHours = hours > 0 ? `${hours}hr` : '';
-    const formattedMinutes = minutes > 0 ? ` ${minutes}min` : '';
+    const formattedHours = hours > 0 ? `${hours}hr` : "";
+    const formattedMinutes = minutes > 0 ? ` ${minutes}min` : "";
     return `${formattedHours}${formattedMinutes}`;
   };
-
 
   return (
     <div className="busBooking">
@@ -181,8 +191,9 @@ const BusBooking = () => {
             />
             <ColumnNames noOfBuses={noOfBuses} />
 
-            {busDetails.map((bus) => (
+            {busDetails?.map((bus) => (
               <BusBookingCard
+                key={routeScheduleId}
                 routeScheduleId={bus.routeScheduleId}
                 inventoryType={bus.inventoryType}
                 sourceCity={fromLocation}
