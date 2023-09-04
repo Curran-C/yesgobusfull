@@ -8,6 +8,7 @@ import userRoutes from "./routes/user.routes.js"
 import cabRoutes from "./routes/cab.routes.js";
 import cabBookingRoutes from "./routes/cabbooking.routes.js";
 import busBookingRoutes from "./routes/busBooking.routes.js";
+import paymentRoutes from "./routes/payment.routes.js";
 
 dotenv.config();
 const app = express();
@@ -32,6 +33,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/cab", cabRoutes);
 app.use("/api/cabBooking", cabBookingRoutes);
 app.use("/api/busBooking", busBookingRoutes);
+app.use("/api/payment/", paymentRoutes);
 
 app.listen(PORT, () => {
   connect();

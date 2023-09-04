@@ -90,6 +90,17 @@
                     flex-wrap: wrap;
                     padding: 30px;
                     border: 1px solid #dadada;
+                    .genderContainer {
+                        display: flex;
+                        flex-direction: column;
+                        gap: 3px;
+                        select {
+                            width: 300px;
+                            padding: 15px 20px;
+                            border: 1px solid #dadada;
+                            outline: none;
+                        }
+                    }
                 }
             }
 

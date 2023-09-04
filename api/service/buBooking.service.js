@@ -1,4 +1,5 @@
 import axios from "axios";
+import BusBooking from "../modals/busBooking.modal.js";
 
 const sendRequest = async (url, method, data) => {
   try {
@@ -129,3 +130,19 @@ export const getBusDetails = async (searchArgs, filters) => {
     throw error.message;
   }
 };
+
+export const bookBus = async (bookingDetails) => {
+  try {
+    const booking = new BusBooking ({
+      ...bookingDetails
+    });
+    await booking.save();
+    return {
+      status:200,
+      message:"Booked",
+      data: booking
+    }
+  } catch (error) {
+    throw error.message;
+  }
+}

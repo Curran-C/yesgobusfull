@@ -50,7 +50,7 @@ import "./landingPage.scss";
 const LandingPage = () => {
   return (
     <div className="landingPage">
-      <Navbar />
+      <Navbar page={"home"} />
       <div className="hero">
         <img src={heroimage} alt="" className="heroImg" />
         <div className="heroContainer">
@@ -233,7 +233,7 @@ const LandingPage = () => {
         />
       </div>
 
-      <div className="aboveFooter">
+      {/* <div className="aboveFooter">
         <img src={blacklogo} alt="" />
         <AboveFooterImages
           images={[visa, mastercard, rupay]}
@@ -257,7 +257,7 @@ const LandingPage = () => {
           images={[fb, insta, twitter, linkedin]}
           title={"FOLLOW US ON"}
         />
-      </div>
+      </div> */}
       <Footer />
     </div>
   );

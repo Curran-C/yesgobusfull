@@ -1,5 +1,6 @@
 import {
   BusBooking,
+  ComingSoon,
   ContactUs,
   KYC,
   LandingPage,
@@ -26,6 +27,7 @@ function App() {
           element={<PaymentSuccess />}
         />
         <Route path="/contactus" element={<ContactUs />} />
+        <Route path="/comingsoon" element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>
   );

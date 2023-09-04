@@ -8,6 +8,7 @@ import {
     cancelTicketController,
     getBusFiltersController,
     getBusDetailsController,
+    bookBusController,
 } from "../controllers/busBooking.controller.js";
 import { authenticateUser } from "../middleware/authenticateUser.js";
 
@@ -25,5 +26,7 @@ router.get("/cancelTicket", cancelTicketController);
 router.get("/getFilters", getBusFiltersController);
 
 router.post("/getBusDetails", getBusDetailsController);
+
+router.post("/bookBus", bookBusController);
 
 export default router;
