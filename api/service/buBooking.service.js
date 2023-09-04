@@ -91,7 +91,7 @@ export const getBusFilters = async (args) => {
 export const getBusDetails = async (searchArgs, filters) => {
   try {
     const searchResponse = await searchBus(searchArgs);
-    if (!filters.boardingPoint && !filters.droppingPoint && !filters.busPartner) {
+    if (!hasFilters(filters)) {
       return {
         status: 200,
         data: searchResponse.apiAvailableBuses,
