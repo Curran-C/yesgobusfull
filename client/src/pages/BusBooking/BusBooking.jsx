@@ -13,11 +13,12 @@ import {
 import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Spin } from "antd";
 
 const BusBooking = () => {
   const [noOfBuses, setNoOfBuses] = useState(0);
   const [busDetails, setBusDetails] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   //pickup
   const pickUpTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
   const pickUpLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
@@ -66,10 +67,17 @@ const BusBooking = () => {
     handleSearch("Mysore", "Bangalore", currentDate);
   }, []);
 
-  const handleSearch = async (sourceCity, destinationCity, doj, returnDate) => {
+  const handleSearch = async (
+    sourceCity,
+    destinationCity,
+    doj,
+    filters,
+    returnDate
+  ) => {
     setFromLocation(sourceCity);
     setToLocation(destinationCity);
     setSelectedDate(doj);
+    setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBusDetails`,
@@ -77,13 +85,16 @@ const BusBooking = () => {
           sourceCity: sourceCity,
           destinationCity: destinationCity,
           doj: doj,
+          ...filters,
         }
       );
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
     } catch (error) {
-      alert("Something went wrong");
+      // alert("Something went wrong");
       console.error("omething went wrong:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -131,6 +142,13 @@ const BusBooking = () => {
     return `${formattedHours}${formattedMinutes}`;
   };
 
+  const handleFilter = (filters) => {
+    handleSearch(fromLocation, toLocation, selectedDate, filters);
+  };
+
+  const handleDate = (date) => {
+    handleSearch(fromLocation, toLocation, date);
+  };
   return (
     <div className="busBooking">
       <Navbar />
@@ -143,7 +161,12 @@ const BusBooking = () => {
       />
       <div className="container">
         <div className="left">
-          <LeftFilter />
+          <LeftFilter
+            sourceCity={fromLocation}
+            destinationCity={toLocation}
+            doj={selectedDate}
+            onFilterChange={handleFilter}
+          />
         </div>
 
         <div className="right">
@@ -180,48 +203,49 @@ const BusBooking = () => {
               />
             </div>
           </div> */}
-
-          <div className="wrapper">
-            <RoutesTitle
-              locationOne={fromLocation}
-              locationTwo={toLocation}
-              date={selectedDate}
-            />
-            <ColumnNames noOfBuses={noOfBuses} />
-
-            {busDetails?.map((bus) => (
-              <BusBookingCard
-                key={bus.routeScheduleId}
-                routeScheduleId={bus.routeScheduleId}
-                inventoryType={bus.inventoryType}
-                sourceCity={fromLocation}
-                destinationCity={toLocation}
-                doj={selectedDate}
-                title={bus.operatorName}
-                busName={bus.operatorName}
-                busType={bus.busType}
-                rating={5}
-                noOfReviews={100}
-                pickUpLocation={fromLocation}
-                pickUpTime={bus.departureTime}
-                reachLocation={toLocation}
-                reachTime={bus.arrivalTime}
-                travelTime={formatTravelTime(bus.durationInMins)}
-                seatsLeft={bus.availableSeats}
-                price={priceToDisplay(bus.fare)}
-                pickUpTimes={pickUpTimes}
-                pickUpLocationOne={bus.boardingPoints}
-                pickUpLocationTwo={pickUpLocationTwo}
-                dropTimes={dropTimes}
-                dropLocationOne={bus.droppingPoints}
-                dropLocationTwo={dropLocationTwo}
-                noOfRows={4}
-                noOfSeatsPerRow={6}
-                backSeat={true}
+          <Spin spinning={loading}>
+            <div className="wrapper">
+              <RoutesTitle
+                locationOne={fromLocation}
+                locationTwo={toLocation}
+                date={selectedDate}
+                onDateChange={handleDate}
               />
-            ))}
+              <ColumnNames noOfBuses={noOfBuses} />
 
-            {/* <BusBookingCard
+              {busDetails?.map((bus) => (
+                <BusBookingCard
+                  key={bus.routeScheduleId}
+                  routeScheduleId={bus.routeScheduleId}
+                  inventoryType={bus.inventoryType}
+                  sourceCity={fromLocation}
+                  destinationCity={toLocation}
+                  doj={selectedDate}
+                  title={bus.operatorName}
+                  busName={bus.operatorName}
+                  busType={bus.busType}
+                  rating={5}
+                  noOfReviews={100}
+                  pickUpLocation={fromLocation}
+                  pickUpTime={bus.departureTime}
+                  reachLocation={toLocation}
+                  reachTime={bus.arrivalTime}
+                  travelTime={formatTravelTime(bus.durationInMins)}
+                  seatsLeft={bus.availableSeats}
+                  price={priceToDisplay(bus.fare)}
+                  pickUpTimes={pickUpTimes}
+                  pickUpLocationOne={bus.boardingPoints}
+                  pickUpLocationTwo={pickUpLocationTwo}
+                  dropTimes={dropTimes}
+                  dropLocationOne={bus.droppingPoints}
+                  dropLocationTwo={dropLocationTwo}
+                  noOfRows={4}
+                  noOfSeatsPerRow={6}
+                  backSeat={true}
+                />
+              ))}
+
+              {/* <BusBookingCard
               title={"YesGoBus"}
               busName={"YesGoBus"}
               busType={"TATA A/C Sleeper (2+1)"}
@@ -316,7 +340,8 @@ const BusBooking = () => {
               noOfSeatsPerRow={6}
               backSeat={true}
             /> */}
-          </div>
+            </div>
+          </Spin>
         </div>
       </div>
       <Footer />
