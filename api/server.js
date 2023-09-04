@@ -33,6 +33,7 @@ app.use(
   })
 );
 
+
 //routes
 app.use("/api/user", userRoutes);
 app.use("/api/cab", cabRoutes);
