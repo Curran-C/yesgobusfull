@@ -14,8 +14,10 @@ import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Spin } from "antd";
+import { useLocation } from "react-router-dom";
 
 const BusBooking = () => {
+  const location = useLocation();
   const [noOfBuses, setNoOfBuses] = useState(0);
   const [busDetails, setBusDetails] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +66,15 @@ const BusBooking = () => {
   const [selectedDate, setSelectedDate] = useState(currentDate);
 
   useEffect(() => {
-    handleSearch("Mysore", "Bangalore", currentDate);
+    const queryParams = new URLSearchParams(location.search);
+    const sourceCity = queryParams.get("from");
+    const destinationCity = queryParams.get("to");
+    const doj = queryParams.get("date");
+    if (sourceCity && destinationCity && doj) {
+      handleSearch(sourceCity, destinationCity, doj);
+    } else {
+      handleSearch("Mysore", "Bangalore", currentDate);
+    }
   }, []);
 
   const handleSearch = async (
@@ -149,6 +159,7 @@ const BusBooking = () => {
   const handleDate = (date) => {
     handleSearch(fromLocation, toLocation, date);
   };
+  
   return (
     <div className="busBooking">
       <Navbar />

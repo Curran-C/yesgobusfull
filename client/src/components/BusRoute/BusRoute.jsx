@@ -22,7 +22,7 @@ const BusRoute = ({ locationOne, locationTwo, departureDate, returnDate, onSearc
     try {
       if (query.length > 3) {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`,);
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`);
         console.log(response.data);
         setLocationSuggestions(response.data.data);
       } else {
@@ -31,7 +31,6 @@ const BusRoute = ({ locationOne, locationTwo, departureDate, returnDate, onSearc
     } catch (error) {
       console.error("omething went wrong:", error);
     }
-    // setLocationSuggestions(suggestions)
   };
 
   useEffect(() => {

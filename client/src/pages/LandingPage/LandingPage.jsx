@@ -46,8 +46,84 @@ import {
 } from "../../components";
 import AboveFooterImages from "../../components/AboveFooterImages/AboveFooterImages";
 import "./landingPage.scss";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+
+  let currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  currentDate = `${year}-${month}-${day}`;
+
+  const [fromLocation, setFromLocation] = useState("Mysore");
+  const [toLocation, setToLocation] = useState("Bangalore");
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+
+  const [locationOneSuggestions, setLocationOneSuggestions] = useState([]);
+  const [locationTwoSuggestions, setLocationTwoSuggestions] = useState([]);
+
+  const [dateSource, setDateSource] = useState("input");
+  const [todayHighlighted, setTodayHighlighted] = useState(false);
+  const [tomorrowHighlighted, setTomorrowHighlighted] = useState(false);
+
+  const handleDateInputChange = (date) => {
+    setSelectedDate(date);
+    setDateSource("input");
+    setTodayHighlighted(false);
+    setTomorrowHighlighted(false);
+  };
+
+  const handleTodayButtonClick = () => {
+    const today = new Date();
+    const todayFormatted = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    setSelectedDate(todayFormatted);
+    setDateSource("today");
+    setTodayHighlighted(true);
+    setTomorrowHighlighted(false);
+  };
+
+  const handleTomorrowButtonClick = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowFormatted = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`;
+    setSelectedDate(tomorrowFormatted);
+    setDateSource("tomorrow");
+    setTomorrowHighlighted(true);
+    setTodayHighlighted(false);
+  };
+
+  const handleSearchClick = () => {
+    navigate(`/busbooking?from=${fromLocation}&to=${toLocation}&date=${selectedDate}`);
+  };
+
+  const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
+    try {
+      if (query.length > 3) {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`);
+        console.log(response.data);
+        setLocationSuggestions(response.data.data);
+      } else {
+        setLocationSuggestions([]);
+      }
+    } catch (error) {
+      console.error("omething went wrong:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (fromLocation) {
+      fetchLocationSuggestions(fromLocation, setLocationOneSuggestions);
+    }
+    if (toLocation) {
+      fetchLocationSuggestions(toLocation, setLocationTwoSuggestions);
+    }
+  }, [fromLocation, toLocation]);
+
   return (
     <div className="landingPage">
       <Navbar page={"home"} />
@@ -64,31 +140,53 @@ const LandingPage = () => {
             million Indians.
           </h2>
           <div className="border">
-            <InfoCard img={office} title={"Mysore"} subtitle={"From"} />
+            <InfoCard img={office}
+              title={fromLocation}
+              subtitle={"From"}
+              inputField={true}
+              onChanged={setFromLocation}
+              suggestions={locationOneSuggestions}
+            />
             <img src={fromto} alt="" />
             <InfoCard
               img={office}
-              title={"Bangalore"}
+              title={toLocation}
               subtitle={"Destination"}
+              inputField={true}
+              onChanged={setToLocation}
+              suggestions={locationTwoSuggestions}
             />
-            <img src={mic} alt="" />
+            {/* <img src={mic} alt="" /> */}
             <InfoCard
               img={calender}
-              title={"02 Jun"}
+              title={selectedDate}
               subtitle={"Select Date"}
+              date={true}
+              inputField={true}
+              onChanged={handleDateInputChange}
             />
-            <InfoCard
+            {/* <InfoCard
               img={calender}
               title={"- - -"}
               subtitle={"Return Optional"}
-            />
+            /> */}
 
             <div className="buttons">
-              <Button text={"Today"} />
-              <Button text={"Tomorrow"} />
+              <button
+                onClick={handleTodayButtonClick}
+                className={todayHighlighted ? "dayButton highlighted" : "dayButton"}
+              >
+                Today
+              </button>
+              <button
+                onClick={handleTomorrowButtonClick}
+                className={tomorrowHighlighted ? "dayButton highlighted" : "dayButton"}
+              >
+                Tomorrow
+              </button>
             </div>
 
-            <Button text={"Search"} />
+            <Button text={"Search"} onClicked={handleSearchClick} />
           </div>
         </div>
       </div>
