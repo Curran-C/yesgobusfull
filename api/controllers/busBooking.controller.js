@@ -8,6 +8,7 @@ import {
   getBusFilters,
   getBusDetails,
   bookBus,
+  searchCity,
 } from "../service/buBooking.service.js";
 
 export const getCityListController = async (req, res) => {
@@ -103,8 +104,27 @@ export const getBusFiltersController = async (req, res) => {
 
 export const getBusDetailsController = async (req, res) => {
   try {
-    const searchArgs = req.body;
-    const filters = req.params;
+    const searchArgs = {
+      sourceCity: req.body.sourceCity,
+      destinationCity: req.body.destinationCity,
+      doj: req.body.doj
+    };
+    let filters = {};
+    if (req.body.boardingPoints !== null && req.body.boardingPoints?.length > 0) {
+      filters.boardingPoints = req.body.boardingPoints;
+    }
+    if (req.body.droppingPoints !== null && req.body.droppingPoints?.length > 0) {
+      filters.droppingPoints = req.body.droppingPoints;
+    }
+    if (req.body.busPartners !== null && req.body.busPartners?.length > 0) {
+      filters.busPartners = req.body.busPartners;
+    }
+    if (req.body.minPrice !== null && req.body.minPrice !== undefined) {
+      filters.minPrice = req.body.minPrice;
+    }
+    if (req.body.maxPrice !== null && req.body.maxPrice !== undefined) {
+      filters.maxPrice = req.body.maxPrice;
+    }
     const response = await getBusDetails(searchArgs, filters);
     res.status(response.status).send(response);
   } catch (error) {
@@ -125,6 +145,19 @@ export const bookBusController = async (req, res) => {
     return res.status(500).send({
       status: 500,
       message: "An error occurred while booking bus",
+    });
+  }
+};
+
+export const searchCityController = async (req, res) => {
+  try {
+    const response = await searchCity(req.params.searchParam);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while searching city",
     });
   }
 };

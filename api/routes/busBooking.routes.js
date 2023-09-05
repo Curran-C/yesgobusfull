@@ -9,6 +9,7 @@ import {
     getBusFiltersController,
     getBusDetailsController,
     bookBusController,
+    searchCityController,
 } from "../controllers/busBooking.controller.js";
 import { authenticateUser } from "../middleware/authenticateUser.js";
 
@@ -28,5 +29,7 @@ router.get("/getFilters", getBusFiltersController);
 router.post("/getBusDetails", getBusDetailsController);
 
 router.post("/bookBus", bookBusController);
+
+router.get("/searchCity/:searchParam", searchCityController)
 
 export default router;

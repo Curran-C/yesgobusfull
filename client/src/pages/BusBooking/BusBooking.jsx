@@ -67,7 +67,13 @@ const BusBooking = () => {
     handleSearch("Mysore", "Bangalore", currentDate);
   }, []);
 
-  const handleSearch = async (sourceCity, destinationCity, doj, filters, returnDate) => {
+  const handleSearch = async (
+    sourceCity,
+    destinationCity,
+    doj,
+    filters,
+    returnDate
+  ) => {
     setFromLocation(sourceCity);
     setToLocation(destinationCity);
     setSelectedDate(doj);
@@ -79,10 +85,9 @@ const BusBooking = () => {
           sourceCity: sourceCity,
           destinationCity: destinationCity,
           doj: doj,
-          ...filters
+          ...filters,
         }
       );
-      console.log(response.data);
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
     } catch (error) {
@@ -139,11 +144,11 @@ const BusBooking = () => {
 
   const handleFilter = (filters) => {
     handleSearch(fromLocation, toLocation, selectedDate, filters);
-  }
+  };
 
   const handleDate = (date) => {
     handleSearch(fromLocation, toLocation, date);
-  }
+  };
   return (
     <div className="busBooking">
       <Navbar />

@@ -1,0 +1,15 @@
+.single_seat {
+  img {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+@media (max-width: 820px) {
+  .single_seat {
+    img {
+      height: 18px;
+    }
+  }
+}
