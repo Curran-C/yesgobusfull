@@ -17,6 +17,7 @@ const sendRequest = async (url, method, data) => {
     });
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.message;
   }
 };
