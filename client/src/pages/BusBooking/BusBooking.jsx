@@ -13,11 +13,12 @@ import {
 import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Spin } from "antd";
 
 const BusBooking = () => {
   const [noOfBuses, setNoOfBuses] = useState(0);
   const [busDetails, setBusDetails] = useState([]);
-
+  const [loading, setLoading] = useState(false);
   //pickup
   const pickUpTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
   const pickUpLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
@@ -51,7 +52,6 @@ const BusBooking = () => {
       })
     );
   }
-  console.log(dates);
 
   let currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -67,31 +67,51 @@ const BusBooking = () => {
     handleSearch("Mysore", "Bangalore", currentDate);
   }, []);
 
-  const handleSearch = async (sourceCity, destinationCity, doj, returnDate) => {
+  const handleSearch = async (
+    sourceCity,
+    destinationCity,
+    doj,
+    filters,
+    returnDate
+  ) => {
     setFromLocation(sourceCity);
     setToLocation(destinationCity);
     setSelectedDate(doj);
+    setLoading(true);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBusDetails`,
         {
           sourceCity: sourceCity,
           destinationCity: destinationCity,
-          doj: doj
+          doj: doj,
+          ...filters,
         }
       );
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
     } catch (error) {
-      alert("Something went wrong");
+      // alert("Something went wrong");
       console.error("omething went wrong:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   const handleDateFilter = (date) => {
     const monthMap = {
-      Jan: 0, Feb: 1, Mar: 2, Apr: 3, May: 4, Jun: 5,
-      Jul: 6, Aug: 7, Sep: 8, Oct: 9, Nov: 10, Dec: 11
+      Jan: 0,
+      Feb: 1,
+      Mar: 2,
+      Apr: 3,
+      May: 4,
+      Jun: 5,
+      Jul: 6,
+      Aug: 7,
+      Sep: 8,
+      Oct: 9,
+      Nov: 10,
+      Dec: 11,
     };
     const parts = date.split(", ");
     const dayMonthYear = parts[1].split(" ");
@@ -99,9 +119,9 @@ const BusBooking = () => {
     const month = monthMap[dayMonthYear[0]];
     const year = parseInt(new Date().getFullYear());
     const newDate = new Date(Date.UTC(year, month, day));
-    const formattedDateString = newDate.toISOString().split('T')[0];
+    const formattedDateString = newDate.toISOString().split("T")[0];
     handleSearch(fromLocation, toLocation, formattedDateString);
-  }
+  };
 
   const priceToDisplay = (fare) => {
     const prices = fare.split(",").map(parseFloat);
@@ -117,12 +137,18 @@ const BusBooking = () => {
   const formatTravelTime = (durationInMins) => {
     const hours = Math.floor(durationInMins / 60);
     const minutes = durationInMins % 60;
-    const formattedHours = hours > 0 ? `${hours}hr` : '';
-    const formattedMinutes = minutes > 0 ? ` ${minutes}min` : '';
+    const formattedHours = hours > 0 ? `${hours}hr` : "";
+    const formattedMinutes = minutes > 0 ? ` ${minutes}min` : "";
     return `${formattedHours}${formattedMinutes}`;
   };
 
+  const handleFilter = (filters) => {
+    handleSearch(fromLocation, toLocation, selectedDate, filters);
+  };
 
+  const handleDate = (date) => {
+    handleSearch(fromLocation, toLocation, date);
+  };
   return (
     <div className="busBooking">
       <Navbar />
@@ -135,7 +161,12 @@ const BusBooking = () => {
       />
       <div className="container">
         <div className="left">
-          <LeftFilter />
+          <LeftFilter
+            sourceCity={fromLocation}
+            destinationCity={toLocation}
+            doj={selectedDate}
+            onFilterChange={handleFilter}
+          />
         </div>
 
         <div className="right">
@@ -172,47 +203,49 @@ const BusBooking = () => {
               />
             </div>
           </div> */}
-
-          <div className="wrapper">
-            <RoutesTitle
-              locationOne={fromLocation}
-              locationTwo={toLocation}
-              date={selectedDate}
-            />
-            <ColumnNames noOfBuses={noOfBuses} />
-
-            {busDetails.map((bus) => (
-              <BusBookingCard
-                routeScheduleId={bus.routeScheduleId}
-                inventoryType={bus.inventoryType}
-                sourceCity={fromLocation}
-                destinationCity={toLocation}
-                doj={selectedDate}
-                title={bus.operatorName}
-                busName={bus.operatorName}
-                busType={bus.busType}
-                rating={5}
-                noOfReviews={100}
-                pickUpLocation={fromLocation}
-                pickUpTime={bus.departureTime}
-                reachLocation={toLocation}
-                reachTime={bus.arrivalTime}
-                travelTime={formatTravelTime(bus.durationInMins)}
-                seatsLeft={bus.availableSeats}
-                price={priceToDisplay(bus.fare)}
-                pickUpTimes={pickUpTimes}
-                pickUpLocationOne={bus.boardingPoints}
-                pickUpLocationTwo={pickUpLocationTwo}
-                dropTimes={dropTimes}
-                dropLocationOne={bus.droppingPoints}
-                dropLocationTwo={dropLocationTwo}
-                noOfRows={4}
-                noOfSeatsPerRow={6}
-                backSeat={true}
+          <Spin spinning={loading}>
+            <div className="wrapper">
+              <RoutesTitle
+                locationOne={fromLocation}
+                locationTwo={toLocation}
+                date={selectedDate}
+                onDateChange={handleDate}
               />
-            ))}
+              <ColumnNames noOfBuses={noOfBuses} />
 
-            {/* <BusBookingCard
+              {busDetails?.map((bus) => (
+                <BusBookingCard
+                  key={bus.routeScheduleId}
+                  routeScheduleId={bus.routeScheduleId}
+                  inventoryType={bus.inventoryType}
+                  sourceCity={fromLocation}
+                  destinationCity={toLocation}
+                  doj={selectedDate}
+                  title={bus.operatorName}
+                  busName={bus.operatorName}
+                  busType={bus.busType}
+                  rating={5}
+                  noOfReviews={100}
+                  pickUpLocation={fromLocation}
+                  pickUpTime={bus.departureTime}
+                  reachLocation={toLocation}
+                  reachTime={bus.arrivalTime}
+                  travelTime={formatTravelTime(bus.durationInMins)}
+                  seatsLeft={bus.availableSeats}
+                  price={priceToDisplay(bus.fare)}
+                  pickUpTimes={pickUpTimes}
+                  pickUpLocationOne={bus.boardingPoints}
+                  pickUpLocationTwo={pickUpLocationTwo}
+                  dropTimes={dropTimes}
+                  dropLocationOne={bus.droppingPoints}
+                  dropLocationTwo={dropLocationTwo}
+                  noOfRows={4}
+                  noOfSeatsPerRow={6}
+                  backSeat={true}
+                />
+              ))}
+
+              {/* <BusBookingCard
               title={"YesGoBus"}
               busName={"YesGoBus"}
               busType={"TATA A/C Sleeper (2+1)"}
@@ -307,7 +340,8 @@ const BusBooking = () => {
               noOfSeatsPerRow={6}
               backSeat={true}
             /> */}
-          </div>
+            </div>
+          </Spin>
         </div>
       </div>
       <Footer />
