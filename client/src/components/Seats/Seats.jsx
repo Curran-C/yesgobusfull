@@ -26,9 +26,6 @@ const Seats = ({
   pickUpLocationTwo,
   dropTimes,
   dropLocationOne,
-  dropLocationTwo,
-  // noOfRows,
-  noOfSeatsPerRow,
   backSeat,
   travelTime,
   reachTime,
@@ -36,58 +33,132 @@ const Seats = ({
   busType,
   busName,
   price,
+  seatDetails,
 }) => {
   //* states
-  const [selectedImageOne, setSelectedImageOne] = useState(null);
   const naviagate = useNavigate();
-  const [selectedBoardingPoint, setSelectedBoardingPoint] = useState("");
-  const [selectedDroppingPoint, setSelectedDroppingPoint] = useState("");
-
-  ///////////////////////
-
-  const [seatDetails, setSeatDetails] = useState([]);
-  const [seatArrangement, setSeatArrangement] = useState([0, 0]);
-  const [noOfColumns, setNoOfColumns] = useState(0);
-  const [currentBerth, setCurrentBerth] = useState(0);
-  const [totalBerthCount, setTotalBerthCount] = useState(1);
-
-  console.log(seatDetails);
-
-  // console.log(seatArrangement, noOfColumns);
-  // console.log(totalBerthCount);
-  // console.log(backSeat);
-
-  ///////////////////////
-
-  useEffect(() => {
-    const getSeats = async () => {
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
-          {
-            sourceCity: sourceCity,
-            destinationCity: destinationCity,
-            doj: doj,
-            inventoryType: inventoryType,
-            routeScheduleId: routeScheduleId,
-          }
-        );
-        // const seatData = response.data.seats; =======> change zIndex
-        const seatData = response.data.seats.filter(({ zIndex }) => !zIndex);
-        setSeatDetails(seatData);
-        const plusIdx = busType.indexOf("+");
-        setSeatArrangement([+busType[plusIdx - 1], +busType[plusIdx + 1]]);
-        setTotalBerthCount(
-          1 + Math.max(...seatData.map(({ zIndex }) => zIndex))
-        );
-        setNoOfColumns(Math.max(...seatData.map(({ column }) => column)));
-      } catch (error) {
-        alert("Something went wrong");
-        console.error("Something went wrong:", error);
+  const [bookingDetails, setBookingDetails] = useState({
+    boardingPoint: {
+      id: "",
+      location: "",
+      time: "",
+    },
+    droppingPoint: {
+      id: "",
+      location: "",
+      time: "",
+    },
+    selectedSeats: [],
+    fare: 0,
+  });
+  const seatSelectionHandler = (seatId, fare) => {
+    return setBookingDetails((prev) => {
+      let newSelected = [...prev.selectedSeats];
+      let newfare = prev.fare;
+      if (!newSelected.includes(seatId)) {
+        newSelected.push(seatId);
+        newfare += fare;
+      } else {
+        newfare -= fare;
+        newSelected = newSelected.filter((id) => id !== seatId);
       }
-    };
-    getSeats();
-  }, []);
+      return {
+        ...prev,
+        selectedSeats: newSelected,
+        fare: newfare,
+      };
+    });
+  };
+  const lowerTierSeats = seatDetails.filter((seat) => seat.zIndex === 0);
+  const upperTierSeats = seatDetails.filter((seat) => seat.zIndex === 1);
+
+  const renderSeatTable = (seats) => {
+    const numRows = Math.max(...seats.map((seat) => seat.row)) + 1;
+    const numCols = Math.max(...seats.map((seat) => seat.column)) + 1;
+
+    const seatTable = [];
+
+    for (let row = 0; row < numRows; row++) {
+      const seatRow = [];
+
+      for (let col = 0; col < numCols; col++) {
+        const seat = seats.find((s) => s.row === row && s.column === col);
+
+        if (seat) {
+          if (seat.available) {
+            if (bookingDetails.selectedSeats.includes(seat.id)) {
+              seatRow.push(
+                <td key={seat.id}>
+                  <img
+                    onClick={() => seatSelectionHandler(seat.id, seat.fare)}
+                    title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
+                    src={selected}
+                    alt="selected seat"
+                  />
+                </td>
+              );
+            } else {
+              if (seat.ladiesSeat) {
+                seatRow.push(
+                  <td key={seat.id}>
+                    <img
+                      onClick={() => seatSelectionHandler(seat.id, seat.fare)}
+                      title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
+                      src={ladiesavailable}
+                      alt="available ladies"
+                    />
+                  </td>
+                );
+              } else {
+                seatRow.push(
+                  <td key={seat.id}>
+                    <img
+                      onClick={() => seatSelectionHandler(seat.id, seat.fare)}
+                      title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
+                      src={available}
+                      alt="available"
+                    />
+                  </td>
+                );
+              }
+            }
+          } else {
+            if (seat.ladiesSeat) {
+              seatRow.push(
+                <td key={seat.id}>
+                  <img
+                    title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
+                    src={ladiesbooked}
+                    alt="ladiesbooked"
+                  />
+                </td>
+              );
+            } else {
+              seatRow.push(
+                <td key={seat.id}>
+                  <img
+                    title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
+                    src={booked}
+                    alt="booked"
+                  />
+                </td>
+              );
+            }
+          }
+        } else {
+          seatRow.push(<td key={`empty-${row}-${col}`}></td>);
+        }
+      }
+
+      seatTable.push(<tr key={`row-${row}`}>{seatRow}</tr>);
+    }
+
+    return (
+      <table>
+        <tbody>{seatTable}</tbody>
+      </table>
+    );
+  };
 
   return (
     <div className="seats">
@@ -96,34 +167,42 @@ const Seats = ({
         <div className="seatsLeftContainer">
           <span className="title">PICKUP POINT</span>
           {pickUpLocationOne?.map((boardingPoint) => (
-            <>
-              <PickUpAndDropPoints
-                key={boardingPoint.id}
-                time={boardingPoint.time}
-                locationOne={boardingPoint.location}
-                // locationTwo={boardingPoint.location}
-                highlight={selectedBoardingPoint === boardingPoint.id}
-                onClick={() => setSelectedBoardingPoint(boardingPoint.id)}
-              />
-              <hr />
-            </>
+            <PickUpAndDropPoints
+              key={boardingPoint.id}
+              time={boardingPoint.time}
+              locationOne={boardingPoint.location}
+              // locationTwo={boardingPoint.location}
+              highlight={bookingDetails.boardingPoint.id === boardingPoint.id}
+              onClick={() =>
+                setBookingDetails((prev) => {
+                  return {
+                    ...prev,
+                    boardingPoint,
+                  };
+                })
+              }
+            />
           ))}
         </div>
 
         <div className="seatsLeftContainer">
           <span className="title">DROP POINT</span>
           {dropLocationOne?.map((droppingPoint, index) => (
-            <>
-              <PickUpAndDropPoints
-                highlight={selectedDroppingPoint === droppingPoint.id}
-                key={droppingPoint.id}
-                time={droppingPoint.time}
-                locationOne={droppingPoint.location}
-                // locationTwo={droppingPoint.location}
-                onClick={() => setSelectedDroppingPoint(droppingPoint.id)}
-              />
-              <hr />
-            </>
+            <PickUpAndDropPoints
+              highlight={bookingDetails.droppingPoint.id === droppingPoint.id}
+              key={droppingPoint.id}
+              time={droppingPoint.time}
+              locationOne={droppingPoint.location}
+              // locationTwo={droppingPoint.location}
+              onClick={() =>
+                setBookingDetails((prev) => {
+                  return {
+                    ...prev,
+                    droppingPoint,
+                  };
+                })
+              }
+            />
           ))}
         </div>
       </div>
@@ -145,55 +224,27 @@ const Seats = ({
             img={ladiesbooked}
           />
         </div>
-
         <div className="filters">
           <p className="filter">All</p>
           <p className="filter">₹700</p>
           <p className="filter">₹800</p>
         </div>
 
-        <div className="birthSelector">
-          <label htmlFor="currentBerth">Choose Berth : </label>
-          <select name="currentBerth" id="currentBerth">
-            {Array(totalBerthCount)
-              .fill(null)
-              .map((_, index) => (
-                <option value={index}>{`${index + 1} berth`}</option>
-              ))}
-          </select>
-        </div>
-
         <div className="bus">
           <div className="driver">
             <img src={driver} alt="driver" />
           </div>
-          <div className="seatsContainer">
-            <div className="seatsOne">
-              {Array(seatArrangement[0])
-                .fill(null)
-                .map((seat, index) => (
-                  <div className="row">
-                    {Array(noOfColumns)
-                      .fill(null)
-                      .map(() => (
-                        <SingleSeat available />
-                      ))}
-                  </div>
-                ))}
-            </div>
-            <div className="seatsTwo">
-              {Array(seatArrangement[1])
-                .fill(null)
-                .map((seat, index) => (
-                  <div className="row">
-                    {Array(noOfColumns)
-                      .fill(null)
-                      .map(() => (
-                        <SingleSeat available />
-                      ))}
-                  </div>
-                ))}
-            </div>
+
+          <div className="gridContainer">
+            {upperTierSeats.length > 0 && <h4>Lower Tier</h4>}
+            {renderSeatTable(lowerTierSeats)}
+
+            {upperTierSeats.length > 0 && (
+              <>
+                <h4>Upper Tier</h4>
+                {renderSeatTable(upperTierSeats)}
+              </>
+            )}
           </div>
         </div>
 
@@ -211,9 +262,9 @@ const Seats = ({
         <div className="price">
           <div className="selectedSeat">
             <span>Selected Seat(s):</span>
-            <p>E 05</p>
+            <p>{bookingDetails.selectedSeats.join(", ") || "None Selected"}</p>
           </div>
-          <p>₹800</p>
+          <p>₹ {bookingDetails.fare}</p>
         </div>
       </div>
     </div>

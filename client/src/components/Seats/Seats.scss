@@ -58,12 +58,12 @@
       margin: 20px 0;
       label {
         font-weight: 600;
-        font-size: 14px;
+        font-size: 13px;
       }
       select {
         background-color: rgba(225, 225, 225, 0.59);
-        height: 30px;
-        font-size: 16px;
+        height: 25px;
+        font-size: 13px;
         border-radius: 5px;
         padding: 0 15px;
         margin: 0 10px;
@@ -84,6 +84,36 @@
         justify-content: center;
         img {
           margin-top: 20px;
+        }
+      }
+      .gridContainer {
+        width: 90%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        h4 {
+          text-align: center;
+          font-size: 12px;
+        }
+        table:nth-child(2) {
+          border-bottom: #bebebe 1px solid;
+        }
+        table {
+          flex-grow: 1;
+          tbody {
+            tr {
+              height: 20px;
+              td {
+                img {
+                  max-width: 30px;
+                  &:hover {
+                    cursor: pointer;
+                  }
+                }
+              }
+            }
+          }
         }
       }
       .seatsContainer {

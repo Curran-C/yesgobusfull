@@ -4,6 +4,7 @@ import BusBookingCardInfo from "../BusBookingCardInfo/BusBookingCardInfo";
 import DropDown from "../DropDown/DropDown";
 import "./BusBookingCard.scss";
 import Seats from "../Seats/Seats";
+import axios from "axios";
 
 const BusBookingCard = ({
   routeScheduleId,
@@ -29,11 +30,38 @@ const BusBookingCard = ({
   dropTimes,
   dropLocationOne,
   dropLocationTwo,
-  noOfRows,
-  noOfSeatsPerRow,
   backSeat,
 }) => {
   const [showSeats, setShowSeats] = useState(false);
+  const [seatDetails, setSeatDetails] = useState(false);
+
+  const [noOfColumns, setNoOfColumns] = useState(0);
+  const [totalBerthCount, setTotalBerthCount] = useState(1);
+
+  const fetchSeatData = async () => {
+    let seatData = [];
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
+        {
+          sourceCity: sourceCity,
+          destinationCity: destinationCity,
+          doj: doj,
+          inventoryType: inventoryType,
+          routeScheduleId: routeScheduleId,
+        }
+      );
+      seatData = response.data.seats;
+    } catch (error) {
+      alert("Something went wrong");
+      console.error("Something went wrong:", error);
+    }
+    setSeatDetails(seatData);
+    setTotalBerthCount(1 + Math.max(...seatData.map(({ zIndex }) => zIndex)));
+    setNoOfColumns(Math.max(...seatData.map(({ column }) => column)));
+    setShowSeats(true);
+  };
+
   return (
     <div className="BusBookingCard">
       <h1>{title}</h1>
@@ -51,7 +79,8 @@ const BusBookingCard = ({
             <BusBookingCardInfo title={reachLocation} subtitle={reachTime} />
             <p className="price">₹{price}</p>
             <BusBookingCardInfo
-              setShowSeats={setShowSeats}
+              setShowSeats={fetchSeatData}
+              // setShowSeats={setShowSeats}
               showSeats={showSeats}
               button={true}
               subtitle={seatsLeft}
@@ -88,12 +117,13 @@ const BusBookingCard = ({
           dropTimes={dropTimes}
           dropLocationOne={dropLocationOne}
           dropLocationTwo={dropLocationTwo}
-          noOfRows={noOfRows}
-          noOfSeatsPerRow={noOfSeatsPerRow}
           backSeat={backSeat}
           busName={busName}
           busType={busType}
           price={price}
+          seatDetails={seatDetails}
+          noOfColumns={noOfColumns}
+          totalBerthCount={totalBerthCount}
         />
       )}
     </div>
