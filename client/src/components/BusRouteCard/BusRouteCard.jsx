@@ -14,6 +14,11 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
       setShowSuggestions(false);
     }
   };
+  
+  const handleDateChange = (e) => {
+    const inputValue = e.target.value;
+    setLocation(inputValue);
+  }
 
   const handleSuggestionClick = (suggestion) => {
     setLocation(suggestion);
@@ -40,12 +45,21 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
   return (
     <div className="BusRouteCard" ref={inputRef}>
       <p>{title}</p>
-      <input
-        type={date ? "date" : "text"}
-        value={location}
-        onChange={handleInputChange}
-        onClick={handleInputClick} // Show suggestions when input is clicked
-      />
+      {date ? (
+        <input
+          type="date"
+          value={location}
+          onChange={handleDateChange}
+        />
+      ) : (
+        <input
+          type="text"
+          value={location}
+          onChange={handleInputChange}
+          onClick={handleInputClick}
+        />
+      )}
+      
       {showSuggestions && suggestions.length > 0 && (
         <ul className="suggestion-list">
           {suggestions.map((suggestion) => (
