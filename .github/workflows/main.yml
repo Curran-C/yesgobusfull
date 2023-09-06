@@ -1,36 +1,3 @@
-# name: Frontend CI/CD
-
-# on:
-#   push:
-#     branches:
-#       - main
-
-# jobs:
-#   build:
-#     runs-on: ubuntu-latest
-
-#     steps:
-#       - name: Checkout Code
-#         uses: actions/checkout@v2
-
-#       - name: Setup Node.js
-#         uses: actions/setup-node@v2
-#         with:
-#           node-version: 16
-
-#       - name: Install Dependencies
-#         run: cd /client && npm install
-
-#       - name: Build Frontend
-#         run: npm run build
-
-#       - name: Upload to S3
-#         env:
-#           AWS_ACCESS_KEY_ID: AKIAQD6AUEVRYSG536HJ
-#           AWS_SECRET_ACCESS_KEY: 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
-#         run: npm run prod
-
-
 name: Frontend CI/CD
 
 on:
