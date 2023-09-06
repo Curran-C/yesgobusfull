@@ -14,8 +14,10 @@ import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Spin } from "antd";
+import { useLocation } from "react-router-dom";
 
 const BusBooking = () => {
+  const location = useLocation();
   const [noOfBuses, setNoOfBuses] = useState(0);
   const [busDetails, setBusDetails] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +66,15 @@ const BusBooking = () => {
   const [selectedDate, setSelectedDate] = useState(currentDate);
 
   useEffect(() => {
-    handleSearch("Mysore", "Bangalore", currentDate);
+    const queryParams = new URLSearchParams(location.search);
+    const sourceCity = queryParams.get("from");
+    const destinationCity = queryParams.get("to");
+    const doj = queryParams.get("date");
+    if (sourceCity && destinationCity && doj) {
+      handleSearch(sourceCity, destinationCity, doj);
+    } else {
+      handleSearch("Mysore", "Bangalore", currentDate);
+    }
   }, []);
 
   const handleSearch = async (
@@ -134,6 +144,106 @@ const BusBooking = () => {
     }
   };
 
+  const tempBusDetails = [
+    {
+      inventoryType: 1,
+      routeScheduleId: "1000295846301600806",
+      serviceId: "1000295800001600806",
+      fare: "300.00,400.00,410.00,448.00",
+      departureTime: "06:45 PM",
+      arrivalTime: "10:45 PM",
+      availableSeats: 38,
+      operatorName: "Jabbar  Travels",
+      cancellationPolicy:
+        '[{"cutoffTime":"0-8","refundInPercentage":"0"},{"cutoffTime":"8-24","refundInPercentage":"50"},{"cutoffTime":"24-72","refundInPercentage":"75"},{"cutoffTime":"72","refundInPercentage":"90"}]',
+      boardingPoints: [
+        {
+          id: "17954206",
+          location: "Infosys",
+          time: "06:00 PM",
+        },
+        {
+          id: "17954500",
+          location: "Mysore Sabar Bustand",
+          time: "06:45 PM",
+        },
+        {
+          id: "17956034",
+          location: "JSS Dental College ",
+          time: "06:50 PM",
+        },
+        {
+          id: "17743142",
+          location: "Columbia Asia Hospital",
+          time: "07:00 PM",
+        },
+        {
+          id: "19309401",
+          location: "Srirangapatna",
+          time: "07:15 PM",
+        },
+        {
+          id: "19309398",
+          location: "Mandya",
+          time: "07:30 PM",
+        },
+        {
+          id: "23311741",
+          location: "Channapatna",
+          time: "08:30 PM",
+        },
+        {
+          id: "23311745",
+          location: "Ramanagara",
+          time: "08:45 PM",
+        },
+        {
+          id: "23311743",
+          location: "Bidadi",
+          time: "09:00 PM",
+        },
+      ],
+      droppingPoints: [
+        {
+          id: "18445360",
+          location: "Kengeri",
+          time: "09:45 PM",
+        },
+        {
+          id: "17801930",
+          location: "Electronic City",
+          time: "10:30 PM",
+        },
+        {
+          id: "17934463",
+          location: "Silkboard ",
+          time: "10:40 PM",
+        },
+        {
+          id: "19271277",
+          location: "HSR Layout Nandas",
+          time: "10:45 PM",
+        },
+      ],
+      busType: "Scania Multi-Axle AC Semi Sleeper (2+2)",
+      partialCancellationAllowed: false,
+      idProofRequired: false,
+      operatorId: 8336,
+      commPCT: 4.4,
+      mTicketAllowed: true,
+      isRTC: false,
+      isOpTicketTemplateRequired: false,
+      isOpLogoRequired: false,
+      isFareUpdateRequired: false,
+      is_child_concession: false,
+      isGetLayoutByBPDP: false,
+      socialDistancing: false,
+      durationInMins: 240,
+      busAmenities: null,
+    },
+  ];
+
+ 
   const formatTravelTime = (durationInMins) => {
     const hours = Math.floor(durationInMins / 60);
     const minutes = durationInMins % 60;
@@ -149,6 +259,7 @@ const BusBooking = () => {
   const handleDate = (date) => {
     handleSearch(fromLocation, toLocation, date);
   };
+  
   return (
     <div className="busBooking">
       <Navbar />
@@ -239,8 +350,6 @@ const BusBooking = () => {
                   dropTimes={dropTimes}
                   dropLocationOne={bus.droppingPoints}
                   dropLocationTwo={dropLocationTwo}
-                  noOfRows={4}
-                  noOfSeatsPerRow={6}
                   backSeat={true}
                 />
               ))}
