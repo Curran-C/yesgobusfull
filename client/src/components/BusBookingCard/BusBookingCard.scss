@@ -1,80 +1,87 @@
 .BusBookingCard {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #dadada;
+  padding: 30px;
+  h1 {
+    font-size: 18px;
+  }
+  .cardContainer {
     display: flex;
     flex-direction: column;
     border: 1px solid #dadada;
-    padding: 30px;
-    h1 {
-        font-size: 18px;
-    }
-    .cardContainer {
+    margin-top: 10px;
+    .cardWrapper {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      justify-content: space-between;
+      .price {
+        color: #fd5901;
+        font-weight: 700;
+      }
+      .otherCards {
         display: flex;
-        flex-direction: column;
-        border: 1px solid #dadada;
-        margin-top: 10px;
-        .cardWrapper {
-            display: flex;
-            align-items: center;
-            padding: 20px;
-            justify-content: space-between;
-            .price {
-                color: #fd5901;
-                font-weight: 700;
-            }
-            .otherCards {
-                display: flex;
-                gap: 50px;
-                align-items: center;
-            }
-        }
-        hr {
-            width: 95%;
-            height: 0.5px;
-            border: none;
-            background-color: #dadada;
-        }
-        .liveLocation {
-            display: flex;
-            gap: 5px;
-            padding: 5px 20px;
-            span {
-                font-size: 15px;
-            }
-        }
-        .dropDowns {
-            display: flex;
-            gap: 30px;
-            padding: 20px;
-        }
+        gap: 50px;
+        align-items: center;
+      }
     }
+    hr {
+      width: 95%;
+      height: 0.5px;
+      border: none;
+      background-color: #dadada;
+    }
+    .liveLocation {
+      display: flex;
+      gap: 5px;
+      padding: 5px 20px;
+      span {
+        font-size: 15px;
+      }
+    }
+    .loading_seats {
+      display: flex;
+      width: 100%;
+      justify-content: center;
+      margin: -10px 20px 20px 20px ;
+    }
+    .dropDowns {
+      display: flex;
+      gap: 30px;
+      padding: 20px;
+    }
+  }
 }
 
-@media (max-width: 768px) {
-    .BusBookingCard {
-        .cardContainer {
-            .cardWrapper {
-                .otherCards {
-                    gap: 20px;
-                }
-            }
+@media (max-width: 820px) {
+  .BusBookingCard {
+    padding: 30px 5px;
+    .cardContainer {
+      .cardWrapper {
+        .otherCards {
+          gap: 20px;
         }
+      }
     }
+  }
 }
 
 @media (max-width: 426px) {
-    .BusBookingCard {
-        .cardContainer {
-            .cardWrapper {
-                flex-direction: column;
-                .otherCards {
-                    flex-wrap: wrap;
-                    justify-content: center;
-                }
-            }
-            .dropDowns {
-                gap: 10px;
-                padding: 10px;
-                flex-wrap: wrap;
-            }
+  .BusBookingCard {
+    .cardContainer {
+      .cardWrapper {
+        flex-direction: column;
+        .otherCards {
+          flex-wrap: wrap;
+          justify-content: center;
         }
+      }
+      .dropDowns {
+        gap: 10px;
+        padding: 10px;
+        flex-wrap: wrap;
+      }
     }
+  }
 }

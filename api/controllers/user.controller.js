@@ -21,7 +21,7 @@ export const signInController = async (req, res) => {
       });
     }
     
-    res.status(result.status).json({ message: result.message, token: result.token });
+    res.status(result.status).json({ message: result.message, data: result.data, token: result.token });
   } catch (err) {
     res.status(500).json({ message: "An error occurred while signing in" });
   }

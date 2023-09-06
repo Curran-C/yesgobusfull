@@ -2,7 +2,15 @@
 import "./InfoCard.scss";
 import React, { useState, useEffect, useRef } from "react";
 
-const InfoCard = ({ img, title, date, inputField, subtitle, onChanged, suggestions }) => {
+const InfoCard = ({
+  img,
+  title,
+  date,
+  inputField,
+  subtitle,
+  onChanged,
+  suggestions,
+}) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const infoCardRef = useRef(null);
 
@@ -19,7 +27,7 @@ const InfoCard = ({ img, title, date, inputField, subtitle, onChanged, suggestio
   const handleDateChange = (e) => {
     const inputValue = e.target.value;
     onChanged(inputValue);
-  }
+  };
 
   const handleSuggestionClick = (suggestion) => {
     onChanged(suggestion);
@@ -49,11 +57,7 @@ const InfoCard = ({ img, title, date, inputField, subtitle, onChanged, suggestio
       <h1 className="infotitle">
         {inputField ? (
           date ? (
-            <input
-              type="date"
-              value={title}
-              onChange={handleDateChange}
-            />
+            <input type="date" value={title} onChange={handleDateChange} />
           ) : (
             <input
               type="text"
@@ -67,14 +71,19 @@ const InfoCard = ({ img, title, date, inputField, subtitle, onChanged, suggestio
         )}
         {showSuggestions && suggestions.length > 0 && (
           <ul className="suggestion-list">
-            {suggestions.map((suggestion) => (
-              <li
-                key={suggestion._id}
-                onClick={() => handleSuggestionClick(suggestion.city_name)}
-              >
-                {suggestion.city_name}
-              </li>
-            ))}
+            {suggestions
+              .filter(
+                ({ city_name }) =>
+                  !/\d/.test(city_name) && !city_name.includes(" ")
+              )
+              .map((suggestion) => (
+                <li
+                  key={suggestion._id}
+                  onClick={() => handleSuggestionClick(suggestion.city_name)}
+                >
+                  {suggestion.city_name}
+                </li>
+              ))}
           </ul>
         )}
       </h1>
