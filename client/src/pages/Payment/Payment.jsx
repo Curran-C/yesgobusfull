@@ -16,67 +16,129 @@ import { livelocation } from "../../assets/busbooking";
 import AboveFooterImages from "../../components/AboveFooterImages/AboveFooterImages";
 import { offer } from "../../assets/payment";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useLocation, useNavigate, Navigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { bookSeat } from "../../../../api/service/buBooking.service";
 
 const Payment = () => {
-  const [userData, setUserData] = useState({});
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  if (!loggedInUser) {
+    return <Navigate to="/login" replace />;
+  }
+
+  const [userData, setUserData] = useState({
+    gender: "M",
+    idType: "PAN",
+  });
+  const navigate = useNavigate();
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search); 
-  const sourceCity = queryParams.get("sourceCity");
-  const destinationCity = queryParams.get("destinationCity");
-  const routeScheduleId = queryParams.get("routeScheduleId");
-  const inventoryType = queryParams.get("inventoryType");
-  const doj = queryParams.get("doj");
-  const pickUpTime = queryParams.get("pickUpTime");
-  const reachTime = queryParams.get("reachTime");
-  const travelTime = queryParams.get("travelTime");
-  const busType = queryParams.get("busType");
-  const busName = queryParams.get("busName");
-  const price = queryParams.get("price");
-  // to be removed
-  const priceArray = price.split(" - ");
-  console.log(priceArray);
-  const tax = parseInt(priceArray[0]) * 0.18;
-  const totalAmount = parseInt(priceArray[0]) + tax;
+  const {
+    sourceCity,
+    destinationCity,
+    routeScheduleId,
+    inventoryType,
+    doj,
+    pickUpTime,
+    reachTime,
+    travelTime,
+    busType,
+    busName,
+    bookingDetails,
+  } = location.state || {};
+  const [executed, setExecuted] = useState(false);
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const blockTicketId = urlSearchParams.get("blockTicketId");
+  useEffect(() => {
+    const checkBlockTicketId = async () => {
+      if (blockTicketId && !executed) {
+        // alert(`Block Ticket ID: ${blockTicketId}`);
+        const bookSeat = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookSeat/${blockTicketId}`
+        );
+        console.log(bookSeat.data);
+        setExecuted(true);
+        if (bookSeat.data.status === "success") {
+          navigate(`/busbooking/payment/success?tlid=${bookSeat.data.BookingDetail.etstnumber}&userId=${loggedInUser._id}`);
+        } else {
+          navigate("/busbooking/payment/failure");
+        }
+      }
+    };
+    checkBlockTicketId();
+  }, [executed, blockTicketId]);
+
 
   const date = new Date();
   const handlePayment = async () => {
     console.log(userData);
+    const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
+      return {
+        seatNbr: seatId,
+        ladiesSeat: bookingDetails?.ladiesSeat[index],
+        ac: bookingDetails?.ac[index],
+        sleeper: bookingDetails?.sleeper[index],
+        fare: bookingDetails?.seatFares[index],
+        totalFareWithTaxes: bookingDetails?.seatTotalFares[index],
+        name: userData.firstName,
+        age: userData.age,
+        sex: userData.gender,
+        lastName: userData.lastName,
+        mobile: userData.mobile,
+        title: " ",
+        email: userData.email,
+        idType: userData.idType,
+        idNumber: userData.idNumber,
+        nameOnId: userData.firstName,
+        primary: true,
+      };
+    });
     try {
-      const requestBody = {
+      const blockSeatRequestBody = {
         sourceCity: sourceCity,
         destinationCity: destinationCity,
         doj: doj,
         routeScheduleId: routeScheduleId,
-        customerName: userData.fullName,
-        customerLastName: userData.fullName,
+        boardingPoint: bookingDetails?.boardingPoint,
+        customerName: userData.firstName,
+        customerLastName: userData.lastName,
         customerEmail: userData.email,
         customerPhone: userData.mobile,
-        // customerGender: userData.gender,
-        customerAge: userData.age,
         emergencyPhNumber: userData.alternativeNumber,
-        totalAmount: parseInt(totalAmount),
+        customerAddress: userData.address,
+        blockSeatPaxDetails: seatObjects,
+        inventoryType: inventoryType,
       };
-      
-      const bookResponse = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
-        requestBody
+      const blockSeat = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
+        blockSeatRequestBody
       );
-      // if (bookResponse.status === 200) alert("Bookin");
-      const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
-        {
-          amount: parseInt(totalAmount),
-          redirectUrl: `https://yesgobus.com/busbooking/payment/success`,
-        }
-      );
-      window.location.replace(
-        response.data.data.instrumentResponse.redirectInfo.url
-      );
+      if (blockSeat?.data?.apiStatus?.success === true) {
+        const bookResponse = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
+          {
+            ...blockSeatRequestBody,
+            userId: loggedInUser._id,
+            totalAmout: bookingDetails?.totalFare
+          }
+        );
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
+          {
+            amount: bookingDetails?.totalFare,
+            redirectUrl: `${window.location.href}?blockTicketId=${blockSeat.blockTicketKey}`,
+            // redirectUrl: `${window.location.href}?blockTicketId=ETS0S232144038`,
+          }
+        );
+        window.location.replace(
+          response.data.data.instrumentResponse.redirectInfo.url
+        );
+      } else {
+        alert("Error blocking seat");
+      }
+
     } catch (error) {
       console.log(error);
-      console.error("omething went wrong:", error);
+      console.error("Something went wrong:", error);
     }
   }
 
@@ -92,7 +154,7 @@ const Payment = () => {
       <BusRoute
         locationOne={sourceCity}
         locationTwo={destinationCity}
-        departureDate={pickUpTime}
+        departureDate={doj}
         returnDate={"- - -"}
       />
 
@@ -124,8 +186,8 @@ const Payment = () => {
               </div>
             </div>
             <div className="reviewright">
-              <span>1 Seat Selected</span>
-              <span>Seat No: E 05</span>
+              <span>{bookingDetails?.selectedSeats?.length} Seat Selected</span>
+              <span>{bookingDetails?.selectedSeats?.join(', ')}</span>
               <a href="">View Policies</a>
             </div>
           </div>
@@ -133,15 +195,15 @@ const Payment = () => {
           <div className="destinations">
             <SimpleCard
               text={"Boaring Pass Details"}
-              date={date.toDateString()}
-              locationOne={"Infosys Gate"}
-              locationTwo={"INFOSYS GATE NO 2,134,33"}
+              date={bookingDetails?.boardingPoint?.time}
+              // locationOne={bookingDetails.boardingPoint.location}
+              locationTwo={bookingDetails?.boardingPoint?.location}
             />
             <SimpleCard
               text={"Drop Point Details"}
-              date={date.toDateString()}
-              locationOne={"Hcross"}
-              locationTwo={"Hcross Highway, bng"}
+              date={bookingDetails?.droppingPoint?.time}
+              // locationOne={bookingDetails.droppingPoint.location}
+              locationTwo={bookingDetails?.droppingPoint?.location}
             />
           </div>
 
@@ -150,15 +212,22 @@ const Payment = () => {
             <span>Enter Traveller Details</span>
             <div className="detailsContainer">
               <Input
-                title={"Full Name"}
+                title={"First Name"}
                 type={"text"}
-                placeholder={"Full name"}
+                placeholder={"First name"}
                 onChanged={handleInputChange}
-                givenName={"fullName"}
+                givenName={"firstName"}
               />
-              <Input title={"Age"} type={"number"} placeholder={"40"} 
-              onChanged={handleInputChange}
-              givenName={"age"}
+              <Input
+                title={"Last Name"}
+                type={"text"}
+                placeholder={"Last name"}
+                onChanged={handleInputChange}
+                givenName={"lastName"}
+              />
+              <Input title={"Age"} type={"number"} placeholder={"40"}
+                onChanged={handleInputChange}
+                givenName={"age"}
               />
               {/* <Input title={"Age"} type={"number"} placeholder={"40"} /> */}
               {/* <Input
@@ -168,10 +237,15 @@ const Payment = () => {
               /> */}
               <div className="genderContainer">
                 <label htmlFor="gender">Gender</label>
-                <select name="" id="gender">
-                  <option value="Male">Male</option>
-                  <option value="Female">Female</option>
-                  <option value="Other">Other</option>
+                <select
+                  name="gender"
+                  id="gender"
+                  value={userData.gender}
+                  onChange={handleInputChange}
+                >
+                  <option value="M">Male</option>
+                  <option value="F">Female</option>
+                  <option value="O">Other</option>
                 </select>
               </div>
             </div>
@@ -202,22 +276,47 @@ const Payment = () => {
                 onChanged={handleInputChange}
                 givenName={"alternativeNumber"}
               />
+              <Input
+                title={"Address"}
+                type={"text"}
+                placeholder={"Address"}
+                onChanged={handleInputChange}
+                givenName={"address"}
+              />
             </div>
           </div>
 
           {/* Picode Details */}
-          {/* <div className="details">
-            <span>Enter Contact Details</span>
+          <div className="details">
+            <span>Enter ID Proof</span>
             <div className="detailsContainer">
-              <Input title={"Pincode"} type={"number"} placeholder={"560"} />
-              <Input title={"State"} type={"text"} placeholder={"Karnataka"} />
+              <div className="genderContainer">
+                <label htmlFor="gender">ID Type</label>
+                <select
+                  name="idType"
+                  id="idType"
+                  value={userData.idType}
+                  onChange={handleInputChange}
+                >
+                  <option value="PAN">Pan</option>
+                  <option value="AADHAAR">Aadhaar</option>
+                </select>
+              </div>
+              <Input
+                title={"ID Number"}
+                type={"text"}
+                placeholder={"ID Number"}
+                onChanged={handleInputChange}
+                givenName={"idNumber"}
+              />
+              {/* <Input title={"State"} type={"text"} placeholder={"Karnataka"} />
               <Input
                 title={"Address"}
                 type={"text"}
                 placeholder={"Address (optional)"}
-              />
+              /> */}
             </div>
-          </div> */}
+          </div>
 
           {/* Trip Type */}
           {/* <div className="tripType">
@@ -250,17 +349,17 @@ const Payment = () => {
             <div className="prices">
               <div className="price">
                 <p>Total Basefare</p>
-                <p>{"₹"+priceArray[0]}</p>
+                <p>{"₹" + bookingDetails?.fare}</p>
               </div>
               <hr />
               <div className="price">
                 <p>Tax</p>
-                <p>{tax}</p>
+                <p>{bookingDetails?.tax}</p>
               </div>
               <hr />
               <div className="price">
                 <p>Total Basefare</p>
-                <p>{totalAmount}</p>
+                <p>{bookingDetails?.totalFare}</p>
               </div>
               <hr />
             </div>
@@ -277,7 +376,7 @@ const Payment = () => {
               <input type="text" name="" id="" placeholder="Enter your code" />
             </div>
           </div> */}
-          <Button text={`Pay Amount ₹${totalAmount}`} onClicked={handlePayment} />
+          <Button text={`Pay Amount ₹${bookingDetails?.totalFare}`} onClicked={handlePayment} />
         </div>
       </div>
       <div className="popularBusRoutes">

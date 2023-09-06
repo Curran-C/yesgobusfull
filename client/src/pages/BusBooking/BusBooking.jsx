@@ -14,9 +14,14 @@ import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { Spin } from "antd";
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 
 const BusBooking = () => {
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  if (!loggedInUser) {
+    return <Navigate to="/login" replace />;
+  }
+
   const location = useLocation();
   const [noOfBuses, setNoOfBuses] = useState(0);
   const [busDetails, setBusDetails] = useState([]);

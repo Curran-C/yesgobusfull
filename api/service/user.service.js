@@ -57,10 +57,11 @@ export const signIn = async (emailMobile, password) => {
     const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_KEY, {
       expiresIn: "1h",
     });
-    
+    existingUser.password = undefined;
     return {
       status: 200,
       message: "Successfully signed in",
+      data: existingUser,
       token: token,
     };
   } catch (err) {
