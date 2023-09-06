@@ -44,6 +44,8 @@ export const initiatePayment = async (args) => {
   };
 
   const payloadString = JSON.stringify(payload);
+  console.log("PayloadString", payloadString);
+  console.log("Payload", payload);
   const base64Payload = btoa(payloadString);
   const requestData = {
     request: base64Payload
