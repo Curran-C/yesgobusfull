@@ -359,10 +359,14 @@
 
         .border {
           display: flex;
+          flex-wrap: wrap;
           margin-top: 20px;
           padding: 30px 10px;
-          .infoCard:nth-child(1) {
-            width: 30%;
+          .infoCard:nth-child(2n + 1) {
+            width: 40%;
+          }
+          .infoCard:nth-child(4) {
+            width: 40%;
           }
           .infoCard {
             h1 {
@@ -375,6 +379,7 @@
             }
           }
           .buttons {
+            display: none;
             .dayButton {
               padding: 5px 10px;
             }
@@ -383,6 +388,9 @@
               background-color: #fd5901;
               color: white;
             }
+          }
+          button{
+            width: 35%;
           }
         }
       }
