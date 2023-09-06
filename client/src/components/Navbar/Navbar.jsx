@@ -10,6 +10,14 @@ const Navbar = ({ page }) => {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("loggedInUser");
+    navigate("/login");
+  };
+
+  const loggedInUser = localStorage.getItem("loggedInUser");
+
   const menu = (
     <div className="burger-menu">
       <a href="/">
@@ -65,9 +73,13 @@ const Navbar = ({ page }) => {
       </div>
 
       <div className="right">
-        <a href="/login">
+        {loggedInUser ? (
+          <Button text="Logout" onClicked={handleLogout} />
+        ) : (
+          <a href="/login">
           <Button text="Login / Signup" />
         </a>
+        )}
       </div>
 
       {/* burger menu */}

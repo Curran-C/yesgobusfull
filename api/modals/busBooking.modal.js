@@ -29,6 +29,7 @@ const seatDetailsSchema = new Schema({
 });
 
 const busBookingSchema = new Schema({
+  userId: String,
   sourceCity: String,
   destinationCity: String,
   doj: Date,
@@ -38,15 +39,14 @@ const busBookingSchema = new Schema({
   customerLastName: String,
   customerEmail: String,
   customerPhone: String,
-  customerAlternateNumber:String,
-  customerGender: String,
-  customerAge: String,
   emergencyPhNumber: String,
-  customerAddress: String,
-  customerState: String,
   blockSeatPaxDetails: [seatDetailsSchema],
   inventoryType: Number,
   totalAmount: Number,
+  bookingStatus: {
+    type: String,
+    default: "pending"
+  }
 });
 
 

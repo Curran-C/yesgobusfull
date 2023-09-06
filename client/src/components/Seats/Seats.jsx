@@ -36,7 +36,7 @@ const Seats = ({
   seatDetails,
 }) => {
   //* states
-  const naviagate = useNavigate();
+  const navigate = useNavigate();
   const [bookingDetails, setBookingDetails] = useState({
     boardingPoint: {
       id: "",
@@ -49,48 +49,89 @@ const Seats = ({
       time: "",
     },
     selectedSeats: [],
+    seatFares: [],
+    seatTotalFares: [],
+    ladiesSeat: [],
+    ac: [],
+    sleeper: [],
     fare: 0,
+    tax: 0,
+    totalFare: 0,
   });
-  const seatSelectionHandler = (seatId, fare) => {
+  const seatSelectionHandler = (seatId, fare, tax, totalFare, isLadiesSeat, isAC, isSleeper) => {
     return setBookingDetails((prev) => {
       let newSelected = [...prev.selectedSeats];
-      let newfare = prev.fare;
-      if (!newSelected.includes(seatId)) {
+      let newFare = prev.fare;
+      let newTax = prev.tax;
+      let newTotalFare = prev.totalFare;
+      let newSeatFares = [...prev.seatFares];
+      let newSeatTotalFares = [...prev.seatTotalFares];
+      let newLadiesSeat = [...prev.ladiesSeat];
+      let newAC = [...prev.ac];
+      let newSleeper = [...prev.sleeper];
+  
+      const seatIndex = newSelected.indexOf(seatId);
+  
+      if (seatIndex === -1) {
         newSelected.push(seatId);
-        newfare += fare;
+        newFare += fare;
+        newTax += tax;
+        newTotalFare += totalFare;
+        newSeatFares.push(fare);
+        newSeatTotalFares.push(totalFare);
+        newAC.push(isAC);
+        newSleeper.push(isSleeper);
+        newLadiesSeat.push(isLadiesSeat);
       } else {
-        newfare -= fare;
-        newSelected = newSelected.filter((id) => id !== seatId);
+        newSelected.splice(seatIndex, 1);
+        newFare -= fare;
+        newTax -= tax;
+        newTotalFare -= totalFare;
+        newSeatFares.splice(seatIndex, 1);
+        newSeatTotalFares.splice(seatIndex, 1);
+        newAC.splice(seatIndex, 1);
+        newSleeper.splice(seatIndex, 1);
+        newLadiesSeat.splice(seatIndex, 1);
       }
+  
       return {
         ...prev,
         selectedSeats: newSelected,
-        fare: newfare,
+        fare: newFare,
+        tax: newTax,
+        totalFare: newTotalFare,
+        seatFares: newSeatFares,
+        seatTotalFares: newSeatTotalFares,
+        ac: newAC,
+        sleeper: newSleeper,
+        ladiesSeat: newLadiesSeat,
       };
     });
   };
+  
+
   const lowerTierSeats = seatDetails.filter((seat) => seat.zIndex === 0);
   const upperTierSeats = seatDetails.filter((seat) => seat.zIndex === 1);
 
-  const renderSeatTable = (seats) => {
-    const numRows = Math.max(...seats.map((seat) => seat.row)) + 1;
-    const numCols = Math.max(...seats.map((seat) => seat.column)) + 1;
+  const renderSeatTable = (seats, selectedSeats) => {
+    const numRows = Math.max(...seats?.map((seat) => seat.row)) + 1;
+    const numCols = Math.max(...seats?.map((seat) => seat.column)) + 1;
 
     const seatTable = [];
 
     for (let row = 0; row < numRows; row++) {
       const seatRow = [];
-
+  
       for (let col = 0; col < numCols; col++) {
         const seat = seats.find((s) => s.row === row && s.column === col);
-
+  
         if (seat) {
           if (seat.available) {
-            if (bookingDetails.selectedSeats.includes(seat.id)) {
+            if (selectedSeats.includes(seat.id)) {
               seatRow.push(
                 <td key={seat.id}>
                   <img
-                    onClick={() => seatSelectionHandler(seat.id, seat.fare)}
+                    onClick={() => seatSelectionHandler(seat.id, seat.fare, seat.serviceTaxAmount, seat.totalFareWithTaxes, seat.ladiesSeat, seat.ac, seat.sleeper)}
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                     src={selected}
                     alt="selected seat"
@@ -102,7 +143,7 @@ const Seats = ({
                 seatRow.push(
                   <td key={seat.id}>
                     <img
-                      onClick={() => seatSelectionHandler(seat.id, seat.fare)}
+                      onClick={() => seatSelectionHandler(seat.id, seat.fare, seat.serviceTaxAmount, seat.totalFareWithTaxes, seat.ladiesSeat, seat.ac, seat.sleeper)}
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                       src={ladiesavailable}
                       alt="available ladies"
@@ -113,7 +154,7 @@ const Seats = ({
                 seatRow.push(
                   <td key={seat.id}>
                     <img
-                      onClick={() => seatSelectionHandler(seat.id, seat.fare)}
+                      onClick={() => seatSelectionHandler(seat.id, seat.fare, seat.serviceTaxAmount, seat.totalFareWithTaxes, seat.ladiesSeat, seat.ac, seat.sleeper)}
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                       src={available}
                       alt="available"
@@ -149,10 +190,10 @@ const Seats = ({
           seatRow.push(<td key={`empty-${row}-${col}`}></td>);
         }
       }
-
+  
       seatTable.push(<tr key={`row-${row}`}>{seatRow}</tr>);
     }
-
+  
     return (
       <table>
         <tbody>{seatTable}</tbody>
@@ -237,12 +278,12 @@ const Seats = ({
 
           <div className="gridContainer">
             {upperTierSeats.length > 0 && <h4>Lower Tier</h4>}
-            {renderSeatTable(lowerTierSeats)}
+            {renderSeatTable(lowerTierSeats, bookingDetails.selectedSeats)}
 
             {upperTierSeats.length > 0 && (
               <>
                 <h4>Upper Tier</h4>
-                {renderSeatTable(upperTierSeats)}
+                {renderSeatTable(upperTierSeats, bookingDetails.selectedSeats)}
               </>
             )}
           </div>
@@ -251,9 +292,21 @@ const Seats = ({
         <div className="continue">
           <Button
             onClicked={() =>
-              naviagate(
-                `/busbooking/payment?sourceCity=${sourceCity}&destinationCity=${destinationCity}&routeScheduleId=${routeScheduleId}&inventoryType=${inventoryType},&doj=${doj}&pickUpTime=${pickUpTime}&reachTime=${pickUpTime}&travelTime=${travelTime}&busType=${busType}&busName=${busName}&price=${price}`
-              )
+              navigate('/busbooking/payment', {
+                state: {
+                  sourceCity,
+                  destinationCity,
+                  routeScheduleId,
+                  inventoryType,
+                  doj,
+                  pickUpTime,
+                  reachTime,
+                  travelTime,
+                  busType,
+                  busName,
+                  bookingDetails,
+                },
+              })
             }
             text={"Continue"}
           />

@@ -7,11 +7,16 @@ import {
 } from "../../assets/login";
 import "./Login.scss";
 import { Button, Input } from "../../components";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 
 const Login = () => {
+  const loggedInUser = localStorage.getItem("loggedInUser");
+  if (loggedInUser) {
+    return <Navigate to="/" replace />;
+  }
+
   const navigate = useNavigate();
   const [showLogin, setShowLogin] = useState(true);
   const [showCreateAccount, setShowCreateAccount] = useState(false);
@@ -135,7 +140,9 @@ const Login = () => {
         );
         if (response.status === 200) {
           const token = response.data.token;
+          const loggedInUser = response.data.data;
           localStorage.setItem("token", token);
+          localStorage.setItem("loggedInUser", loggedInUser);
           alert("Login Successfull");
           navigate("/");
         } else {
