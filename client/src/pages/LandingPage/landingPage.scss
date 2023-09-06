@@ -305,8 +305,31 @@
         align-items: center;
 
         .border {
-          flex-wrap: wrap;
-          gap: 10px;
+          display: flex;
+          margin-top: 20px;
+          padding: 30px 10px;
+          .infoCard {
+            h1 {
+              input {
+                width: 100%;
+                min-width: 150px;
+                font-size: 0.8rem;
+              }
+            }
+            .infosubtitle {
+              font-size: 0.8rem;
+            }
+          }
+          .buttons {
+            .dayButton {
+              padding: 5px 10px;
+            }
+
+            .highlighted {
+              background-color: #fd5901;
+              color: white;
+            }
+          }
         }
       }
     }
@@ -335,8 +358,32 @@
         }
 
         .border {
+          display: flex;
           margin-top: 20px;
           padding: 30px 10px;
+          .infoCard:nth-child(1) {
+            width: 30%;
+          }
+          .infoCard {
+            h1 {
+              input {
+                font-size: 0.75rem;
+              }
+            }
+            .infosubtitle {
+              font-size: 0.7rem;
+            }
+          }
+          .buttons {
+            .dayButton {
+              padding: 5px 10px;
+            }
+
+            .highlighted {
+              background-color: #fd5901;
+              color: white;
+            }
+          }
         }
       }
     }

@@ -203,7 +203,7 @@ const Login = () => {
             )}
           </div>
           {showLogin ? login : createAccount}
-          <div className="or">
+          {/* <div className="or">
             <hr />
             <p>Or</p>
             <hr />
@@ -225,7 +225,7 @@ const Login = () => {
                 <span>Linkedin</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <p>
             By Continuing, I agree to the <span>Terms of Use</span> &{" "}
