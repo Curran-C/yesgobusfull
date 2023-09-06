@@ -1,74 +1,79 @@
 .infoCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    gap: 5px;
-    text-align: center;
-    img {
-        height: 30px;
-    }
-    .infotitle {
-        font-size: 15px;
-        letter-spacing: 1px;
-    }
-    .infosubtitle {
-        font-weight: 800;
-        font-size: 13px;
-        letter-spacing: 1px;
-    }
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  gap: 5px;
+  text-align: center;
+  img {
+    height: 30px;
+  }
+  .infotitle {
+    font-size: 15px;
+    letter-spacing: 1px;
+  }
+  .infosubtitle {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
 }
 
 .infotitle {
-    position: relative;
-    font-size: 15px;
-    letter-spacing: 1px;
-    input {
-      border: none;
-      font-weight: bold;
-      font-size: 18px;
-      text-align: center;
-    }
-    input:focus {
-        outline: none;
-    }
+  position: relative;
+  font-size: 15px;
+  letter-spacing: 1px;
+  input {
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
   }
+  input:focus {
+    outline: none;
+  }
+}
 
-  .suggestion-list {
-    position: absolute; 
-    top: 100%; 
-    left: 0;
-    width: 100%; 
-    background: white;
-    border-radius: 0 0 25px 25px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-    max-height: 150px;
-    overflow-y: auto;
-    z-index: 1;
-    list-style-type: none; 
-    padding: 0; 
-    margin: 0; 
+.suggestion-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 0 0 25px 25px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
   }
-  
-  .suggestion-list li {
-    padding: 10px 20px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-  }
-  
-  .suggestion-list li:hover {
-    background-color: #f5f5f5;
-  }
+}
+
+.suggestion-list li {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.suggestion-list li:hover {
+  background-color: #f5f5f5;
+}
 
 @media (max-width: 426px) {
-    .infotitle {
-        font-size: 13px;
-    }
-    .infosubtitle {
-        font-size: 12px;
-    }
-    input {
-        font-size: 16px;
-      }
+  .infotitle {
+    font-size: 13px;
+  }
+  .infosubtitle {
+    font-size: 12px;
+  }
+  input {
+    font-size: 16px;
+  }
 }
