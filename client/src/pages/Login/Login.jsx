@@ -37,7 +37,7 @@ const Login = () => {
 
   const handlePhChange = (e) => {
     setShowOTP(false);
-    if (isMobilenumber(e.target.value)) setShowOTP(true);
+    // if (isMobilenumber(e.target.value)) setShowOTP(true);
     setLoginData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
@@ -76,12 +76,12 @@ const Login = () => {
           onChanged={handlePhChange}
           givenName={"emailMobile"}
         />
-        {showOTP && <Button text={"Send OTP"} />}
+        {/* {showOTP && <Button text={"Send OTP"} />} */}
       </div>
       <Input
-        title={"Enter Password / OTP"}
+        title={"Enter Password"}
         type={"password"}
-        placeholder={"Enter Password / OTP"}
+        placeholder={"Enter Password"}
         onChanged={handleOtherLoginChanges}
         givenName={"password"}
       />
@@ -100,16 +100,16 @@ const Login = () => {
       <Input
         title={"Mobile Number"}
         type={"number"}
-        placeholder={"+91 0000 0000 00"}
+        placeholder={"0000 0000 00"}
         onChanged={handlePhChangeSingup}
         givenName={"phoneNumber"}
       />
-      {showOTP && (
+      {/* {showOTP && (
         <>
           <Button text={"Send OTP"} />
           <Input title={"Verify OTP"} type={"number"} />
         </>
-      )}
+      )} */}
       <Input
         title={"Email"}
         type={"email"}
@@ -203,7 +203,7 @@ const Login = () => {
             )}
           </div>
           {showLogin ? login : createAccount}
-          <div className="or">
+          {/* <div className="or">
             <hr />
             <p>Or</p>
             <hr />
@@ -225,7 +225,7 @@ const Login = () => {
                 <span>Linkedin</span>
               </div>
             </div>
-          </div>
+          </div> */}
 
           <p>
             By Continuing, I agree to the <span>Terms of Use</span> &{" "}

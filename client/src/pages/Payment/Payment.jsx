@@ -124,7 +124,7 @@ const Payment = () => {
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
           {
-            amount: bookingDetails?.totalFare,
+            amount: parseInt(Math.ceil(bookingDetails?.totalFare)),
             redirectUrl: `${window.location.href}?blockTicketId=${blockSeat.blockTicketKey}`,
             // redirectUrl: `${window.location.href}?blockTicketId=ETS0S232144038`,
           }
