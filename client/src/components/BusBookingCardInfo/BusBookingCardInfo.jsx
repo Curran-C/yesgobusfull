@@ -11,6 +11,7 @@ const BusBookingCardInfo = ({
   img,
   showSeats,
   setShowSeats,
+  buttonText,
 }) => {
   return (
     <div className="BusBookingCardInfo">
@@ -18,7 +19,10 @@ const BusBookingCardInfo = ({
         {title && <p className="title">{title}</p>}
         {img && <img className="img" src={rightarrow} />}
         {button && (
-          <Button onClicked={() => setShowSeats(!showSeats)} text={"Select"} />
+          <Button
+            onClicked={() => setShowSeats(!showSeats)}
+            text={buttonText || "Select"}
+          />
         )}
         {rating && (
           <div className="rating">

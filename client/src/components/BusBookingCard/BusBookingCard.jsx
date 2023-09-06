@@ -5,6 +5,7 @@ import DropDown from "../DropDown/DropDown";
 import "./BusBookingCard.scss";
 import Seats from "../Seats/Seats";
 import axios from "axios";
+import { Spin } from "antd";
 
 const BusBookingCard = ({
   routeScheduleId,
@@ -33,12 +34,11 @@ const BusBookingCard = ({
   backSeat,
 }) => {
   const [showSeats, setShowSeats] = useState(false);
-  const [seatDetails, setSeatDetails] = useState(false);
-
-  const [noOfColumns, setNoOfColumns] = useState(0);
-  const [totalBerthCount, setTotalBerthCount] = useState(1);
+  const [seatDetails, setSeatDetails] = useState([]);
+  const [seatLoading, setSeatLoading] = useState(false);
 
   const fetchSeatData = async () => {
+    setSeatLoading(true);
     let seatData = [];
     try {
       const response = await axios.post(
@@ -57,8 +57,7 @@ const BusBookingCard = ({
       console.error("Something went wrong:", error);
     }
     setSeatDetails(seatData);
-    setTotalBerthCount(1 + Math.max(...seatData.map(({ zIndex }) => zIndex)));
-    setNoOfColumns(Math.max(...seatData.map(({ column }) => column)));
+    setSeatLoading(false);
     setShowSeats(true);
   };
 
@@ -80,10 +79,10 @@ const BusBookingCard = ({
             <p className="price">₹{price}</p>
             <BusBookingCardInfo
               setShowSeats={fetchSeatData}
-              // setShowSeats={setShowSeats}
+              buttonText={!seatsLeft || (!seatDetails && "Full")}
               showSeats={showSeats}
               button={true}
-              subtitle={seatsLeft}
+              subtitle={seatsLeft || "No seats left"}
             />
           </div>
         </div>
@@ -92,6 +91,11 @@ const BusBookingCard = ({
           <img src={livelocation} alt="" />
           <span>Live tracking</span>
         </div>
+        <Spin
+          spinning={seatLoading}
+          colorText="#fd5901"
+          className="loading_seats"
+        />
         {/* <hr /> */}
         {/* <div className="dropDowns">
           <DropDown title="Policy" text="Lorem" />
@@ -101,7 +105,7 @@ const BusBookingCard = ({
           <DropDown title="Reviews" text="Lorem" />
         </div> */}
       </div>
-      {showSeats && (
+      {showSeats && seatsLeft && seatDetails && (
         <Seats
           travelTime={travelTime}
           pickUpTime={pickUpTime}
@@ -122,8 +126,6 @@ const BusBookingCard = ({
           busType={busType}
           price={price}
           seatDetails={seatDetails}
-          noOfColumns={noOfColumns}
-          totalBerthCount={totalBerthCount}
         />
       )}
     </div>

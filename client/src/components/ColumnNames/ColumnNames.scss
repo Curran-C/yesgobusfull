@@ -1,29 +1,32 @@
 .ColumnNames {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .tableTitles {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    .tableTitles {
-        display: flex;
-        gap: 300px;
-        background: rgba(0, 137, 240, 0.11);
-        padding: 30px 10px;
-        div {
-            display: flex;
-            gap: 45px;
-        }
+    gap: 600px;
+    background: rgba(0, 137, 240, 0.11);
+    padding: 30px 10px;
+    div {
+      display: flex;
+      gap: 45px;
     }
+  }
 }
 
-@media (max-width: 768px) {
-    .ColumnNames {
-        .tableTitles {
-            gap: 10px;
-        }
+@media (max-width: 820px) {
+  .ColumnNames {
+    .tableTitles {
+      gap: 200px;
+      div {
+        gap: 20px;
+      }
     }
+  }
 }
 
 @media (max-width: 426px) {
-    .ColumnNames {
-        display: none;
-    }
+  .ColumnNames {
+    display: none;
+  }
 }

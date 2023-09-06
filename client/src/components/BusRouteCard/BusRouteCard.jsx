@@ -14,11 +14,11 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
       setShowSuggestions(false);
     }
   };
-  
+
   const handleDateChange = (e) => {
     const inputValue = e.target.value;
     setLocation(inputValue);
-  }
+  };
 
   const handleSuggestionClick = (suggestion) => {
     setLocation(suggestion);
@@ -46,11 +46,7 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
     <div className="BusRouteCard" ref={inputRef}>
       <p>{title}</p>
       {date ? (
-        <input
-          type="date"
-          value={location}
-          onChange={handleDateChange}
-        />
+        <input type="date" value={location} onChange={handleDateChange} />
       ) : (
         <input
           type="text"
@@ -59,17 +55,22 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
           onClick={handleInputClick}
         />
       )}
-      
+
       {showSuggestions && suggestions.length > 0 && (
         <ul className="suggestion-list">
-          {suggestions.map((suggestion) => (
-            <li
-              key={suggestion._id}
-              onClick={() => handleSuggestionClick(suggestion.city_name)}
-            >
-              {suggestion.city_name}
-            </li>
-          ))}
+          {suggestions
+            .filter(
+              ({ city_name }) =>
+                !/\d/.test(city_name) && !city_name.includes(" ")
+            )
+            .map((suggestion) => (
+              <li
+                key={suggestion._id}
+                onClick={() => handleSuggestionClick(suggestion.city_name)}
+              >
+                {suggestion.city_name}
+              </li>
+            ))}
         </ul>
       )}
     </div>
