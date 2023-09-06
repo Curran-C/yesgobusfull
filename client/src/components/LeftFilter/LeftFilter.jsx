@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 
 const LeftFilter = ({sourceCity, destinationCity, doj, onFilterChange}) => {
-  const [range, setRange] = useState([100, 10000]);
+  const [range, setRange] = useState([100, 3000]);
   const [filters, setFilters] = useState([]);
   const [boardingPointsFilter, setBoardingPointsFilter] = useState([]);
   const [droppingPointsFilter, setDroppingPointsFilter] = useState([]);
@@ -122,7 +122,7 @@ const LeftFilter = ({sourceCity, destinationCity, doj, onFilterChange}) => {
             onChangeCommitted={handleSliderChangeCommitted}
             valueLabelDisplay="auto"
             min={0}
-            max={10000}
+            max={3000}
             step={1}
           />
           <div className="range-labels">
