@@ -1,22 +1,33 @@
 .reviewCard {
+  display: flex;
+  align-items: start;
+  flex-direction: column;
+  padding: 20px 30px;
+  justify-content: space-evenly;
+  height: 150px;
+  width: 300px;
+  border: 1px solid lightgray;
+  .ratingContainer {
     display: flex;
-    align-items: start;
-    flex-direction: column;
-    padding: 20px 30px;
-    justify-content: space-evenly;
-    height: 150px;
-    width: 300px;
-    border: 1px solid lightgray;
-    .ratingContainer {
-        display: flex;
-        align-items: center;
-        gap: 20px;
-        .name {
-            margin: 0;
-        }
+    align-items: center;
+    gap: 20px;
+    .name {
+      margin: 0;
     }
-    p {
-        font-size: 14px;
-        color: #979797;
+  }
+  p {
+    font-size: 14px;
+    color: #979797;
+  }
+}
+
+@media (max-width: 768px) {
+  .reviewCard {
+    gap: 10px;
+    height: auto;
+    width: auto;
+    span {
+      text-align: justify;
     }
+  }
 }
