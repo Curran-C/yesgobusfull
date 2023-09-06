@@ -79,7 +79,9 @@ const LandingPage = () => {
 
   const handleTodayButtonClick = () => {
     const today = new Date();
-    const todayFormatted = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    const todayFormatted = `${today.getFullYear()}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
     setSelectedDate(todayFormatted);
     setDateSource("today");
     setTodayHighlighted(true);
@@ -89,7 +91,9 @@ const LandingPage = () => {
   const handleTomorrowButtonClick = () => {
     const tomorrow = new Date();
     tomorrow.setDate(tomorrow.getDate() + 1);
-    const tomorrowFormatted = `${tomorrow.getFullYear()}-${String(tomorrow.getMonth() + 1).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`;
+    const tomorrowFormatted = `${tomorrow.getFullYear()}-${String(
+      tomorrow.getMonth() + 1
+    ).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`;
     setSelectedDate(tomorrowFormatted);
     setDateSource("tomorrow");
     setTomorrowHighlighted(true);
@@ -97,14 +101,17 @@ const LandingPage = () => {
   };
 
   const handleSearchClick = () => {
-    navigate(`/busbooking?from=${fromLocation}&to=${toLocation}&date=${selectedDate}`);
+    navigate(
+      `/busbooking?from=${fromLocation}&to=${toLocation}&date=${selectedDate}`
+    );
   };
 
   const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
     try {
       if (query.length > 3) {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`);
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
+        );
         console.log(response.data);
         setLocationSuggestions(response.data.data);
       } else {
@@ -140,7 +147,8 @@ const LandingPage = () => {
             million Indians.
           </h2>
           <div className="border">
-            <InfoCard img={office}
+            <InfoCard
+              img={office}
               title={fromLocation}
               subtitle={"From"}
               inputField={true}
@@ -174,13 +182,17 @@ const LandingPage = () => {
             <div className="buttons">
               <button
                 onClick={handleTodayButtonClick}
-                className={todayHighlighted ? "dayButton highlighted" : "dayButton"}
+                className={
+                  todayHighlighted ? "dayButton highlighted" : "dayButton"
+                }
               >
                 Today
               </button>
               <button
                 onClick={handleTomorrowButtonClick}
-                className={tomorrowHighlighted ? "dayButton highlighted" : "dayButton"}
+                className={
+                  tomorrowHighlighted ? "dayButton highlighted" : "dayButton"
+                }
               >
                 Tomorrow
               </button>
@@ -196,8 +208,8 @@ const LandingPage = () => {
         <div className="wrapper">
           <InfoCard
             img={wifi}
-            title={"Free Wifi"}
-            subtitle={"All buses are  equipped with WI-FI and sockets"}
+            title={"FREE WIFI"}
+            subtitle={"We have buses equipped with Wi-Fi and sockets"}
           />
           <InfoCard
             img={bus}
@@ -214,7 +226,7 @@ const LandingPage = () => {
           <InfoCard
             img={ticket}
             title={"BUY TICKETS EASILY"}
-            subtitle={"Cash, visa, Master card"}
+            subtitle={"UPI, Bank Payments, Visa, MasterCards, etc..."}
           />
         </div>
       </div>
@@ -258,7 +270,7 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="popularBusRoutes">
+      {/* <div className="popularBusRoutes">
         <Title title={"Popular Bus Routes"} subtitle={"View More"} />
 
         <div className="popularBusRoutesContainer">
@@ -268,13 +280,13 @@ const LandingPage = () => {
           <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
           <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
         </div>
-      </div>
+      </div> */}
 
       <div className="whyChooseYesGoBus">
-        <Title title={"Why Yesgobus For Bus Booking"} />
+        <Title title={"Why YesGoBus For Bus Booking"} />
         <div className="whyChooseYesGoBusContainer">
-          <InfoCard img={routes} title={"1000"} subtitle={"Routes"} />
-          <InfoCard img={orangeBus} title={"250"} subtitle={"BUS PARTNERS"} />
+          <InfoCard img={routes} title={"1000+"} subtitle={"Routes"} />
+          <InfoCard img={orangeBus} title={"250+"} subtitle={"BUS PARTNERS"} />
           <InfoCard
             img={filledticket}
             title={"30 SEC"}
@@ -319,7 +331,7 @@ const LandingPage = () => {
           }
         />
 
-        <TitleAndText
+        {/* <TitleAndText
           title={"Online Bus Ticket Booking at Lowest Price"}
           textOne={
             "Experience the joy of online bus ticket booking at the lowest price with us. We understand the importance of stretching your travel budget, and that's why we're dedicated to offering you the best deals without compromising on quality. Our platform showcases a range of options that cater to different budgets, allowing you to find the perfect balance between affordability and comfort. With our user-friendly interface, you can easily compare prices, routes, and amenities, ensuring you secure the most cost-effective journey for your needs."
@@ -328,7 +340,7 @@ const LandingPage = () => {
             "When you choose us for online bus ticket booking, you're choosing a partner committed to delivering value. Our partnerships with a wide network of bus operators enable us to negotiate competitive prices that you won't find elsewhere. Through our transparent pricing model, you can be confident that the price you see is the price you pay – no hidden fees or surprises. Your quest for the lowest price doesn't mean compromising on quality; we collaborate with reputable bus providers to ensure your safety and comfort throughout your voyage. Experience the satisfaction of making smart travel decisions by booking your bus tickets at the lowest price through our platform."
           }
           seen={"seen"}
-        />
+        /> */}
       </div>
 
       {/* <div className="aboveFooter">
