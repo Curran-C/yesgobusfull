@@ -26,7 +26,7 @@ const Navbar = ({ page }) => {
       <a href="/busbooking">
         <span>Bus</span>
       </a>
-      <a href="/comingsoon">
+      <a href="/cabs">
         <span>Cabs</span>
       </a>
       {/* <a>
@@ -61,7 +61,7 @@ const Navbar = ({ page }) => {
         <a href="/busbooking">
           <span>Bus</span>
         </a>
-        <a href="/comingsoon">
+        <a href="/cabs">
           <span>Cabs</span>
         </a>
         {/* <a>
