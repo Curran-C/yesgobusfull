@@ -54,6 +54,18 @@
   }
 }
 
+.buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 20px;
+}
+
+.button-container {
+  text-align: center;
+}
+
 @media (max-width: 820px) {
   .coming_soon {
     .heroImg {

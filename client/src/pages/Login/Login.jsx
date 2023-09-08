@@ -183,8 +183,10 @@ const Login = () => {
         <div className="loginright">
           <div className="titles">
             <p>Welcome to YesGoBus</p>
-            <h1>Log In</h1>
+            {/* <h1>Log In</h1> */}
             {showLogin ? (
+              <>
+              <h1>Log In</h1>
               <p>
                 Dont have an account?
                 <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
@@ -192,7 +194,10 @@ const Login = () => {
                   Create an account
                 </span>
               </p>
+              </>
             ) : (
+              <>
+              <h1>Create an Account</h1>
               <p>
                 Already have an account?
                 <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
@@ -200,6 +205,7 @@ const Login = () => {
                   Click to Login
                 </span>
               </p>
+              </>
             )}
           </div>
           {showLogin ? login : createAccount}
