@@ -19,6 +19,7 @@ const ContactUs = () => {
               "Write to us about your query and our customer support team will revert as soon as possible."
             }
             text={"Send Mail"}
+            link={"yesgobus.help@gmail.com"}
           />
           <Card
             img={call}
@@ -27,14 +28,18 @@ const ContactUs = () => {
               "You may call us between Monday to Friday 9:00 am to 5:30 pm from your registered mobile number."
             }
             text={"Call Us"}
+            link={"999999999"}
           />
           <Card
             img={call}
             title={"Our address"}
             subtitle={
-              "Capital Hub Benz circle, 5th Floor, Electronic city, karnataka, bangalore – 500 064"
+              `No. 17074,
+              Basavan Bagewadi, Nidagun
+              DL,
+              Vijayapura, Bijapur - 586213`
             }
-            text={"Call Us"}
+            // text={"Call Us"}
           />
         </div>
       </div>

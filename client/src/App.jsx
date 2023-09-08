@@ -27,7 +27,7 @@ function App() {
           element={<PaymentSuccess />}
         />
         <Route path="/contactus" element={<ContactUs />} />
-        <Route path="/comingsoon" element={<ComingSoon />} />
+        <Route path="/cabs" element={<ComingSoon />} />
       </Routes>
     </BrowserRouter>
   );
