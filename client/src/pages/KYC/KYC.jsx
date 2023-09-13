@@ -1,131 +1,232 @@
-import "./KYC.css";
+import { Navigate, useNavigate } from "react-router-dom";
+import { back, front } from "../../assets/KYC";
+import axios from "axios";
+import {
+  AadharModal,
+  Button,
+  Input,
+  KycNavbar,
+  Navbar,
+  SignModal,
+} from "../../components";
+import "./KYC.scss";
+import { useState, useEffect } from "react";
+
 const KYC = () => {
+  const navigate = useNavigate();
+
+  // *modals
+  const [showModal, setShowModal] = useState(false);
+  const [showAadharModal, setShowAadharModal] = useState(false);
+  const [showPancardModal, setShowPancardModal] = useState(false);
+  const [showDLModal, setShowDLModal] = useState(false);
+  const [accessToken, setAccessToken] = useState("");
+
+  // *states
+  const [user, setUser] = useState({});
+  const handleRegister = async () => {
+    try {
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/driver/signup`,
+        user
+      );
+      navigate("/kyc/payment");
+    } catch (error) {
+      alert("Something went wrong");
+      console.error("Error registering user:", error);
+    }
+  };
+
+  useEffect(() => {
+    const authenticateAndGetToken = async () => {
+      try {
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/kyc/authenticate`
+        );
+        setAccessToken(response.data.access_token);
+      } catch (error) {
+        console.error("Error:", error);
+      }
+    };
+
+    authenticateAndGetToken();
+  }, []);
+
+  const verifyBank = async () => {
+    try {
+      const requestData = {
+        account_number: user.bankAccNum,
+        ifsc: user.ifsc,
+        access_token: accessToken,
+      };
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/kyc/bank/verify`,
+        requestData
+      );
+      if (
+        response.data?.data?.message ===
+          "Bank Account details verified successfully." &&
+        response.data?.data?.name_at_bank
+          .toLowerCase()
+          .includes(user.accHolderName.toLowerCase())
+      ) {
+        alert("Account verified");
+      } else {
+        alert("Invalid");
+      }
+    } catch (err) {
+      console.error("Error while verifying bank details:", err);
+    }
+  };
   return (
-    <div className="kyc">
-      <div className="bus-ticket-parent">
-        <div className="bus-ticket">Bus Ticket</div>
-        <div className="bus-ticket">Cabs</div>
-        <div className="bus-ticket">Offers</div>
-        <div className="bus-ticket">Contact Us</div>
-      </div>
-      <img
-        className="whatsapp-image-2023-07-01-at-1-icon"
-        alt=""
-        src="/whatsapp-image-20230701-at-1815-2@2x.png"
-      />
-      <img className="vector-icon" alt="" src="/vector.svg" />
-      <div className="back">Back</div>
-      <div className="complete-kyc">Complete KYC</div>
-      <div className="personal-details">Personal Details</div>
-      <div className="banking-details">Banking Details</div>
-      <div className="kyc-child" />
-      <div className="kyc-item" />
-      <div className="kyc-inner" />
-      <div className="enter-your-details">Enter Your Details</div>
-      <div className="enter-account-details">Enter Account Details</div>
-      <div className="choose-document-type">Choose Document Type</div>
-      <div className="line-div" />
-      <div className="kyc-child1" />
-      <div className="kyc-child2" />
-      <div className="group-parent">
-        <div className="group-wrapper">
-          <div className="first-name-parent">
-            <div className="first-name">First name</div>
-            <div className="group-child" />
+    <div className="KYC">
+      <KycNavbar />
+      {showModal && <SignModal onCancel={setShowModal} />}
+      {showAadharModal && (
+        <AadharModal
+          user={user}
+          setUser={setUser}
+          typeOfDocument={"Aadhar"}
+          onCancel={setShowAadharModal}
+        />
+      )}
+      {showPancardModal && (
+        <AadharModal
+          user={user}
+          setUser={setUser}
+          typeOfDocument={"Pancard"}
+          onCancel={setShowPancardModal}
+        />
+      )}
+      {/* {showDLModal && (
+        <AadharModal
+          user={user}
+          setUser={setUser}
+          typeOfDocument={"Driving License"}
+          onCancel={setShowDLModal}
+        />
+      )} */}
+      <div className="details">
+        <h1>Complete KYC</h1>
+        <p>Personal Details</p>
+        <div className="detailsContainer">
+          <h4>Enter your details</h4>
+          <hr style={{ margin: 0 }} />
+          <div className="inputs">
+            <Input
+            className="input_kyc"
+              onChanged={setUser}
+              givenName={"firstName"}
+              title={"First Name"}
+              type={"text"}
+            />
+            <Input
+            className="input_kyc"
+              onChanged={setUser}
+              givenName={"lastName"}
+              title={"Last Name"}
+              type={"text"}
+            />
+            <Input
+            className="input_kyc"
+              onChanged={setUser}
+              givenName={"phNum"}
+              title={"Mobile"}
+              type={"number"}
+            />
+            <Input
+            className="input_kyc"
+              onChanged={setUser}
+              givenName={"email"}
+              title={"Email"}
+              type={"email"}
+            />
+            <Input
+            className="input_kyc"
+              onChanged={setUser}
+              givenName={"password"}
+              title={"Password"}
+              type={"password"}
+            />
+            <Input
+            className="input_kyc"
+              onChanged={setUser}
+              givenName={"pincode"}
+              title={"Pin Code"}
+              type={"number"}
+            />
           </div>
         </div>
-        <div className="group-wrapper">
-          <div className="first-name-parent">
-            <div className="first-name">Last name</div>
-            <div className="group-child" />
+      </div>
+
+      <div className="id">
+        <p>ID Proof</p>
+        <div className="idContainer">
+          <h4>Enter your details</h4>
+          <hr style={{ margin: 0 }} />
+          <div className="idWrapper">
+            <div className="left">
+              <div className="buttons">
+                <Button
+                  onClicked={() => setShowAadharModal(true)}
+                  text={"Aadhar Card"}
+                />
+                <Button
+                  onClicked={() => setShowPancardModal(true)}
+                  text={"Pan Card"}
+                />
+                {/* <Button
+                  onClicked={() => setShowDLModal(true)}
+                  text={"Driving License"}
+                /> */}
+              </div>
+              <h5>Upload ID Proof</h5>
+            </div>
+            <hr style={{ margin: 0 }} />
+            <div className="right">
+              <img src={front} alt="" />
+              <img src={back} alt="" />
+            </div>
           </div>
         </div>
-        <div className="group-wrapper">
-          <div className="first-name">Mobile</div>
-          <div className="group-child" />
+      </div>
+
+      <div className="bankingDetails">
+        <p>Banking Details</p>
+        <div className="bankingDetailsContainer">
+          <h4>Enter account details</h4>
+          <hr style={{ margin: 0 }} />
+          <div className="inputs">
+            <Input
+            className="input_kyc"
+              onChanged={setUser}
+              givenName={"accHolderName"}
+              title={"Account Holder Name"}
+              type={"text"}
+            />
+            <Input
+              onChanged={setUser}
+              givenName={"bankAccNum"}
+              title={"Account Number"}
+              type={"number"}
+            />
+            <Input
+              onChanged={setUser}
+              title={"Re-enter Account Number"}
+              type={"number"}
+            />
+            <Input
+              onChanged={setUser}
+              givenName={"ifsc"}
+              title={"IFSC Code"}
+              type={"text"}
+            />
+          </div>
+          <Button onClicked={verifyBank} text={"Verify"} />
         </div>
       </div>
-      <div className="frame-div">
-        <div className="group-wrapper">
-          <div className="first-name">Email</div>
-          <div className="group-child" />
-        </div>
-        <div className="group-wrapper">
-          <div className="first-name">Pincode</div>
-          <div className="group-child" />
-        </div>
-      </div>
-      <div className="id-proof">ID Proof</div>
-      <div className="group-parent1">
-        <div className="rectangle-parent">
-          <div className="group-child2" />
-          <div className="aadhar-card">Aadhar Card</div>
-        </div>
-        <div className="rectangle-parent">
-          <div className="group-child3" />
-          <div className="pan-card">Pan Card</div>
-        </div>
-        <div className="rectangle-container">
-          <div className="group-child4" />
-          <div className="driving-license">Driving License</div>
-        </div>
-      </div>
-      <div className="upload-id-proof">Upload ID Proof</div>
-      <div className="submit-the-pan">
-        Submit the pan card in a plain dark surface and make sure it’s visible
-        your documents
-      </div>
-      <div className="group-div">
-        <div className="group-child5" />
-        <img
-          className="iconlylight-outlinecamera"
-          alt=""
-          src="/iconlylightoutlinecamera.svg"
-        />
-        <div className="front">Front</div>
-      </div>
-      <div className="kyc-child3" />
-      <div className="rectangle-parent1">
-        <div className="group-child5" />
-        <img
-          className="iconlylight-outlinecamera"
-          alt=""
-          src="/iconlylightoutlinecamera.svg"
-        />
-        <div className="back1">Back</div>
-      </div>
-      <div className="account-type-wrapper">
-        <div className="first-name">Account Type</div>
-      </div>
-      <div className="rectangle-parent2">
-        <div className="group-child7" />
-        <div className="savings">Savings</div>
-      </div>
-      <div className="rectangle-parent3">
-        <div className="group-child8" />
-        <div className="current">Current</div>
-      </div>
-      <div className="group-parent2">
-        <div className="group-wrapper">
-          <div className="first-name">Account holder name</div>
-          <div className="group-child" />
-        </div>
-        <div className="group-wrapper">
-          <div className="first-name">Account number</div>
-          <div className="group-child" />
-        </div>
-        <div className="group-wrapper">
-          <div className="first-name">Enter again account number</div>
-          <div className="group-child" />
-        </div>
-      </div>
-      <div className="ifsc-code-parent">
-        <div className="first-name">IFSC Code</div>
-        <div className="group-child" />
-      </div>
-      <div className="rectangle-parent4">
-        <div className="group-child13" />
-        <div className="next">Next</div>
+      <div className="nextButton">
+        <Button onClicked={handleRegister} text={"Next"} />
       </div>
     </div>
   );

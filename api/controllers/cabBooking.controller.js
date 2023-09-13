@@ -1,7 +1,9 @@
 import {
 	createCabBooking,
 	getCabBookingsByUser,
-	cancelCabBooking
+	cancelCabBooking,
+	getAllCabBookingByUser,
+	completeBooking
 } from '../service/carBooking.service.js';
 
 export const createCabBookingController = async (req, res) => {
@@ -31,4 +33,31 @@ export const cancelCabBookingController = async (req, res) => {
 	} catch (err) {
 		res.status(500).json({ message: "An error occurred while canceling the booking" });
 	}
+};
+
+
+export const getAllCabBookingByUserController = async (req, res) => {
+	try {
+		const driverId = new mongoose.Types.ObjectId(req.params.driverId);
+		const result = await getAllCabBookingByUser(driverId);
+		res.status(result.status).json(result);
+	} catch (error) {
+		console.error(error);
+		res.status(500).json({
+			message: "An error occurred while processing your request.",
+		});
+	}
+}
+
+export const completeBookingController = async (req, res) => {
+  try {
+    const {bookingId} = req.params;
+    const result = await completeBooking(bookingId);
+    res.status(result.status).json(result);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: "An error occurred while processing your request.",
+    });
+  }
 };

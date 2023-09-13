@@ -10,6 +10,7 @@ import {
   PaymentSuccess,
 } from "./pages";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import KycLandingPage from "./pages/KYC/KycLandingPage/KycLandingPage";
 function App() {
   return (
     <BrowserRouter>
@@ -28,6 +29,9 @@ function App() {
         />
         <Route path="/contactus" element={<ContactUs />} />
         <Route path="/cabs" element={<ComingSoon />} />
+        <Route path="/cabs/kyc" element={<KYC />} />
+        {/* <Route path="/cabs/kyc" element={<KycLandingPage />} /> */}
+
       </Routes>
     </BrowserRouter>
   );
