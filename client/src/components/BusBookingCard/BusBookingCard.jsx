@@ -86,11 +86,11 @@ const BusBookingCard = ({
             />
           </div>
         </div>
-        <hr />
+        {/* <hr />
         <div style={{ marginBottom: "10px" }} className="liveLocation">
           <img src={livelocation} alt="" />
           <span>Live tracking</span>
-        </div>
+        </div> */}
         <Spin
           spinning={seatLoading}
           colorText="#fd5901"
