@@ -53,12 +53,16 @@ const Payment = () => {
       if (blockTicketId && !executed) {
         // alert(`Block Ticket ID: ${blockTicketId}`);
         const bookSeat = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookSeat/${blockTicketId}`
+          `${
+            import.meta.env.VITE_BASE_URL
+          }/api/busBooking/bookSeat/${blockTicketId}`
         );
         console.log(bookSeat.data);
         setExecuted(true);
         if (bookSeat.data.status === "success") {
-          navigate(`/busbooking/payment/success?tlid=${bookSeat.data.BookingDetail.etstnumber}&userId=${loggedInUser._id}`);
+          navigate(
+            `/busbooking/payment/success?tlid=${bookSeat.data.BookingDetail.etstnumber}&userId=${loggedInUser._id}`
+          );
         } else {
           navigate("/busbooking/payment/failure");
         }
@@ -66,7 +70,6 @@ const Payment = () => {
     };
     checkBlockTicketId();
   }, [executed, blockTicketId]);
-
 
   const date = new Date();
   const handlePayment = async () => {
@@ -118,7 +121,7 @@ const Payment = () => {
           {
             ...blockSeatRequestBody,
             userId: loggedInUser._id,
-            totalAmout: bookingDetails?.totalFare
+            totalAmout: bookingDetails?.totalFare,
           }
         );
         const response = await axios.post(
@@ -135,12 +138,11 @@ const Payment = () => {
       } else {
         alert("Error blocking seat");
       }
-
     } catch (error) {
       console.log(error);
       console.error("Something went wrong:", error);
     }
-  }
+  };
 
   const handleInputChange = (e) => {
     setUserData((prev) => {
@@ -178,23 +180,26 @@ const Payment = () => {
               <div className="to">
                 <BusBookingCardInfo title={sourceCity} subtitle={pickUpTime} />
                 <BusBookingCardInfo img={true} subtitle={travelTime} />
-                <BusBookingCardInfo title={destinationCity} subtitle={reachTime} />
+                <BusBookingCardInfo
+                  title={destinationCity}
+                  subtitle={reachTime}
+                />
               </div>
-              <div className="liveLocation">
+              {/* <div className="liveLocation">
                 <img src={livelocation} alt="" />
                 <span>Live tracking</span>
-              </div>
+              </div> */}
             </div>
             <div className="reviewright">
               <span>{bookingDetails?.selectedSeats?.length} Seat Selected</span>
-              <span>{bookingDetails?.selectedSeats?.join(', ')}</span>
+              <span>{bookingDetails?.selectedSeats?.join(", ")}</span>
               <a href="">View Policies</a>
             </div>
           </div>
 
           <div className="destinations">
             <SimpleCard
-              text={"Boaring Pass Details"}
+              text={"Boarding Pass Details"}
               date={bookingDetails?.boardingPoint?.time}
               // locationOne={bookingDetails.boardingPoint.location}
               locationTwo={bookingDetails?.boardingPoint?.location}
@@ -225,7 +230,10 @@ const Payment = () => {
                 onChanged={handleInputChange}
                 givenName={"lastName"}
               />
-              <Input title={"Age"} type={"number"} placeholder={"40"}
+              <Input
+                title={"Age"}
+                type={"number"}
+                placeholder={"40"}
                 onChanged={handleInputChange}
                 givenName={"age"}
               />
@@ -376,7 +384,10 @@ const Payment = () => {
               <input type="text" name="" id="" placeholder="Enter your code" />
             </div>
           </div> */}
-          <Button text={`Pay Amount ₹${bookingDetails?.totalFare}`} onClicked={handlePayment} />
+          <Button
+            text={`Pay Amount ₹${bookingDetails?.totalFare}`}
+            onClicked={handlePayment}
+          />
         </div>
       </div>
       <div className="popularBusRoutes">
@@ -384,10 +395,22 @@ const Payment = () => {
 
         <div className="popularBusRoutesContainer">
           <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
+          <PopularRoutes
+            busname={"Hyderabad Bus"}
+            to={"Ananthapur, Kurnool, Shadnagar"}
+          />
+          <PopularRoutes
+            busname={"Chennai Bus"}
+            to={"Bangarapet, Jolarpettai, Katpadi"}
+          />
+          <PopularRoutes
+            busname={"Trivandrum Bus"}
+            to={"Salem, Coimbatore, Kochi"}
+          />
+          <PopularRoutes
+            busname={"Mangalore Bus"}
+            to={"Kunigal, Hassan, Sakaleshpura"}
+          />
         </div>
       </div>
       <Footer />
