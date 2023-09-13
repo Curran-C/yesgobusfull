@@ -48,6 +48,8 @@ const Navbar = ({ page }) => {
             className="logo"
             onClick={() => navigate("/")}
             src={logo}
+            width={50}
+            height={50}
             alt=""
           />
         ) : (
@@ -55,6 +57,7 @@ const Navbar = ({ page }) => {
             className="blacklogo"
             onClick={() => navigate("/")}
             src={blacklogo}
+            width={50}
             alt=""
           />
         )}
@@ -77,8 +80,8 @@ const Navbar = ({ page }) => {
           <Button text="Logout" onClicked={handleLogout} />
         ) : (
           <a href="/login">
-          <Button text="Login / Signup" />
-        </a>
+            <Button text="Login / Signup" />
+          </a>
         )}
       </div>
 
