@@ -16,9 +16,13 @@ import SimpleCard from "./SimpleCard/SimpleCard";
 import BusBookingCardInfo from "./BusBookingCardInfo/BusBookingCardInfo";
 import Input from "./Input/Input";
 import Card from "./Card/Card";
+import SignModal from "./SignModal/SignModal";
+import AadharModal from "./AadharModal/AadharModal";
+import KycNavbar from "./KycNavbar/KycNavbar";
 
 export {
   Navbar,
+  KycNavbar,
   Button,
   InfoCard,
   Title,
@@ -36,4 +40,6 @@ export {
   SimpleCard,
   Input,
   Card,
+  SignModal,
+  AadharModal,
 };
