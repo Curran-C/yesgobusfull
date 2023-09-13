@@ -395,10 +395,22 @@ const Payment = () => {
 
         <div className="popularBusRoutesContainer">
           <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
-          <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
+          <PopularRoutes
+            busname={"Hyderabad Bus"}
+            to={"Ananthapur, Kurnool, Shadnagar"}
+          />
+          <PopularRoutes
+            busname={"Chennai Bus"}
+            to={"Bangarapet, Jolarpettai, Katpadi"}
+          />
+          <PopularRoutes
+            busname={"Trivandrum Bus"}
+            to={"Salem, Coimbatore, Kochi"}
+          />
+          <PopularRoutes
+            busname={"Mangalore Bus"}
+            to={"Kunigal, Hassan, Sakaleshpura"}
+          />
         </div>
       </div>
       <Footer />
