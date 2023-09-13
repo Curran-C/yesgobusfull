@@ -35,8 +35,10 @@ app.use(
   })
 );
 
-
 //routes
+app.get("/", (req, res) => {
+  res.send("YesGoBus Backend");
+});
 app.use("/api/user", userRoutes);
 app.use("/api/cab", cabRoutes);
 app.use("/api/cabBooking", cabBookingRoutes);

@@ -1,4 +1,4 @@
-import { call, message } from "../../assets/contact";
+import { call, message, locationIcon } from "../../assets/contact";
 import { Card, Footer, Navbar } from "../../components";
 import "./ContactUs.scss";
 
@@ -31,14 +31,12 @@ const ContactUs = () => {
             link={"999999999"}
           />
           <Card
-            img={call}
+            img={locationIcon}
             title={"Our address"}
-            subtitle={
-              `No. 17074,
+            subtitle={`No. 17074,
               Basavan Bagewadi, Nidagun
               DL,
-              Vijayapura, Bijapur - 586213`
-            }
+              Vijayapura, Bijapur - 586213`}
             // text={"Call Us"}
           />
         </div>
