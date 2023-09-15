@@ -71,8 +71,9 @@ const KYC = () => {
       if (
         response.data?.status === "success" &&
         response.data?.data?.full_name
+        .replace(/\s/g, '')
           .toLowerCase()
-          .includes(user.accHolderName.toLowerCase())
+          .includes(user.accHolderName.replace(/\s/g, '').toLowerCase())
       ) {
         alert("Account verified");
       } else {
