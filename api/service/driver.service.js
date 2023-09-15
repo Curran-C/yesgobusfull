@@ -67,3 +67,54 @@ export const signIn = async (email, password) => {
     };
   }
 };
+
+export const updateDriver = async (driverId, newData) => {
+  try {
+    const updatedDriver = await Driver.findByIdAndUpdate(driverId, 
+      {
+      ...newData
+    },
+    {new: true}
+    );
+    if(!updateDriver) {
+      return {
+        status: 404,
+        message: "Driver not found",
+      }
+    }
+    return {
+      status: 200,
+      message: "Driver details updated successfully",
+      data: updateDriver,
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 500,
+      message: "An error occurred while updating driver details",
+    };
+  }
+};
+
+export const getDriverById = async (driverId) => {
+  try {
+    const driver = await Driver.findById(driverId);
+    if(!driver) {
+      return {
+        status: 404,
+        message: "Driver not found",
+      }
+    }
+    return {
+      status: 200,
+      message: "Driver details retrived successfully",
+      data: driver,
+    }
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 500,
+      message: "An error occurred while getting driver details",
+    };
+  }
+};
