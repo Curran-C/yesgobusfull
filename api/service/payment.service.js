@@ -11,6 +11,7 @@ const sendRequest = async (url, method, headers, data) => {
     });
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.message;
   }
 };
@@ -34,7 +35,7 @@ export const initiatePayment = async (args) => {
     "merchantId": process.env.MERCHANT_ID,
     "merchantTransactionId": merchantTransactionId,
     "merchantUserId": merchantUserId,
-    "amount": amount,
+    "amount": amount*100,
     "redirectUrl": redirectUrl,
     "redirectMode": "POST",
     "callbackUrl": "https://webhook.site/callback-url",
@@ -44,8 +45,6 @@ export const initiatePayment = async (args) => {
   };
 
   const payloadString = JSON.stringify(payload);
-  console.log("PayloadString", payloadString);
-  console.log("Payload", payload);
   const base64Payload = Buffer.from(payloadString).toString('base64');
   const requestData = {
     request: base64Payload
@@ -64,8 +63,8 @@ export const initiatePayment = async (args) => {
     'Content-Type': 'application/json',
     'X-VERIFY': xVerify,
   };
-  const url = "https://api-preprod.phonepe.com/apis/hermes/pg/v1/pay";
-  // const url = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+  // const url = "https://api-preprod.phonepe.com/apis/hermes/pg/v1/pay";
+  const url = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 
   return sendRequest(url, "POST", headers, requestData);
 };
@@ -88,8 +87,8 @@ export const checkPaymentStatus = async (args) => {
     'X-VERIFY': xVerify,
     'X-MERCHANT-ID': process.env.MERCHANT_ID,
   };
-  const url = `https://api-preprod.phonepe.com/apis/hermes${apiEndpoint}`;
-  // const url = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+  // const url = `https://api-preprod.phonepe.com/apis/hermes${apiEndpoint}`;
+  const url = `https://api.phonepe.com/apis/hermes${apiEndpoint}`;
 
   return sendRequest(url, "GET", headers, requestData);
 };
