@@ -5,40 +5,41 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
-  const [refId, setRefId] = useState("");
-  const [accessToken, setAccessToken] = useState("");
+  const [clientId, setClientId] = useState("");
 
-  useEffect(() => {
-    const authenticateAndGetToken = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/kyc/authenticate`
-        );
-        setAccessToken(response.data.access_token);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const authenticateAndGetToken = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_BASE_URL}/api/kyc/authenticate`
+  //       );
+  //       setAccessToken(response.data.access_token);
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   };
 
-    authenticateAndGetToken();
-  }, []);
+  //   authenticateAndGetToken();
+  // }, []);
 
   //send aadhaar otp
   const sendOtp = async () => {
     console.log("aadhar");
     try {
+      // const requestData = {
+      //   aadhaar_number: user.aadhar,
+      //   access_token: accessToken,
+      // };
       const requestData = {
-        aadhaar_number: user.aadhar,
-        access_token: accessToken,
+        aadhaar_number: user?.aadhar,
       };
-      console.log("requestData==>",requestData)
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/aadhaar/generateOtp`,
         requestData
       );
-      if (response.data?.data?.message === "OTP sent successfully") {
-        setRefId(response.data.data.ref_id);
-        alert(response.data.data.message);
+      if (response.data?.status === "success") {
+        setClientId(response.data.data.client_id);
+        alert("OTP Sent Successfully");
       } else {
         alert("Invalid");
       }
@@ -50,23 +51,28 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
   //verify aadhar otp
   const verifyOtp = async () => {
     try {
-      console.log("aadhar card");
+      // console.log("aadhar card");
+      // const requestData = {
+      //   otp: user?.otp,
+      //   ref_id: refId,
+      //   access_token: accessToken,
+      // };
       const requestData = {
         otp: user?.otp,
-        ref_id: refId,
-        access_token: accessToken,
+        client_id: clientId,
       };
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/aadhaar/verifyOtp`,
         requestData
       );
-      if (response.data?.data?.status === "VALID") {
+      if (response.data?.status === "success") {
         alert("Verified Successfully");
         onCancel(false);
       } else {
         alert("Invalid");
       }
     } catch (err) {
+      alert("Invalid");
       console.error("Error while verifying adaar otp:", err);
     }
   };
@@ -74,17 +80,47 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
   //verify pan
   const verifyPan = async () => {
     try {
+      // const requestData = {
+      //   pan: user?.pancard,
+      //   access_token: accessToken,
+      // };
       const requestData = {
-        pan: user?.pancard,
-        access_token: accessToken,
+        panNumber: user?.pancard,
+        dob: user?.dob,
+        fullName: user.fullName,
       };
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/pan/verify`,
         requestData
       );
       if (
-        response.data?.data?.status === "VALID" &&
-        response.data?.data?.full_name
+        response.data?.status === "success"
+      ) {
+        alert("Verified Successfully");
+        onCancel(false);
+      } else {
+        alert("Invalid");
+      }
+    } catch (err) {
+      console.error("Error while verifying pan:", err);
+    }
+  };
+
+  //verify driving licence
+  const verifyDrivingLicense = async () => {
+    try {
+      const requestData = {
+        id_number: user?.drivinglicense,
+        dob: user?.dob,
+      };
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/api/kyc/drivingLicense/verify`,
+        requestData
+      );
+      console.log(response.data?.data?.name);
+      if (
+        response.data?.status === "success" &&
+        response.data?.data?.name
           .toLowerCase()
           .includes(user?.firstName?.toLowerCase())
       ) {
@@ -94,7 +130,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
         alert("Invalid");
       }
     } catch (err) {
-      console.error("Error while verifying pan:", err);
+      console.error("Error while verifying driving license:", err);
     }
   };
 
@@ -110,12 +146,39 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
               onChanged={setUser}
               givenName={`${typeOfDocument?.toLowerCase().split(" ").join("")}`}
             />
+            {typeOfDocument === "Aadhar" && (
             <Button
               onClicked={typeOfDocument === "Aadhar" ? sendOtp : verifyPan}
               text={typeOfDocument !== "Pancard" ? "Send OTP" : "Verify"}
             />
+            )}
           </div>
-          {typeOfDocument !== "Pancard" && (
+          {(typeOfDocument === "Pancard") && (
+            <div className="inputs">
+              <Input
+                type={"text"}
+                placeholder={"Full Name"}
+                onChanged={setUser}
+                givenName={"fullName"}
+              />
+            </div>
+          )}
+          {(typeOfDocument === "Pancard" || typeOfDocument === "Driving License") && (
+            <div className="inputs">
+              <Input
+                type={"date"}
+                placeholder={"DOB"}
+                onChanged={setUser}
+                givenName={"dob"}
+              />
+              {console.log(typeOfDocument)}
+              <Button 
+              onClicked={typeOfDocument === "Pancard" ? verifyPan : verifyDrivingLicense} 
+              text={"Verify"} 
+              />
+            </div>
+          )}
+          {typeOfDocument === "Aadhar" && (
             <div className="inputs">
               <Input
                 type={"number"}
