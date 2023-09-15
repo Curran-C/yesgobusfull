@@ -60,6 +60,16 @@ const driverSchema = new Schema(
     ifsc: {
       type: String,
       required: true
+    },
+    merchantTransactionId: {
+      type: String,
+    },
+    paymentAmount: {
+      type: Number,
+    },
+    paymentStatus: {
+      type: String,
+      default: "pending",
     }
   },
   {
