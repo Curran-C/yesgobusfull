@@ -13,14 +13,15 @@
     font-size: 15px;
     .logo,
     .blacklogo {
-      height: 150px;
-      width: 150px;
+      height: 100px;
+      width: 100px;
       &:hover {
         cursor: pointer;
       }
     }
     .blacklogo {
-      height: 65px;
+      height: 80px;
+      width: 80px;
     }
     a {
       text-decoration: none;

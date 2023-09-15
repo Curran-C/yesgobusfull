@@ -1,10 +1,14 @@
 import { Button, Footer, Navbar } from "../../components";
 import "./ComingSoon.scss";
 import comingSoonImg from "../../assets/comingSoon/comingSoon.png";
+import { useNavigate } from "react-router-dom";
+
 
 function ComingSoon() {
+  const navigate = useNavigate()
   const redirectToCabDriverLogin = () => {
-    window.location.href = "https://yesgobusnew.web.app/kyc"
+    // window.location.href = "https://yesgobusnew.web.app/kyc"
+    navigate("/cabs/kyc")
   }
   return (
     <section className="coming_soon">

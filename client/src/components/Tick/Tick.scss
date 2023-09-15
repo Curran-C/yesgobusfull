@@ -1,0 +1,12 @@
+.tick {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    img {
+        height: 30px;
+    }
+    span {
+        font-size: 18px;
+        font-weight: 500;
+    }
+}
