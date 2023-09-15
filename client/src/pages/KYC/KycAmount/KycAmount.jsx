@@ -1,6 +1,6 @@
 import "./Amount.scss";
 
-const Amount = ({ text, amt }) => {
+const KycAmount = ({ text, amt }) => {
   return (
     <div className="amount">
       <p>{text}</p>
@@ -9,4 +9,4 @@ const Amount = ({ text, amt }) => {
   );
 };
 
-export default Amount;
+export default KycAmount;

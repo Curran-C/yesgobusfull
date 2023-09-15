@@ -30,9 +30,10 @@ const KYC = () => {
         `${import.meta.env.VITE_BASE_URL}/api/driver/signup`,
         user
       );
+      console.log(response.data)
       const driverId = response.data.data._id;
       console.log(driverId);
-      navigate(`/kyc/payment`, {
+      navigate(`/cabs/kyc/payment`, {
         state: {
           driverId,
         }
