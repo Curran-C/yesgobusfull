@@ -1,0 +1,24 @@
+.PaymentCard {
+    display: flex;
+    align-items: end;
+    gap: 20px;
+    .paymentleft {
+        img {
+            height: 70px;
+        }
+    }
+    .paymentright {
+        width: 90%;
+        p {
+            margin-bottom: 5px;
+        }
+        p:nth-child(1) {
+            font-size: 15px;
+            font-weight: 500;
+        }
+        p:nth-child(2) {
+            font-size: 13px;
+            font-weight: 300;
+        }
+    }
+}
