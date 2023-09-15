@@ -93,6 +93,7 @@ const BusBooking = () => {
     setToLocation(destinationCity);
     setSelectedDate(doj);
     setLoading(true);
+    setNoOfBuses(0);
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBusDetails`,

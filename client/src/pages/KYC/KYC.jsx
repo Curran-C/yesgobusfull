@@ -30,45 +30,51 @@ const KYC = () => {
         `${import.meta.env.VITE_BASE_URL}/api/driver/signup`,
         user
       );
-      navigate("/kyc/payment");
+      console.log(response.data)
+      const driverId = response.data.data._id;
+      console.log(driverId);
+      navigate(`/cabs/kyc/payment`, {
+        state: {
+          driverId,
+        }
+      });
     } catch (error) {
       alert("Something went wrong");
       console.error("Error registering user:", error);
     }
   };
 
-  useEffect(() => {
-    const authenticateAndGetToken = async () => {
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/kyc/authenticate`
-        );
-        setAccessToken(response.data.access_token);
-      } catch (error) {
-        console.error("Error:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const authenticateAndGetToken = async () => {
+  //     try {
+  //       const response = await axios.get(
+  //         `${import.meta.env.VITE_BASE_URL}/api/kyc/authenticate`
+  //       );
+  //       setAccessToken(response.data.access_token);
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //     }
+  //   };
 
-    authenticateAndGetToken();
-  }, []);
+  //   authenticateAndGetToken();
+  // }, []);
 
   const verifyBank = async () => {
     try {
       const requestData = {
         account_number: user.bankAccNum,
         ifsc: user.ifsc,
-        access_token: accessToken,
       };
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/bank/verify`,
         requestData
       );
       if (
-        response.data?.data?.message ===
-          "Bank Account details verified successfully." &&
-        response.data?.data?.name_at_bank
+        response.data?.status === "success" &&
+        response.data?.data?.full_name
+        .replace(/\s/g, '')
           .toLowerCase()
-          .includes(user.accHolderName.toLowerCase())
+          .includes(user.accHolderName.replace(/\s/g, '').toLowerCase())
       ) {
         alert("Account verified");
       } else {
@@ -98,14 +104,14 @@ const KYC = () => {
           onCancel={setShowPancardModal}
         />
       )}
-      {/* {showDLModal && (
+      {showDLModal && (
         <AadharModal
           user={user}
           setUser={setUser}
           typeOfDocument={"Driving License"}
           onCancel={setShowDLModal}
         />
-      )} */}
+      )}
       <div className="details">
         <h1>Complete KYC</h1>
         <p>Personal Details</p>
@@ -114,42 +120,36 @@ const KYC = () => {
           <hr style={{ margin: 0 }} />
           <div className="inputs">
             <Input
-            className="input_kyc"
               onChanged={setUser}
               givenName={"firstName"}
               title={"First Name"}
               type={"text"}
             />
             <Input
-            className="input_kyc"
               onChanged={setUser}
               givenName={"lastName"}
               title={"Last Name"}
               type={"text"}
             />
             <Input
-            className="input_kyc"
               onChanged={setUser}
               givenName={"phNum"}
               title={"Mobile"}
               type={"number"}
             />
             <Input
-            className="input_kyc"
               onChanged={setUser}
               givenName={"email"}
               title={"Email"}
               type={"email"}
             />
             <Input
-            className="input_kyc"
               onChanged={setUser}
               givenName={"password"}
               title={"Password"}
               type={"password"}
             />
             <Input
-            className="input_kyc"
               onChanged={setUser}
               givenName={"pincode"}
               title={"Pin Code"}
@@ -175,17 +175,17 @@ const KYC = () => {
                   onClicked={() => setShowPancardModal(true)}
                   text={"Pan Card"}
                 />
-                {/* <Button
+                <Button
                   onClicked={() => setShowDLModal(true)}
                   text={"Driving License"}
-                /> */}
+                />
               </div>
               <h5>Upload ID Proof</h5>
             </div>
             <hr style={{ margin: 0 }} />
             <div className="right">
-              <img src={front} alt="" />
-              <img src={back} alt="" />
+              {/* <img src={front} alt="" />
+              <img src={back} alt="" /> */}
             </div>
           </div>
         </div>
@@ -198,7 +198,6 @@ const KYC = () => {
           <hr style={{ margin: 0 }} />
           <div className="inputs">
             <Input
-            className="input_kyc"
               onChanged={setUser}
               givenName={"accHolderName"}
               title={"Account Holder Name"}
