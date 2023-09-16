@@ -1,4 +1,5 @@
 import axios from "axios";
+import BankModal from "../modals/bankDetails.modal";
 
 const sendRequest = async (url, method, headers, data) => {
   try {
@@ -128,8 +129,25 @@ export const bankAccountVerification = async (ifsc, account_number) => {
     "id_number": account_number,
     "ifsc": ifsc
   }
+  const bankDetails = await BankModal.findOne({
+    ...requestData
+  });
+  if (bankDetails) {
+    return {
+      data: {
+        full_name: bankDetails.full_name,
+      },
+      status: "success",
+    }
+  }
   const url = `/bank`;
-  return sendRequest(url, "POST", headers, requestData);
+  const response = await sendRequest(url, "POST", headers, requestData);
+  const newBankDetails = new BankModal({
+    ...requestData,
+    full_name: response.data.full_name,
+  });
+  await newBankDetails.save();
+  return response;
 };
 
 export const drivingLicenseVerification = async (id_number, dob) => {
