@@ -145,6 +145,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
               placeholder={`Enter ${typeOfDocument} number`}
               onChanged={setUser}
               givenName={`${typeOfDocument?.toLowerCase().split(" ").join("")}`}
+              isKyc={true}
             />
             {typeOfDocument === "Aadhar" && (
             <Button
@@ -160,6 +161,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
                 placeholder={"Full Name"}
                 onChanged={setUser}
                 givenName={"fullName"}
+                isKyc={true}
               />
             </div>
           )}
@@ -170,6 +172,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
                 placeholder={"DOB"}
                 onChanged={setUser}
                 givenName={"dob"}
+                isKyc={true}
               />
               {console.log(typeOfDocument)}
               <Button 
@@ -185,6 +188,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
                 placeholder={"OTP"}
                 onChanged={setUser}
                 givenName={"otp"}
+                isKyc={true}
               />
               {console.log(typeOfDocument)}
               <Button onClicked={verifyOtp} text={"Verify"} />
