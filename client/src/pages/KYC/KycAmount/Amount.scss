@@ -1,0 +1,15 @@
+.amount {
+    display: flex;
+    width: 400px;
+    justify-content: space-between;
+    align-items: center;
+    p:nth-child(2) {
+        font-weight: 600;
+    }
+}
+
+@media (max-width: 425px) {
+    .amount {
+        width: 100%;
+    }
+}

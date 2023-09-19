@@ -41,14 +41,12 @@ const Login = () => {
     setLoginData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-    console.log(loginData);
   };
 
   const handleOtherLoginChanges = (e) => {
     setLoginData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-    console.log(loginData);
   };
 
   const handlePhChangeSingup = (e) => {
@@ -63,7 +61,6 @@ const Login = () => {
     setCreateAccountData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
-    console.log(createAccountData);
   };
 
   const login = (
