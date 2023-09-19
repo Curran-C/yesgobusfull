@@ -124,36 +124,42 @@ const KYC = () => {
               givenName={"firstName"}
               title={"First Name"}
               type={"text"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               givenName={"lastName"}
               title={"Last Name"}
               type={"text"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               givenName={"phNum"}
               title={"Mobile"}
               type={"number"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               givenName={"email"}
               title={"Email"}
               type={"email"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               givenName={"password"}
               title={"Password"}
               type={"password"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               givenName={"pincode"}
               title={"Pin Code"}
               type={"number"}
+              isKyc={true}
             />
           </div>
         </div>
@@ -202,23 +208,27 @@ const KYC = () => {
               givenName={"accHolderName"}
               title={"Account Holder Name"}
               type={"text"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               givenName={"bankAccNum"}
               title={"Account Number"}
               type={"number"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               title={"Re-enter Account Number"}
               type={"number"}
+              isKyc={true}
             />
             <Input
               onChanged={setUser}
               givenName={"ifsc"}
               title={"IFSC Code"}
               type={"text"}
+              isKyc={true}
             />
           </div>
           <Button onClicked={verifyBank} text={"Verify"} />
