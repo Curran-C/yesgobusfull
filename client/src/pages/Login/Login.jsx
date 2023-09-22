@@ -2,14 +2,15 @@ import {
   facebook,
   google,
   image,
-  linkedin,
+  // linkedin,
   logoblack,
 } from "../../assets/login";
 import "./Login.scss";
 import { Button, Input } from "../../components";
 import { useNavigate, Navigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { googleLoginAPI } from "../../api/authentication";
 
 const Login = () => {
   const loggedInUser = localStorage.getItem("loggedInUser");
@@ -65,7 +66,7 @@ const Login = () => {
 
   const login = (
     <>
-      <div className={showOTP && "otp"}>
+      <div className={showOTP ? "otp" : ""}>
         <Input
           title={"Enter Mobile Number / Email"}
           type={"text"}
@@ -138,8 +139,9 @@ const Login = () => {
         if (response.status === 200) {
           const token = response.data.token;
           const loggedInUser = response.data.data;
+          console.log(loggedInUser);
           localStorage.setItem("token", token);
-          localStorage.setItem("loggedInUser", loggedInUser);
+          localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
           alert("Login Successfull");
           navigate("/");
         } else {
@@ -169,6 +171,38 @@ const Login = () => {
     }
   };
 
+  // Google Login //
+  useEffect(() => {
+    if (window.google && window.google.accounts) {
+      const googleAccounts = window.google.accounts;
+      googleAccounts.id.initialize({
+        client_id: import.meta.env.VITE_GOOGLE_OAUTH_CLIENT_ID,
+        callback: googleUserVerifyHandler,
+      });
+
+      googleAccounts.id.renderButton(document.getElementById("googlesignin"), {
+        // theme: "filled_blue",
+        // shape: "circle",
+        ux_mode: "popup",
+        // text: "continue_with",
+        size: "large",
+      });
+    } else {
+      console.error("Google Accounts API is not available.");
+    }
+  }, []);
+
+  const googleUserVerifyHandler = async ({ credential }) => {
+    try {
+      const { data, token } = await googleLoginAPI(credential);
+      localStorage.setItem("token", token);
+      localStorage.setItem("loggedInUser", JSON.stringify(data));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className="Login">
       <div className="navbarlogin">
@@ -183,30 +217,36 @@ const Login = () => {
             {/* <h1>Log In</h1> */}
             {showLogin ? (
               <>
-              <h1>Log In</h1>
-              <p>
-                Dont have an account?
-                <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
-                  {" "}
-                  Create an account
-                </span>
-              </p>
+                <h1>Log In</h1>
+                <p>
+                  Dont have an account?
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={handleLoginChange}
+                  >
+                    {" "}
+                    Create an account
+                  </span>
+                </p>
               </>
             ) : (
               <>
-              <h1>Create an Account</h1>
-              <p>
-                Already have an account?
-                <span style={{ cursor: "pointer" }} onClick={handleLoginChange}>
-                  {" "}
-                  Click to Login
-                </span>
-              </p>
+                <h1>Create an Account</h1>
+                <p>
+                  Already have an account?
+                  <span
+                    style={{ cursor: "pointer" }}
+                    onClick={handleLoginChange}
+                  >
+                    {" "}
+                    Click to Login
+                  </span>
+                </p>
               </>
             )}
           </div>
           {showLogin ? login : createAccount}
-          {/* <div className="or">
+          <div className="or">
             <hr />
             <p>Or</p>
             <hr />
@@ -215,20 +255,21 @@ const Login = () => {
           <div className="links">
             <p>Continue with</p>
             <div className="linksContainer">
-              <div className="link">
-                <img src={google} alt="" />
+              <div id="googlesignin" className="link"></div>
+              {/* <div className="link">
+                <img src={google} alt="" id="googlesignin" />
                 <span>Google</span>
-              </div>
+              </div> */}
               <div className="link">
                 <img src={facebook} alt="" />
                 <span>Facebook</span>
               </div>
-              <div className="link">
+              {/* <div className="link">
                 <img src={linkedin} alt="" />
                 <span>Linkedin</span>
-              </div>
+              </div> */}
             </div>
-          </div> */}
+          </div>
 
           <p>
             By Continuing, I agree to the <span>Terms of Use</span> &{" "}

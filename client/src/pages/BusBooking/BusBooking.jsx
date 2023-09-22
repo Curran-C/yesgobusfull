@@ -27,22 +27,22 @@ const BusBooking = () => {
   const [busDetails, setBusDetails] = useState([]);
   const [loading, setLoading] = useState(false);
   //pickup
-  const pickUpTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
-  const pickUpLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
-  const pickUpLocationTwo = [
-    "INFOSYS GATE NO 2,134,33",
-    "Wipro GATE NO 2,134,33",
-    "Bus stand NO 2,134,33",
-  ];
+  // const pickUpTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
+  // const pickUpLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
+  // const pickUpLocationTwo = [
+  //   "INFOSYS GATE NO 2,134,33",
+  //   "Wipro GATE NO 2,134,33",
+  //   "Bus stand NO 2,134,33",
+  // ];
 
-  //drop
-  const dropTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
-  const dropLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
-  const dropLocationTwo = [
-    "INFOSYS GATE NO 2,134,33",
-    "Wipro GATE NO 2,134,33",
-    "Bus stand NO 2,134,33",
-  ];
+  // //drop
+  // const dropTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
+  // const dropLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
+  // const dropLocationTwo = [
+  //   "INFOSYS GATE NO 2,134,33",
+  //   "Wipro GATE NO 2,134,33",
+  //   "Bus stand NO 2,134,33",
+  // ];
 
   //dates
   const date = new Date();
@@ -76,6 +76,10 @@ const BusBooking = () => {
     const destinationCity = queryParams.get("to");
     const doj = queryParams.get("date");
     if (sourceCity && destinationCity && doj) {
+      // the below three set functions of useState are not working
+      setFromLocation(sourceCity);
+      setToLocation(destinationCity);
+      setSelectedDate(doj);
       handleSearch(sourceCity, destinationCity, doj);
     } else {
       handleSearch("Mysore", "Bangalore", currentDate);
@@ -165,7 +169,7 @@ const BusBooking = () => {
   const handleDate = (date) => {
     handleSearch(fromLocation, toLocation, date);
   };
-  
+
   return (
     <div className="busBooking">
       <Navbar />
@@ -250,111 +254,16 @@ const BusBooking = () => {
                   travelTime={formatTravelTime(bus.durationInMins)}
                   seatsLeft={bus.availableSeats}
                   price={priceToDisplay(bus.fare)}
-                  pickUpTimes={pickUpTimes}
+                  // pickUpTimes={pickUpTimes}
                   pickUpLocationOne={bus.boardingPoints}
-                  pickUpLocationTwo={pickUpLocationTwo}
-                  dropTimes={dropTimes}
+                  // pickUpLocationTwo={pickUpLocationTwo}
+                  // dropTimes={dropTimes}
                   dropLocationOne={bus.droppingPoints}
-                  dropLocationTwo={dropLocationTwo}
+                  // dropLocationTwo={dropLocationTwo}
                   backSeat={true}
                 />
               ))}
 
-              {/* <BusBookingCard
-              title={"YesGoBus"}
-              busName={"YesGoBus"}
-              busType={"TATA A/C Sleeper (2+1)"}
-              rating={5}
-              noOfReviews={100}
-              pickUpLocation={"Bangalore"}
-              pickUpTime={"12:00"}
-              reachLocation={"Mangalore"}
-              reachTime={"13:00"}
-              travelTime={"3hr 20min"}
-              seatsLeft={"27 seats left"}
-              price={800}
-              pickUpTimes={pickUpTimes}
-              pickUpLocationOne={pickUpLocationOne}
-              pickUpLocationTwo={pickUpLocationTwo}
-              dropTimes={dropTimes}
-              dropLocationOne={dropLocationOne}
-              dropLocationTwo={dropLocationTwo}
-              noOfRows={4}
-              noOfSeatsPerRow={6}
-              backSeat={true}
-            />
-
-            <BusBookingCard
-              title={"YesGoBus"}
-              busName={"YesGoBus"}
-              busType={"TATA A/C Sleeper (2+1)"}
-              rating={5}
-              noOfReviews={100}
-              pickUpLocation={"Bangalore"}
-              pickUpTime={"12:00"}
-              reachLocation={"Mangalore"}
-              reachTime={"13:00"}
-              travelTime={"3hr 20min"}
-              seatsLeft={"27 seats left"}
-              price={800}
-              pickUpTimes={pickUpTimes}
-              pickUpLocationOne={pickUpLocationOne}
-              pickUpLocationTwo={pickUpLocationTwo}
-              dropTimes={dropTimes}
-              dropLocationOne={dropLocationOne}
-              dropLocationTwo={dropLocationTwo}
-              noOfRows={4}
-              noOfSeatsPerRow={6}
-              backSeat={true}
-            />
-
-            <BusBookingCard
-              title={"YesGoBus"}
-              busName={"YesGoBus"}
-              busType={"TATA A/C Sleeper (2+1)"}
-              rating={5}
-              noOfReviews={100}
-              pickUpLocation={"Bangalore"}
-              pickUpTime={"12:00"}
-              reachLocation={"Mangalore"}
-              reachTime={"13:00"}
-              travelTime={"3hr 20min"}
-              seatsLeft={"27 seats left"}
-              price={800}
-              pickUpTimes={pickUpTimes}
-              pickUpLocationOne={pickUpLocationOne}
-              pickUpLocationTwo={pickUpLocationTwo}
-              dropTimes={dropTimes}
-              dropLocationOne={dropLocationOne}
-              dropLocationTwo={dropLocationTwo}
-              noOfRows={4}
-              noOfSeatsPerRow={6}
-              backSeat={true}
-            />
-
-            <BusBookingCard
-              title={"YesGoBus"}
-              busName={"YesGoBus"}
-              busType={"TATA A/C Sleeper (2+1)"}
-              rating={5}
-              noOfReviews={100}
-              pickUpLocation={"Bangalore"}
-              pickUpTime={"12:00"}
-              reachLocation={"Mangalore"}
-              reachTime={"13:00"}
-              travelTime={"3hr 20min"}
-              seatsLeft={"27 seats left"}
-              price={800}
-              pickUpTimes={pickUpTimes}
-              pickUpLocationOne={pickUpLocationOne}
-              pickUpLocationTwo={pickUpLocationTwo}
-              dropTimes={dropTimes}
-              dropLocationOne={dropLocationOne}
-              dropLocationTwo={dropLocationTwo}
-              noOfRows={4}
-              noOfSeatsPerRow={6}
-              backSeat={true}
-            /> */}
             </div>
           </Spin>
         </div>

@@ -25,12 +25,12 @@ const BusBookingCard = ({
   reachLocation,
   price,
   seatsLeft,
-  pickUpTimes,
-  pickUpLocationOne,
-  pickUpLocationTwo,
-  dropTimes,
-  dropLocationOne,
-  dropLocationTwo,
+  // pickUpTimes,
+  // pickUpLocationOne,
+  // pickUpLocationTwo,
+  // dropTimes,
+  // dropLocationOne,
+  // dropLocationTwo,
   backSeat,
 }) => {
   const [showSeats, setShowSeats] = useState(false);
@@ -115,12 +115,12 @@ const BusBookingCard = ({
           sourceCity={sourceCity}
           destinationCity={destinationCity}
           doj={doj}
-          pickUpTimes={pickUpTimes}
-          pickUpLocationOne={pickUpLocationOne}
-          pickUpLocationTwo={pickUpLocationTwo}
-          dropTimes={dropTimes}
-          dropLocationOne={dropLocationOne}
-          dropLocationTwo={dropLocationTwo}
+          // pickUpTimes={pickUpTimes}
+          // pickUpLocationOne={pickUpLocationOne}
+          // pickUpLocationTwo={pickUpLocationTwo}
+          // dropTimes={dropTimes}
+          // dropLocationOne={dropLocationOne}
+          // dropLocationTwo={dropLocationTwo}
           backSeat={backSeat}
           busName={busName}
           busType={busType}

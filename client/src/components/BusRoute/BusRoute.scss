@@ -4,6 +4,10 @@
   align-items: center;
   justify-content: space-evenly;
   padding: 20px 30px;
+
+  .reverse-img {
+    transition: transform 0.5s ease;
+  }
 }
 
 @media (max-width: 768px) {

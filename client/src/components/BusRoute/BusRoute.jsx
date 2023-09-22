@@ -5,71 +5,81 @@ import Button from "../Button/Button";
 import "./BusRoute.scss";
 import axios from "axios";
 
-const BusRoute = ({ locationOne, locationTwo, departureDate, returnDate, onSearch }) => {
-  const [LocationOne, setLocationOne] = useState(locationOne);
-  const [LocationTwo, setLocationTwo] = useState(locationTwo);
-  const [DepartureDate, setDepartureDate] = useState(departureDate);
-  const [ReturnDate, setReturnDate] = useState(returnDate);
-
+const BusRoute = ({
+  locationOne,
+  locationTwo,
+  departureDate,
+  returnDate,
+  onSearch,
+}) => {
   const [locationOneSuggestions, setLocationOneSuggestions] = useState([]);
   const [locationTwoSuggestions, setLocationTwoSuggestions] = useState([]);
-
-  const handleSearch = () => {
-    onSearch(LocationOne, LocationTwo, DepartureDate);
-  };
 
   const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
     try {
       if (query.length > 3) {
         const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`);
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
+        );
         console.log(response.data);
         setLocationSuggestions(response.data.data);
       } else {
         setLocationSuggestions([]);
       }
     } catch (error) {
-      console.error("omething went wrong:", error);
+      console.error("Something went wrong:", error);
     }
   };
 
   useEffect(() => {
-    if (LocationOne) {
-      fetchLocationSuggestions(LocationOne, setLocationOneSuggestions);
+    if (locationOne) {
+      fetchLocationSuggestions(locationOne, setLocationOneSuggestions);
     }
-    if (LocationTwo) {
-      fetchLocationSuggestions(LocationTwo, setLocationTwoSuggestions);
+    if (locationTwo) {
+      fetchLocationSuggestions(locationTwo, setLocationTwoSuggestions);
     }
-  }, [LocationOne, LocationTwo]);
+  }, [locationOne, locationTwo]);
 
   return (
     <div className="BusRoute">
       <BusRouteCard
         title="From"
-        location={LocationOne}
-        setLocation={setLocationOne}
+        location={locationOne}
+        setLocation={(value) => onSearch(value, locationTwo, departureDate)}
         suggestions={locationOneSuggestions}
       />
-      <img src={twowayarrow} alt="" />
+      <img
+        src={twowayarrow}
+        alt="reverse routes"
+        className="reverse-img"
+        onClick={({ target: image }) => {
+          const currentRotation =
+            getComputedStyle(image).getPropertyValue("transform");
+
+          if (currentRotation === "none") {
+            image.style.transform = "rotate(180deg)";
+          } else {
+            image.style.transform = "";
+          }
+          onSearch(locationTwo, locationOne, departureDate);
+        }}
+      />
       <BusRouteCard
         title="To"
-        location={LocationTwo}
-        setLocation={setLocationTwo}
+        location={locationTwo}
+        setLocation={(value) => onSearch(locationOne, value, departureDate)}
         suggestions={locationTwoSuggestions}
       />
       <BusRouteCard
         title="Select Date"
-        location={DepartureDate}
-        setLocation={setDepartureDate}
+        location={departureDate}
+        setLocation={(value) => onSearch(locationOne, locationTwo, value)}
         date={true}
       />
-      {/* <BusRouteCard
-        title="Return Optional"
-        location={ReturnDate}
-        setLocation={setReturnDate}
-        date={true}
-      /> */}
-      <Button text={"Search"} onClicked={handleSearch} />
+      <Button
+        text={"Search"}
+        onClicked={() => onSearch(locationOne, locationTwo, departureDate)}
+      />
     </div>
   );
 };

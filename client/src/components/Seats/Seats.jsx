@@ -21,11 +21,11 @@ const Seats = ({
   sourceCity,
   destinationCity,
   doj,
-  pickUpTimes,
-  pickUpLocationOne,
-  pickUpLocationTwo,
-  dropTimes,
-  dropLocationOne,
+  // pickUpTimes,
+  // pickUpLocationOne,
+  // pickUpLocationTwo,
+  // dropTimes,
+  // dropLocationOne,
   backSeat,
   travelTime,
   reachTime,
@@ -35,8 +35,11 @@ const Seats = ({
   price,
   seatDetails,
 }) => {
+
   //* states
   const navigate = useNavigate();
+  const [boardingPoints, setBoardingPoint] = useState([]);
+  const [droppingPoints, setDroppingPoint] = useState([]);
   const [bookingDetails, setBookingDetails] = useState({
     boardingPoint: {
       id: "",
@@ -201,13 +204,36 @@ const Seats = ({
     );
   };
 
+  useEffect(() => {
+    const getSeats = async() => {
+      try {
+        const response = await axios.post(
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
+          {
+            sourceCity: sourceCity,
+            destinationCity: destinationCity,
+            doj: doj,
+            inventoryType: inventoryType,
+            routeScheduleId: routeScheduleId,
+          }
+        );
+        setBoardingPoint(response.data.boardingPoints);
+        setDroppingPoint(response.data.droppingPoints);
+      } catch (error) {
+        alert("Something went wrong");
+        console.error("Something went wrong:", error);
+      }
+    }
+    getSeats();
+  }, []);
+
   return (
     <div className="seats">
       <div className="seatsLeft">
         <h5>Select Pickup and Drop Points</h5>
         <div className="seatsLeftContainer">
           <span className="title">PICKUP POINT</span>
-          {pickUpLocationOne?.map((boardingPoint) => (
+          {boardingPoints?.map((boardingPoint) => (
             <PickUpAndDropPoints
               key={boardingPoint.id}
               time={boardingPoint.time}
@@ -228,7 +254,7 @@ const Seats = ({
 
         <div className="seatsLeftContainer">
           <span className="title">DROP POINT</span>
-          {dropLocationOne?.map((droppingPoint, index) => (
+          {droppingPoints?.map((droppingPoint, index) => (
             <PickUpAndDropPoints
               highlight={bookingDetails.droppingPoint.id === droppingPoint.id}
               key={droppingPoint.id}
