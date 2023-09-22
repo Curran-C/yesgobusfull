@@ -21,7 +21,7 @@ import { useState, useEffect } from "react";
 import { bookSeat } from "../../../../api/service/buBooking.service";
 
 const Payment = () => {
-  const loggedInUser = localStorage.getItem("loggedInUser");
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!loggedInUser) {
     return <Navigate to="/login" replace />;
   }
@@ -48,32 +48,71 @@ const Payment = () => {
   const [executed, setExecuted] = useState(false);
   const urlSearchParams = new URLSearchParams(window.location.search);
   const blockTicketId = urlSearchParams.get("blockTicketId");
+  const bookingId = urlSearchParams.get("bookingId");
+  const paymentVerify = new URLSearchParams(location.search).has(
+    "paymentVerify"
+  );
+
+  //verify payment and book ticket
   useEffect(() => {
-    const checkBlockTicketId = async () => {
-      if (blockTicketId && !executed) {
-        // alert(`Block Ticket ID: ${blockTicketId}`);
-        const bookSeat = await axios.get(
-          `${
-            import.meta.env.VITE_BASE_URL
-          }/api/busBooking/bookSeat/${blockTicketId}`
+    const paymentVerification = async () => {
+      // get bookings
+      const getBookingDetails = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBookingById/${bookingId}`
+      );
+      if (getBookingDetails.status === 200) {
+        const merchantTransactionId = getBookingDetails?.data?.data.merchantTransactionId;
+
+        // check payment status
+        const checkPaymentStatus = await axios.get(
+          `${import.meta.env.VITE_BASE_URL
+          }/api/payment/checkPaymentStatus/${merchantTransactionId}`
         );
-        console.log(bookSeat.data);
-        setExecuted(true);
-        if (bookSeat.data.status === "success") {
-          navigate(
-            `/busbooking/payment/success?tlid=${bookSeat.data.BookingDetail.etstnumber}&userId=${loggedInUser._id}`
+
+        if (checkPaymentStatus.data.code === "PAYMENT_SUCCESS") {
+          console.log(`Block Ticket ID: ${blockTicketId}`);
+
+          // book seat
+          const bookSeat = await axios.get(
+            `${import.meta.env.VITE_BASE_URL
+            }/api/busBooking/bookSeat/${blockTicketId}`
           );
+          
+          // if booking is successfull
+          if (bookSeat.data.status === "success") {
+
+            // update booking in the db
+            const updatePaymentDetails = await axios.patch(
+              `${import.meta.env.VITE_BASE_URL
+              }/api/busBooking/updateBooking/${bookingId}`,
+              {
+                bookingStatus: "paid",
+                tid: bookSeat?.data.BookingDetail.etstnumber,
+                buspnr: bookSeat?.data.buspnr,
+                opPNR: bookSeat?.data.opPNR,
+              }
+            );
+
+            // navigate to payment successfull page
+            navigate(`/busbooking/payment/success?bookingId=${bookingId}`);
+          } else {
+            navigate("/busbooking/payment/failure");
+          }
         } else {
-          navigate("/busbooking/payment/failure");
+          alert("Payment Failed");
         }
       }
     };
-    checkBlockTicketId();
-  }, [executed, blockTicketId]);
+    if (paymentVerify) {
+      paymentVerification();
+    }
+  }, [paymentVerify]);
 
   const date = new Date();
+
+  //handle payment
   const handlePayment = async () => {
-    console.log(userData);
+    //seats data
     const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
       return {
         seatNbr: seatId,
@@ -95,7 +134,9 @@ const Payment = () => {
         primary: true,
       };
     });
+
     try {
+      // block seat request body
       const blockSeatRequestBody = {
         sourceCity: sourceCity,
         destinationCity: destinationCity,
@@ -111,32 +152,51 @@ const Payment = () => {
         blockSeatPaxDetails: seatObjects,
         inventoryType: inventoryType,
       };
+
+      // block seat
       const blockSeat = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
         blockSeatRequestBody
       );
+
       if (blockSeat?.data?.apiStatus?.success === true) {
-        const bookResponse = await axios.post(
+        const { data: bookResponse } = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
           {
             ...blockSeatRequestBody,
             userId: loggedInUser._id,
-            totalAmout: bookingDetails?.totalFare,
+            totalAmount: bookingDetails?.totalFare,
           }
         );
+
+        //initiate payment
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
           {
-            amount: parseInt(Math.ceil(bookingDetails?.totalFare)),
-            redirectUrl: `${window.location.href}?blockTicketId=${blockSeat.blockTicketKey}`,
-            // redirectUrl: `${window.location.href}?blockTicketId=ETS0S232144038`,
+            amount: bookingDetails?.totalFare,
+            redirectUrl: `https://yesgobus.com/busbooking/payment?blockTicketId=${blockSeat.data.blockTicketKey}&bookingId=${bookResponse.data._id}&paymentVerify=1`,
           }
         );
-        window.location.replace(
-          response.data.data.instrumentResponse.redirectInfo.url
-        );
-      } else {
-        alert("Error blocking seat");
+
+        if (response.status === 200) {
+          // update merchantTransactionId
+          const updatePaymentDetails = await axios.patch(
+            `${import.meta.env.VITE_BASE_URL
+            }/api/busBooking/updateBooking/${bookResponse.data._id}`,
+            {
+              merchantTransactionId: response.data.data.merchantTransactionId,
+            }
+          );
+          if (updatePaymentDetails.status === 200) {
+            window.open(
+              response.data.data.instrumentResponse.redirectInfo.url,
+              "_blank",
+              "noopener noreferrer"
+            );
+          }
+        } else {
+          alert("Please try with other seat or bus.");
+        }
       }
     } catch (error) {
       console.log(error);

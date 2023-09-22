@@ -43,11 +43,14 @@ const busBookingSchema = new Schema({
   blockSeatPaxDetails: [seatDetailsSchema],
   inventoryType: Number,
   totalAmount: Number,
-  // bookingStatus: {
-  //   type: String,
-  //   default: "pending"
-  // },
-  // tid:String,
+  merchantTransactionId: String,
+  bookingStatus: {
+    type: String,
+    default: "pending"
+  },
+  tid: String,
+  buspnr: String,
+  opPNR: String,
 });
 
 
