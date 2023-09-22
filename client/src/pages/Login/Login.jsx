@@ -10,6 +10,7 @@ import { Button, Input } from "../../components";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { googleLoginAPI } from "../../api/authentication";
 
 const Login = () => {
   const loggedInUser = localStorage.getItem("loggedInUser");
@@ -191,7 +192,16 @@ const Login = () => {
     }
   }, []);
 
-  const googleUserVerifyHandler = (data) => console.log(data);
+  const googleUserVerifyHandler = async ({ credential }) => {
+    try {
+      const { data, token } = await googleLoginAPI(credential);
+      localStorage.setItem("token", token);
+      localStorage.setItem("loggedInUser", JSON.stringify(data));
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <div className="Login">
