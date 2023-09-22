@@ -25,10 +25,9 @@ const KycPayments = () => {
         `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
         {
           amount: 2000,
-          redirectUrl: `${window.location.href}?driverId=${driverId}&paymentVerify=1`,
+          redirectUrl: `https://yesgobus.com/cabs/kyc/payment?driverId=${driverId}&paymentVerify=1`,
         }
       );
-      console.log(response);
       if (response.status === 200) {
         const updatePaymentDetails = await axios.patch(
           `${
@@ -102,10 +101,10 @@ const KycPayments = () => {
         <div className="wrapper">
           <div className="left">
             <div className="amounts">
-              <KycAmount text={"Total Amount"} amt={"₹5000.00"} />
+              <KycAmount text={"Total Amount"} amt={"₹3000.00"} />
               <KycAmount text={"Discount"} amt={"-₹1000.00"} />
               <KycAmount text={"Tax"} amt={"Included"} />
-              <KycAmount text={"Amount Payable"} amt={"₹4000.00"} />
+              <KycAmount text={"Amount Payable"} amt={"₹2000.00"} />
             </div>
             <Button onClicked={() => handlePayment()} text={"Pay Now"} />
           </div>

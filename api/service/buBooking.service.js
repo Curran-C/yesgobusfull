@@ -57,7 +57,7 @@ export const cancelTicket = async (args) => {
 export const getBusFilters = async (args) => {
   try {
     const searchResponse = await searchBus(args);
-    // let searchResponse = await axios.post("https://yesgobusfull.onrender.com/api/busBooking/searchBus", args);
+    // let searchResponse = await axios.post("https://api.yesgobus.com/api/busBooking/searchBus", args);
     // searchResponse = searchResponse.data;
     const filters = {
       boardingPoints: [],
@@ -105,16 +105,19 @@ function hasFilters(filters) {
 
 export const getBusDetails = async (searchArgs, filters) => {
   try {
-    const searchResponse = await searchBus(searchArgs);
-    // let searchResponse = await axios.post("https://yesgobusfull.onrender.com/api/busBooking/searchBus", searchArgs);
+    let searchResponse = await searchBus(searchArgs);
+    // let searchResponse = await axios.post("https://api.yesgobus.com/api/busBooking/searchBus", searchArgs);
     // searchResponse = searchResponse.data;
+    searchResponse = searchResponse.apiAvailableBuses.filter((bus) => {
+      return bus.inventoryType !== 130;
+    });
     if (!hasFilters(filters)) {
       return {
         status: 200,
-        data: searchResponse.apiAvailableBuses,
+        data: searchResponse,
       };
     }
-    const filteredBuses = searchResponse.apiAvailableBuses.filter((bus) => {
+    const filteredBuses = searchResponse.filter((bus) => {
 
       const fareValues = bus.fare.split(",").map(parseFloat);
       const matchingPrice =
@@ -184,3 +187,47 @@ export const searchCity = async (searchParam) => {
     throw error.message;
   }
 }
+
+export const updateBookings = async (bookingId, bookingDetails) => {
+  try {
+    const updatedBooking = await BusBooking.findOneAndUpdate(
+      { _id: bookingId }, 
+      { $set: bookingDetails }, 
+      { new: true } 
+    );
+    if (!updatedBooking) {
+      return {
+        status: 404,
+        message: "Booking not found",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Booking updated",
+      data: updatedBooking,
+    };
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+export const getBookingById = async (bookingId) => {
+  try {
+    const booking = await BusBooking.findById(bookingId);
+    if (!booking) {
+      return {
+        status: 404,
+        message: "Booking not found",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Booking retrieved",
+      data: booking,
+    };
+  } catch (error) {
+    throw error.message;
+  }
+};

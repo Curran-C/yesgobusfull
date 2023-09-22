@@ -9,6 +9,8 @@ import {
   getBusDetails,
   bookBus,
   searchCity,
+  updateBookings,
+  getBookingById,
 } from "../service/buBooking.service.js";
 
 export const getCityListController = async (req, res) => {
@@ -158,6 +160,34 @@ export const searchCityController = async (req, res) => {
     return res.status(500).send({
       status: 500,
       message: "An error occurred while searching city",
+    });
+  }
+};
+
+export const updateBookingsController = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const response = await updateBookings(bookingId, req.body);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while updating booking details",
+    });
+  }
+};
+
+export const getBookingByIdController = async (req, res) => {
+  try {
+    const { bookingId } = req.params;
+    const response = await getBookingById(bookingId);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while getting booking details",
     });
   }
 };

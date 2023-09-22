@@ -138,8 +138,9 @@ const Login = () => {
         if (response.status === 200) {
           const token = response.data.token;
           const loggedInUser = response.data.data;
+          console.log(loggedInUser);
           localStorage.setItem("token", token);
-          localStorage.setItem("loggedInUser", loggedInUser);
+          localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
           alert("Login Successfull");
           navigate("/");
         } else {
