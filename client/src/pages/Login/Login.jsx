@@ -65,7 +65,7 @@ const Login = () => {
 
   const login = (
     <>
-      <div className={showOTP && "otp"}>
+      <div className={showOTP ? "otp" : ""}>
         <Input
           title={"Enter Mobile Number / Email"}
           type={"text"}
