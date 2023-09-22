@@ -1,5 +1,5 @@
 import axios from "axios";
-import BankModal from "../modals/bankDetails.js";
+import BankModal from "../modals/bankDetails.modal.js";
 
 const sendRequest = async (url, method, headers, data) => {
   try {
