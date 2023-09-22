@@ -1,4 +1,8 @@
-import { signUp, signIn } from '../service/user.service.js';
+import { 
+  signUp, 
+  signIn,
+  googleSignUp, 
+  } from '../service/user.service.js';
 
 export const signUpController = async (req, res) => {
   try {
@@ -22,6 +26,17 @@ export const signInController = async (req, res) => {
     }
     
     res.status(result.status).json({ message: result.message, data: result.data, token: result.token });
+  } catch (err) {
+    res.status(500).json({ message: "An error occurred while signing in" });
+  }
+};
+
+
+export const googleSignInController = async (req, res) => {
+  try {
+    const { jwtToken } = req.body;
+    const result = await googleSignUp(jwtToken);
+    res.status(result.status).send(result);
   } catch (err) {
     res.status(500).json({ message: "An error occurred while signing in" });
   }
