@@ -53,6 +53,10 @@
         min-height: 200px;
         width: 90%;
 
+        .reverse-image {
+          transition: transform 0.5s ease;
+        }
+
         .infoCard {
           .infotitle {
             color: #448fff;
@@ -389,7 +393,7 @@
               color: white;
             }
           }
-          button{
+          button {
             width: 35%;
           }
         }

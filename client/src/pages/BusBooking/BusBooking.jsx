@@ -76,6 +76,10 @@ const BusBooking = () => {
     const destinationCity = queryParams.get("to");
     const doj = queryParams.get("date");
     if (sourceCity && destinationCity && doj) {
+      // the below three set functions of useState are not working
+      setFromLocation(sourceCity);
+      setToLocation(destinationCity);
+      setSelectedDate(doj);
       handleSearch(sourceCity, destinationCity, doj);
     } else {
       handleSearch("Mysore", "Bangalore", currentDate);
@@ -165,7 +169,7 @@ const BusBooking = () => {
   const handleDate = (date) => {
     handleSearch(fromLocation, toLocation, date);
   };
-  
+
   return (
     <div className="busBooking">
       <Navbar />
