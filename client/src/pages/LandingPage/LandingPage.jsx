@@ -155,7 +155,23 @@ const LandingPage = () => {
               onChanged={setFromLocation}
               suggestions={locationOneSuggestions}
             />
-            <img src={fromto} alt="" />
+            <img
+              src={fromto}
+              alt="reverse route"
+              className="reverse-image"
+              onClick={({ target: image }) => {
+                const currentRotation =
+                  getComputedStyle(image).getPropertyValue("transform");
+
+                if (currentRotation === "none") {
+                  image.style.transform = "rotate(180deg)";
+                } else {
+                  image.style.transform = "";
+                }
+                setFromLocation(toLocation);
+                setToLocation(fromLocation);
+              }}
+            />
             <InfoCard
               img={office}
               title={toLocation}
@@ -178,7 +194,6 @@ const LandingPage = () => {
               title={"- - -"}
               subtitle={"Return Optional"}
             /> */}
-
             <div className="buttons">
               <button
                 onClick={handleTodayButtonClick}
@@ -197,7 +212,6 @@ const LandingPage = () => {
                 Tomorrow
               </button>
             </div>
-
             <Button text={"Search"} onClicked={handleSearchClick} />
           </div>
         </div>
