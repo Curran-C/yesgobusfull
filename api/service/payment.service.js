@@ -37,7 +37,7 @@ export const initiatePayment = async (args) => {
     "merchantUserId": merchantUserId,
     "amount": amount*100,
     "redirectUrl": redirectUrl,
-    "redirectMode": "POST",
+    "redirectMode": "GET",
     "callbackUrl": "https://webhook.site/callback-url",
     "paymentInstrument": {
       "type": "PAY_PAGE"
