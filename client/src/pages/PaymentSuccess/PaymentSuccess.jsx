@@ -1,7 +1,7 @@
 import "./PaymentSuccess.scss";
 import { successful } from "../../assets/payment";
 import { Button, Navbar } from "../../components";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import html2canvas from "html2canvas";
@@ -10,21 +10,23 @@ import jsPDF from "jspdf";
 const PaymentSuccess = () => {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const bookingId = urlSearchParams.get("bookingId");
+  const navigate = useNavigate();
 
   const [bookingDetails, setBookingDetails] = useState(null);
   console.log(bookingId);
   useEffect(() => {
-    
     const getBookingDetails = async () => {
       try {
-        const {data: getBookingDetails} = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBookingById/${bookingId}`
+        const { data: getBookingDetails } = await axios.get(
+          `${
+            import.meta.env.VITE_BASE_URL
+          }/api/busBooking/getBookingById/${bookingId}`
         );
         setBookingDetails(getBookingDetails.data);
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     getBookingDetails();
   }, []);
 
@@ -65,6 +67,11 @@ const PaymentSuccess = () => {
     });
   };
 
+  // Navigate to ticket view. Add query params here.
+  const handleTicketView = () => {
+    navigate(`/busbooking/ticket`);
+  };
+
   return (
     <div className="PaymentSuccess">
       <div className="container">
@@ -86,8 +93,8 @@ const PaymentSuccess = () => {
         </div>
 
         <div className="buttons">
-          <Button text={"Download Ticket"} onClicked={handleDownloadPDF}/>
-          <Button text={"View Ticket"} />
+          <Button text={"Download Ticket"} onClicked={handleDownloadPDF} />
+          <Button text={"View Ticket"} onClicked={handleTicketView} />
         </div>
       </div>
     </div>

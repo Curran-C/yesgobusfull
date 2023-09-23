@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { blackhamburger, hamburger, logo } from "../../assets";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import Button from "../Button/Button";
 
 import "./Navbar.scss";
 import { blacklogo } from "../../assets/homepage";
+import UserIcon from "../Profile/Icons/UserIcon";
 
 const Navbar = ({ page }) => {
   const [showMenu, setShowMenu] = useState(false);
@@ -77,7 +78,13 @@ const Navbar = ({ page }) => {
 
       <div className="right">
         {loggedInUser ? (
-          <Button text="Logout" onClicked={handleLogout} />
+          // <Button text="Logout" onClicked={handleLogout} />
+          <Link to={`/profile`} className="user">
+            <span className="user-icon">
+              <UserIcon />
+            </span>
+            {JSON.parse(loggedInUser).fullName}
+          </Link>
         ) : (
           <a href="/login">
             <Button text="Login / Signup" />
