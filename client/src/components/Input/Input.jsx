@@ -1,6 +1,6 @@
 import "./Input.scss";
 
-const Input = ({ title, type, placeholder, onChanged, givenName, isKyc }) => {
+const Input = ({ title, type, placeholder, onChanged, givenName, isKyc, value }) => {
   const handleChange = (e) => {
     e.preventDefault();
     onChanged((prev) => {
@@ -16,6 +16,7 @@ const Input = ({ title, type, placeholder, onChanged, givenName, isKyc }) => {
         onChange={handleOnChange}
         type={type}
         placeholder={placeholder}
+        value={value}
       />
     </div>
   );

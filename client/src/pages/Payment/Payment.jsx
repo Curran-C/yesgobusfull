@@ -26,10 +26,17 @@ const Payment = () => {
     return <Navigate to="/login" replace />;
   }
 
+  const [firstName, lastName] = loggedInUser.fullName.split(" ");
+
   const [userData, setUserData] = useState({
+    firstName: firstName || "",
+    lastName: lastName || "",
+    email: loggedInUser.email || "",
+    mobile: loggedInUser.phoneNumber || "",
     gender: "M",
     idType: "PAN",
   });
+
   const navigate = useNavigate();
   const location = useLocation();
   const {
@@ -282,6 +289,7 @@ const Payment = () => {
                 placeholder={"First name"}
                 onChanged={handleInputChange}
                 givenName={"firstName"}
+                value={userData.firstName}
               />
               <Input
                 title={"Last Name"}
@@ -289,6 +297,7 @@ const Payment = () => {
                 placeholder={"Last name"}
                 onChanged={handleInputChange}
                 givenName={"lastName"}
+                value={userData.lastName}
               />
               <Input
                 title={"Age"}
@@ -329,6 +338,7 @@ const Payment = () => {
                 placeholder={"example@email.com"}
                 onChanged={handleInputChange}
                 givenName={"email"}
+                value={userData.email}
               />
               <Input
                 title={"Mobile Number"}
@@ -336,6 +346,7 @@ const Payment = () => {
                 placeholder={"1234567890"}
                 onChanged={handleInputChange}
                 givenName={"mobile"}
+                value={userData.mobile}
               />
               <Input
                 title={"Altername Number"}
