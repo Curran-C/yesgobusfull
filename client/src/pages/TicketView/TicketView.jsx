@@ -121,20 +121,29 @@ export default function TicketView() {
             </thead>
             <tbody>
               <tr>
-                <td style={{ width: "5%" }}>01</td>
+                <td style={{ width: "5%", minWidth: "5ch" }}>01</td>
                 <td
                   className="font-24"
-                  style={{ textAlign: "left", width: "30%" }}
+                  style={{ textAlign: "left", width: "30%", minWidth: "20ch" }}
                 >
                   Pramod
                 </td>
-                <td className="font-24" style={{ width: "7.5%" }}>
+                <td
+                  className="font-24"
+                  style={{ width: "7.5%", minWidth: "5ch" }}
+                >
                   28
                 </td>
-                <td className="font-24" style={{ width: "7.5%" }}>
+                <td
+                  className="font-24"
+                  style={{ width: "7.5%", minWidth: "8ch" }}
+                >
                   E 05
                 </td>
-                <td className="font-24" style={{ width: "50%" }}>
+                <td
+                  className="font-24"
+                  style={{ width: "50%", minWidth: "40ch" }}
+                >
                   <p>Yesgobus Booking ID {"KA-10987645823CGX"}</p>
                   <p>Operator PNR #{"523565"}</p>
                   <div className="price">
