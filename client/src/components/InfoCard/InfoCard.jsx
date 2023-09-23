@@ -60,7 +60,7 @@ const InfoCard = ({
             <input type="date" value={title} onChange={handleDateChange} />
           ) : (
             <input
-              type="text"
+              type="search"
               value={title}
               onChange={handleInputChange}
               onClick={handleInputClick}
