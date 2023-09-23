@@ -14,7 +14,7 @@ export const signUp = async (userData) => {
         password: hashedPassword,
       });
       await newUser.save();
-      
+
       return {
         status: 200,
         message: "SignUp Successful",
@@ -75,7 +75,7 @@ export const signIn = async (emailMobile, password) => {
 
 export const googleSignUp = async (jwtToken) => {
   try {
-    const {email, name} = jwt.decode(jwtToken);
+    const { email, name } = jwt.decode(jwtToken);
     const newUser = await User.findOneAndUpdate(
       { email },
       {
@@ -85,7 +85,7 @@ export const googleSignUp = async (jwtToken) => {
         },
       },
       {
-        new: true, 
+        new: true,
         upsert: true,
       }
     );
@@ -96,6 +96,40 @@ export const googleSignUp = async (jwtToken) => {
     return {
       status: 200,
       message: "Google SignIn successfull",
+      data: newUser,
+      token: token,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 500,
+      message: err.message || "Internal server error",
+    };
+  }
+};
+
+export const facebookSignUp = async ({ name, email }) => {
+  try {
+    const newUser = await User.findOneAndUpdate(
+      { email },
+      {
+        $setOnInsert: {
+          email,
+          fullName: name,
+        },
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    );
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_KEY, {
+      expiresIn: "1h",
+    });
+
+    return {
+      status: 200,
+      message: "Facebook SignIn successfull",
       data: newUser,
       token: token,
     };
