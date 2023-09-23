@@ -15,6 +15,32 @@
   max-width: 1920px;
   margin-inline: auto;
   padding-bottom: 4em;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.05;
+    background: url("../../assets/contact/watermark.svg") no-repeat center;
+    background-size: 70%;
+
+    @media (min-width: 768px) {
+      background-size: 80%;
+    }
+
+    @media (min-width: 1024px) {
+      background-size: 90%;
+    }
+
+    @media (min-width: 1440px) {
+      background-size: 100%;
+      left: 50px;
+    }
+  }
 
   .navbar {
     padding: 0px 50px;
@@ -31,28 +57,6 @@
     border: 1px solid var(--border-color);
     // padding-bottom: 4em;
     // margin-bottom: 4em;
-
-    &__header {
-      display: flex;
-      flex-direction: column;
-      padding-inline: var(--px-ticket);
-
-      .helpline {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-
-        &__details {
-          display: flex;
-          align-items: center;
-          color: var(--orange);
-        }
-
-        &__number p:first-of-type {
-          text-decoration: underline;
-        }
-      }
-    }
 
     .journey__details {
       background-color: rgba(0, 240, 110, 0.2);
@@ -132,6 +136,10 @@
       padding-block: 1em;
       width: auto;
 
+      @media (min-width: 1280px) {
+        width: 60%;
+      }
+
       .time__line__image {
         width: 100%;
 
@@ -185,60 +193,6 @@
       td {
         text-align: center;
         padding: 1em 0.25em;
-      }
-    }
-
-    .customer__support {
-      display: flex;
-      flex-direction: column;
-      gap: 1em;
-      padding-inline: var(--px-ticket);
-      padding-top: 1em;
-      padding-bottom: 2em;
-      border-bottom: 1px solid var(--border-color);
-
-      h2 {
-        font-size: 32px;
-        font-weight: 500;
-      }
-
-      .support__contact {
-        display: flex;
-        gap: 1em;
-        color: var(--orange);
-
-        .support__number {
-          h3 {
-            font-size: 32px;
-            font-weight: 500;
-          }
-        }
-      }
-    }
-
-    .terms {
-      display: flex;
-      flex-direction: column;
-      gap: 1em;
-      padding-inline: var(--px-ticket);
-      padding-top: 1em;
-      padding-bottom: 2em;
-
-      h2 {
-        font-size: 32px;
-        font-weight: 500;
-      }
-
-      ul {
-        display: flex;
-        flex-direction: column;
-        gap: 1em;
-      }
-
-      ul li p {
-        font-size: 1rem;
-        line-height: 1.75;
-        color: rgba(95, 95, 95, 1);
       }
     }
   }

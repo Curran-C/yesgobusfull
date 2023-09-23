@@ -7,6 +7,8 @@ import PaymentSuccess from "./PaymentSuccess/PaymentSuccess";
 import PaymentFailure from "./PaymentFailure/PaymentFailure";
 import ContactUs from "./ContactUs/ContactUs";
 import ComingSoon from "./ComingSoon/ComingSoon";
+import TicketView from "./TicketView/TicketView";
+import Profile from "./Profile/Profile";
 
 export {
   LandingPage,
@@ -18,4 +20,6 @@ export {
   PaymentFailure,
   ContactUs,
   ComingSoon,
+  TicketView,
+  Profile,
 };

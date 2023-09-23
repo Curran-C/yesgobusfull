@@ -1,12 +1,12 @@
 import { Navbar } from "../../components";
-import { blacklogo } from "../../assets/homepage";
-import {
-  telephoneIcon,
-  timeline,
-  telephoneIconFill,
-} from "../../assets/contact";
+import { timeline } from "../../assets/contact";
 import "./TicketView.scss";
 import { Link } from "react-router-dom";
+import Terms from "../../components/TicketView/Terms";
+import CustomerSupport from "../../components/TicketView/CustomerSupport";
+import TicketHead from "../../components/TicketView/TicketHead";
+
+const contactNumber = "040-22233311";
 
 export default function TicketView() {
   // Mock data for ticket
@@ -33,27 +33,9 @@ export default function TicketView() {
     <div className="ticketview__wrapper">
       <Navbar />
       <section className="ticket">
-        <header className="ticket__header">
-          <div className="helpline">
-            <img
-              src={blacklogo}
-              alt="yesgobus logo"
-              style={{ width: "100px" }}
-            />
-            <div className="helpline__details">
-              <img
-                src={telephoneIcon}
-                alt="telephone"
-                style={{ width: "40px", height: "40px" }}
-              />
-              <div className="helpline__number">
-                <p>Yesgobus Helpline</p>
-                <p>040-22233311</p>
-              </div>
-            </div>
-          </div>
-        </header>
+        <TicketHead contactNumber={contactNumber} />
 
+        {/* Journey from and to */}
         <div className="journey__details">
           <h1>
             {bookingData.from} to {bookingData.to}
@@ -61,11 +43,13 @@ export default function TicketView() {
           <p>{bookingData.date}</p>
         </div>
 
+        {/* Bus class */}
         <div className="bus__details">
           <h3>Yesgobus</h3>
           <p>{bookingData.class}</p>
         </div>
 
+        {/* Pickup and Drop details */}
         <div className="pick__drop">
           <div className="boarding__details">
             <p>Boarding Points Details</p>
@@ -90,6 +74,7 @@ export default function TicketView() {
           </div>
         </div>
 
+        {/* Reporting and Arriving Time */}
         <div className="time__line">
           <div className="time__line__image">
             <img src={timeline} alt="" />
@@ -110,6 +95,7 @@ export default function TicketView() {
 
         <div className="table">
           <table>
+            {/* Table Head */}
             <thead>
               <tr>
                 <th></th>
@@ -119,7 +105,9 @@ export default function TicketView() {
                 <th>Details</th>
               </tr>
             </thead>
+            {/* Table Body */}
             <tbody>
+              {/* Loop booking data for table row here */}
               <tr>
                 <td style={{ width: "5%", minWidth: "5ch" }}>01</td>
                 <td
@@ -162,49 +150,9 @@ export default function TicketView() {
           </table>
         </div>
 
-        <div className="customer__support">
-          <h2>Customer Support and Enquiries</h2>
-          <div className="support__contact">
-            <img src={telephoneIconFill} alt="" />
-            <div className="support__number">
-              <h3 className="">Yesgobus</h3>
-              <p>040-22233311</p>
-            </div>
-          </div>
-        </div>
+        <CustomerSupport contactNumber={contactNumber} />
 
-        <div className="terms">
-          <h2>Terms and Conditions</h2>
-          <ul>
-            <li>
-              <p>
-                Yesgobus Travellers can book bus tickets online at the lowest
-                ticket fares. Travellers prefer to choose their favorite bus to
-                reserve online bus booking. You’re at the right place to find a
-                wide range of Private buses and SRTC (State Road Transport
-                Corporation) buses are available for bus booking online on bus.
-              </p>
-            </li>
-            <li>
-              <p>
-                Passengers should arrive at the 15 min before the scheduled time
-                of departure.
-              </p>
-            </li>
-            <li>
-              <p>
-                Yesgobus is not responsible for any accident or any passenger
-                losses.
-              </p>
-            </li>
-            <li>
-              <p>
-                Cancellation charges are applicable on original fare but on the
-                discount fee.
-              </p>
-            </li>
-          </ul>
-        </div>
+        <Terms />
       </section>
 
       <div className="action__buttons">

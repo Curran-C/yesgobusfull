@@ -1,0 +1,25 @@
+.terms {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding-inline: var(--px-ticket);
+  padding-top: 1em;
+  padding-bottom: 2em;
+
+  h2 {
+    font-size: 32px;
+    font-weight: 500;
+  }
+
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+  }
+
+  ul li p {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: rgba(95, 95, 95, 1);
+  }
+}
