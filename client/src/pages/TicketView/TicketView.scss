@@ -1,0 +1,259 @@
+.ticketview__wrapper {
+  //   border: 1px solid black;
+  --orange: rgba(253, 89, 1, 1);
+  --px-ticket: 30px;
+  --border-color: rgba(163, 163, 163, 1);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+  max-width: 1920px;
+  margin-inline: auto;
+  padding-bottom: 4em;
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    opacity: 0.05;
+    background: url("../../assets/contact/watermark.svg") no-repeat center;
+    background-size: 70%;
+
+    @media (min-width: 768px) {
+      background-size: 80%;
+    }
+
+    @media (min-width: 1024px) {
+      background-size: 90%;
+    }
+
+    @media (min-width: 1440px) {
+      background-size: 100%;
+      left: 50px;
+    }
+  }
+
+  .navbar {
+    padding: 0px 50px;
+    height: 130px;
+    .left {
+      a {
+        color: black;
+      }
+    }
+  }
+
+  .ticket {
+    margin: 0px 50px;
+    border: 1px solid var(--border-color);
+    // padding-bottom: 4em;
+    // margin-bottom: 4em;
+
+    .journey__details {
+      background-color: rgba(0, 240, 110, 0.2);
+
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-inline: var(--px-ticket);
+
+      gap: 2em;
+      padding-block: 2em;
+
+      @media (min-width: 1280px) {
+        flex-direction: row;
+      }
+
+      p {
+        font-size: 20px;
+        text-align: center;
+      }
+
+      h1 {
+        text-align: center;
+
+        font-size: 32px;
+        font-weight: 500;
+      }
+    }
+
+    .bus__details {
+      display: flex;
+      flex-direction: column;
+      padding-inline: var(--px-ticket);
+      padding-block: 1em;
+      border-bottom: 1px solid var(--border-color);
+
+      h3 {
+        font-weight: 500;
+      }
+    }
+
+    .pick__drop {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding-inline: var(--px-ticket);
+      padding-block: 1em;
+
+      @media (min-width: 1280px) {
+        flex-direction: row;
+      }
+
+      .boarding__details,
+      .dropping__details {
+        display: flex;
+        flex-direction: column;
+        gap: 2em;
+        padding-top: 1em;
+
+        .location,
+        .sub-location {
+          font-size: 32px;
+          font-weight: 500;
+        }
+
+        .sub-location {
+          color: rgba(147, 147, 147, 1);
+        }
+      }
+    }
+
+    .time__line {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5em;
+      padding-inline: var(--px-ticket);
+      padding-block: 1em;
+      width: auto;
+
+      @media (min-width: 1280px) {
+        width: 60%;
+      }
+
+      .time__line__image {
+        width: 100%;
+
+        img {
+          width: 100%;
+        }
+        .line {
+          width: 98%;
+          margin-inline: auto;
+          border-top: 0.125em dashed black;
+        }
+      }
+
+      .schedule {
+        display: flex;
+        justify-content: space-between;
+
+        .reporting,
+        .arriving {
+          p {
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .table {
+      padding-inline: var(--px-ticket);
+      padding-block: 2em;
+      border-bottom: 1px solid var(--border-color);
+
+      overflow-x: auto;
+
+      table,
+      th,
+      td {
+        border: 1px solid #333;
+        border-collapse: collapse;
+      }
+
+      table {
+        width: 100%;
+      }
+
+      th {
+        font-size: 1rem;
+        font-weight: 500;
+        padding: 1em 0.25em;
+      }
+
+      td {
+        text-align: center;
+        padding: 1em 0.25em;
+      }
+    }
+  }
+
+  .action__buttons {
+    margin: 0px 50px;
+    // padding-inline: var(--px-ticket);
+    padding-block: 2em;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 2em;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    .home,
+    .download {
+      text-decoration: none;
+      color: white;
+      padding: 1em 3em;
+      border-radius: 10px;
+      text-align: center;
+    }
+
+    .home {
+      background-color: rgba(176, 176, 176, 1);
+    }
+
+    .download {
+      background-color: var(--orange);
+      border: 1px solid var(--orange);
+      outline: none;
+    }
+  }
+
+  .orange-btn {
+    background-color: rgba(253, 89, 1, 0.89);
+    color: white;
+    padding: 0.25em 0.75em;
+    border: 1px solid rgba(253, 89, 1, 0.89);
+    border-radius: 5px;
+
+    width: fit-content;
+  }
+
+  .font-24 {
+    font-size: 24px;
+    font-weight: 500;
+  }
+
+  .font-400 {
+    font-weight: 400;
+  }
+
+  .price {
+    margin-inline: auto;
+    width: fit-content;
+    border: 1px solid black;
+    padding: 0.5em 2em;
+  }
+}

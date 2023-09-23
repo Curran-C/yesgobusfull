@@ -47,12 +47,12 @@ const KycPaymentModal = ({ onCancel, driverId }) => {
       <div className="blackbg" onClick={() => onCancel(false)}></div>
       <div className="modalcontainer">
         <div className="modalwrapper">
-          <h1>Payment Successful</h1>
+          <h1>Thank You</h1>
           <h2>You're now one of our Drivers!</h2>
           <div className="cardsWithText">
             <CardWithText
               billing={true}
-              title={"Billing Detials"}
+              title={"Driver Details"}
               user={user}
               idType={idType}
             />
@@ -62,10 +62,10 @@ const KycPaymentModal = ({ onCancel, driverId }) => {
               address={address}
             />
           </div>
-          <div className="buttons">
+          {/* <div className="buttons">
             <Button text={"View Invoice"} />
             <Button text={"Download Invoice"} />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

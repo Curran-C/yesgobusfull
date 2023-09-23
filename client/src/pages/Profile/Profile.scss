@@ -1,0 +1,32 @@
+.profile__wrapper {
+  //   border: 1px solid black;
+  --orange: rgba(253, 89, 1, 1);
+  --px-ticket: 30px;
+  --border-color: rgba(163, 163, 163, 1);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+  max-width: 1920px;
+  margin-inline: auto;
+  padding-bottom: 4em;
+
+  .navbar {
+    padding: 0px 50px;
+    height: 130px;
+    .left {
+      a {
+        color: black;
+      }
+    }
+  }
+
+  .profile {
+    padding: 0px 50px;
+  }
+}

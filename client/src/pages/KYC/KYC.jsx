@@ -11,6 +11,7 @@ import {
 } from "../../components";
 import "./KYC.scss";
 import { useState, useEffect } from "react";
+import KycPaymentModal from "./KycPaymentModal/KycPaymentModal";
 
 const KYC = () => {
   const navigate = useNavigate();
@@ -20,10 +21,10 @@ const KYC = () => {
   const [showAadharModal, setShowAadharModal] = useState(false);
   const [showPancardModal, setShowPancardModal] = useState(false);
   const [showDLModal, setShowDLModal] = useState(false);
-  const [accessToken, setAccessToken] = useState("");
-
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   // *states
   const [user, setUser] = useState({});
+  const [driverId, setDriverId] = useState(null);
   const handleRegister = async () => {
     try {
       const response = await axios.post(
@@ -31,13 +32,13 @@ const KYC = () => {
         user
       );
       console.log(response.data)
-      const driverId = response.data.data._id;
-      console.log(driverId);
-      navigate(`/cabs/kyc/payment`, {
-        state: {
-          driverId,
-        }
-      });
+      setDriverId(response.data.data._id);
+      // navigate(`/cabs/kyc/payment`, {
+      //   state: {
+      //     driverId,
+      //   }
+      // });
+      setShowPaymentModal(true);
     } catch (error) {
       alert("Something went wrong");
       console.error("Error registering user:", error);
@@ -72,7 +73,7 @@ const KYC = () => {
       if (
         response.data?.status === "success" &&
         response.data?.data?.full_name
-        .replace(/\s/g, '')
+          .replace(/\s/g, '')
           .toLowerCase()
           .includes(user.accHolderName.replace(/\s/g, '').toLowerCase())
       ) {
@@ -87,6 +88,9 @@ const KYC = () => {
   return (
     <div className="KYC">
       <KycNavbar />
+      {showPaymentModal && (
+        <KycPaymentModal onCancel={setShowPaymentModal} driverId={driverId} />
+      )}
       {showModal && <SignModal onCancel={setShowModal} />}
       {showAadharModal && (
         <AadharModal
