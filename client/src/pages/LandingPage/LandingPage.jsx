@@ -272,7 +272,7 @@ const LandingPage = () => {
         </div>
       </div> */}
 
-      <div className="govBuses">
+      {/* <div className="govBuses">
         <Title title={"Government Buses"} subtitle={"view more"} />
         <div className="govBusesContainer">
           <InfoCard img={bus1} subtitle={"APSRTC"} />
@@ -282,7 +282,7 @@ const LandingPage = () => {
           <InfoCard img={bus5} subtitle={"MSRTC"} />
           <InfoCard img={bus6} subtitle={"KSRTC"} />
         </div>
-      </div>
+      </div> */}
 
       {/* <div className="popularBusRoutes">
         <Title title={"Popular Bus Routes"} subtitle={"View More"} />
