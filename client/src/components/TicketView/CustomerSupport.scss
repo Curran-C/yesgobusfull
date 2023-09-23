@@ -1,0 +1,27 @@
+.customer__support {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  padding-inline: var(--px-ticket);
+  padding-top: 1em;
+  padding-bottom: 2em;
+  border-bottom: 1px solid var(--border-color);
+
+  h2 {
+    font-size: 32px;
+    font-weight: 500;
+  }
+
+  .support__contact {
+    display: flex;
+    gap: 1em;
+    color: var(--orange);
+
+    .support__number {
+      h3 {
+        font-size: 32px;
+        font-weight: 500;
+      }
+    }
+  }
+}
