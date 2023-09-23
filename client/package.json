@@ -25,6 +25,7 @@
     "react-dom": "^18.2.0",
     "react-input-slider": "^6.0.1",
     "react-router-dom": "^6.15.0",
+    "reactjs-social-login": "^2.6.3",
     "rsuite": "^5.38.0",
     "sass": "^1.64.2"
   },
