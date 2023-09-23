@@ -1,0 +1,21 @@
+.ticket__header {
+  display: flex;
+  flex-direction: column;
+  padding-inline: var(--px-ticket);
+
+  .helpline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    &__details {
+      display: flex;
+      align-items: center;
+      color: var(--orange);
+    }
+
+    &__number p:first-of-type {
+      text-decoration: underline;
+    }
+  }
+}

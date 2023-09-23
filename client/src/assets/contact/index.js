@@ -4,6 +4,7 @@ import locationIcon from "./location.svg";
 import telephoneIcon from "./telephone.svg";
 import timeline from "./timeline.svg";
 import telephoneIconFill from "./telephoneFill.svg";
+import WatermarkIcon from "./watermark.svg";
 
 export {
   message,
@@ -12,4 +13,5 @@ export {
   telephoneIcon,
   timeline,
   telephoneIconFill,
+  WatermarkIcon,
 };
