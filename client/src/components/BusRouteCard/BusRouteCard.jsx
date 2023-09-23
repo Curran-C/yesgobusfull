@@ -49,7 +49,7 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
         <input type="date" value={location} onChange={handleDateChange} />
       ) : (
         <input
-          type="text"
+          type="search"
           value={location}
           onChange={handleInputChange}
           onClick={handleInputClick}

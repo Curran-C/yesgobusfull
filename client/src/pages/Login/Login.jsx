@@ -190,7 +190,64 @@ const Login = () => {
     } else {
       console.error("Google Accounts API is not available.");
     }
+
+    // Facebook login
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
+    // Load the Facebook SDK asynchronously
+    (function (d, s, id) {
+      var js,
+        fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://connect.facebook.net/en_US/sdk.js";
+      fjs.parentNode.insertBefore(js, fjs);
+    })(document, "script", "facebook-jssdk");
+
+    // Initialize the Facebook SDK when it's loaded
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+        cookie: true,
+        xfbml: true,
+        version: "v18.0",
+      });
+      FB.AppEvents.logPageView();
+    };
   }, []);
+
+  // Facebook login callback
+  const facebookLoginHandler = async () => {
+    try {
+      const response = await new Promise((resolve, reject) => {
+        FB.login(
+          function (loginResponse) {
+            if (loginResponse.status === "connected") {
+              resolve(loginResponse.authResponse);
+            } else {
+              reject("Facebook login failed");
+            }
+          },
+          { scope: "public_profile,email" }
+        );
+      });
+
+      console.log("Facebook login successful:", response?.accessToken);
+      const { data, token } = await googleLoginAPI(response?.accessToken);
+      localStorage.setItem("token", token);
+      localStorage.setItem("loggedInUser", JSON.stringify(data));
+      navigate("/");
+      // You can also make API requests to get more user information using the access token
+      // Example:
+      // const userData = await fetch(`https://graph.facebook.com/v18.0/me?access_token=${response.accessToken}&fields=id,name,email`);
+      // const userDataJson = await userData.json();
+      // console.log('User data from Facebook Graph API:', userDataJson);
+    } catch (error) {
+      console.error("Facebook login error:", error);
+    }
+  };
 
   const googleUserVerifyHandler = async ({ credential }) => {
     try {
@@ -256,18 +313,33 @@ const Login = () => {
             <p>Continue with</p>
             <div className="linksContainer">
               <div id="googlesignin" className="link"></div>
-              {/* <div className="link">
+              <div className="link">
+                <div
+                  className="fb-login-button"
+                  data-size="medium"
+                  data-button-type="continue_with"
+                  data-layout="default"
+                  data-auto-logout-link="false"
+                  data-use-continue-as="true"
+                  data-width=""
+                  data-scope="public_profile,email"
+                  onClick={facebookLoginHandler}
+                />
+              </div>
+              {/* 
+              <div className="link">
                 <img src={google} alt="" id="googlesignin" />
                 <span>Google</span>
-              </div> */}
+              </div> 
               <div className="link">
                 <img src={facebook} alt="" />
                 <span>Facebook</span>
               </div>
-              {/* <div className="link">
+              <div className="link">
                 <img src={linkedin} alt="" />
                 <span>Linkedin</span>
-              </div> */}
+              </div> 
+              */}
             </div>
           </div>
 
