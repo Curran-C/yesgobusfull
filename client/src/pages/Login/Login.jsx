@@ -192,9 +192,17 @@ const Login = () => {
     }
 
     // Facebook login
-    if (window.FB) {
-      window.FB.XFBML.parse();
-    }
+    // Initialize the Facebook SDK when it's loaded
+    window.fbAsyncInit = function () {
+      FB.init({
+        appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+        cookie: true,
+        xfbml: true,
+        version: "v18.0",
+      });
+      FB.AppEvents.logPageView();
+    };
+
     // Load the Facebook SDK asynchronously
     (function (d, s, id) {
       var js,
@@ -206,20 +214,14 @@ const Login = () => {
       fjs.parentNode.insertBefore(js, fjs);
     })(document, "script", "facebook-jssdk");
 
-    // Initialize the Facebook SDK when it's loaded
-    window.fbAsyncInit = function () {
-      FB.init({
-        appId: import.meta.env.VITE_FACEBOOK_APP_ID,
-        cookie: true,
-        xfbml: true,
-        version: "v18.0",
-      });
-      FB.AppEvents.logPageView();
-    };
+    if (window.FB) {
+      window.FB.XFBML.parse();
+    }
   }, []);
 
   // Facebook login callback
   const facebookLoginHandler = async () => {
+    console.log("facebook login handler");
     try {
       const response = await new Promise((resolve, reject) => {
         FB.login(
@@ -239,11 +241,6 @@ const Login = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("loggedInUser", JSON.stringify(data));
       navigate("/");
-      // You can also make API requests to get more user information using the access token
-      // Example:
-      // const userData = await fetch(`https://graph.facebook.com/v18.0/me?access_token=${response.accessToken}&fields=id,name,email`);
-      // const userDataJson = await userData.json();
-      // console.log('User data from Facebook Graph API:', userDataJson);
     } catch (error) {
       console.error("Facebook login error:", error);
     }
