@@ -11,6 +11,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { googleLoginAPI } from "../../api/authentication";
+import { LoginSocialFacebook } from "reactjs-social-login";
 
 const Login = () => {
   const loggedInUser = localStorage.getItem("loggedInUser");
@@ -191,60 +192,60 @@ const Login = () => {
       console.error("Google Accounts API is not available.");
     }
 
-    // Facebook login
-    // Initialize the Facebook SDK when it's loaded
-    window.fbAsyncInit = function () {
-      FB.init({
-        appId: import.meta.env.VITE_FACEBOOK_APP_ID,
-        cookie: true,
-        xfbml: true,
-        version: "v18.0",
-      });
-      FB.AppEvents.logPageView();
-    };
+    // // Facebook login
+    // // Initialize the Facebook SDK when it's loaded
+    // window.fbAsyncInit = function () {
+    //   FB.init({
+    //     appId: import.meta.env.VITE_FACEBOOK_APP_ID,
+    //     cookie: true,
+    //     xfbml: true,
+    //     version: "v18.0",
+    //   });
+    //   FB.AppEvents.logPageView();
+    // };
 
-    // Load the Facebook SDK asynchronously
-    (function (d, s, id) {
-      var js,
-        fjs = d.getElementsByTagName(s)[0];
-      if (d.getElementById(id)) return;
-      js = d.createElement(s);
-      js.id = id;
-      js.src = "https://connect.facebook.net/en_US/sdk.js";
-      fjs.parentNode.insertBefore(js, fjs);
-    })(document, "script", "facebook-jssdk");
+    // // Load the Facebook SDK asynchronously
+    // (function (d, s, id) {
+    //   var js,
+    //     fjs = d.getElementsByTagName(s)[0];
+    //   if (d.getElementById(id)) return;
+    //   js = d.createElement(s);
+    //   js.id = id;
+    //   js.src = "https://connect.facebook.net/en_US/sdk.js";
+    //   fjs.parentNode.insertBefore(js, fjs);
+    // })(document, "script", "facebook-jssdk");
 
-    if (window.FB) {
-      window.FB.XFBML.parse();
-    }
+    // if (window.FB) {
+    //   window.FB.XFBML.parse();
+    // }
   }, []);
 
-  // Facebook login callback
-  const facebookLoginHandler = async () => {
-    console.log("facebook login handler");
-    try {
-      const response = await new Promise((resolve, reject) => {
-        FB.login(
-          function (loginResponse) {
-            if (loginResponse.status === "connected") {
-              resolve(loginResponse.authResponse);
-            } else {
-              reject("Facebook login failed");
-            }
-          },
-          { scope: "public_profile,email" }
-        );
-      });
+  // // Facebook login callback
+  // const facebookLoginHandler = async () => {
+  //   console.log("facebook login handler");
+  //   try {
+  //     const response = await new Promise((resolve, reject) => {
+  //       FB.login(
+  //         function (loginResponse) {
+  //           if (loginResponse.status === "connected") {
+  //             resolve(loginResponse.authResponse);
+  //           } else {
+  //             reject("Facebook login failed");
+  //           }
+  //         },
+  //         { scope: "public_profile,email" }
+  //       );
+  //     });
 
-      console.log("Facebook login successful:", response?.accessToken);
-      const { data, token } = await googleLoginAPI(response?.accessToken);
-      localStorage.setItem("token", token);
-      localStorage.setItem("loggedInUser", JSON.stringify(data));
-      navigate("/");
-    } catch (error) {
-      console.error("Facebook login error:", error);
-    }
-  };
+  //     console.log("Facebook login successful:", response?.accessToken);
+  //     const { data, token } = await googleLoginAPI(response?.accessToken);
+  //     localStorage.setItem("token", token);
+  //     localStorage.setItem("loggedInUser", JSON.stringify(data));
+  //     navigate("/");
+  //   } catch (error) {
+  //     console.error("Facebook login error:", error);
+  //   }
+  // };
 
   const googleUserVerifyHandler = async ({ credential }) => {
     try {
@@ -310,7 +311,17 @@ const Login = () => {
             <p>Continue with</p>
             <div className="linksContainer">
               <div id="googlesignin" className="link"></div>
-              <div className="link">
+              <LoginSocialFacebook
+                appId={import.meta.env.VITE_FACEBOOK_APP_ID}
+                onReject={(error) => console.log(error)}
+                onResolve={(res) => console.log(res)}
+              >
+                <div className="link">
+                  <img src={facebook} alt="" />
+                  <span>Facebook</span>
+                </div>
+              </LoginSocialFacebook>
+              {/* <div className="link">
                 <div
                   className="fb-login-button"
                   data-size="medium"
@@ -322,7 +333,7 @@ const Login = () => {
                   data-scope="public_profile,email"
                   onClick={facebookLoginHandler}
                 />
-              </div>
+              </div> */}
               {/* 
               <div className="link">
                 <img src={google} alt="" id="googlesignin" />
