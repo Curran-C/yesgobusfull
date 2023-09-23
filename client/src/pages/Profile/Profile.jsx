@@ -6,8 +6,9 @@ export default function Profile() {
   return (
     <div className="profile__wrapper">
       <Navbar />
-      <section>
-        <h1>Profile</h1>
+      <section className="profile">
+        <aside className="profile__sidebar"></aside>
+        <main className="profile__container"></main>
       </section>
     </div>
   );
