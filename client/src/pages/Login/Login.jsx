@@ -10,7 +10,7 @@ import { Button, Input } from "../../components";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { googleLoginAPI } from "../../api/authentication";
+import { facebookLoginAPI, googleLoginAPI } from "../../api/authentication";
 import { LoginSocialFacebook } from "reactjs-social-login";
 
 const Login = () => {
@@ -258,6 +258,17 @@ const Login = () => {
     }
   };
 
+  const facebookLoginHanler = async (fbResponse) => {
+    try {
+      const { data, token } = await facebookLoginAPI(fbResponse);
+      localStorage.setItem("token", token);
+      localStorage.setItem("loggedInUser", JSON.stringify(data));
+      navigate("/");
+    } catch (error) {
+      console.log("Error login in using facebook: ", error);
+    }
+  };
+
   return (
     <div className="Login">
       <div className="navbarlogin">
@@ -314,7 +325,7 @@ const Login = () => {
               <LoginSocialFacebook
                 appId={import.meta.env.VITE_FACEBOOK_APP_ID}
                 onReject={(error) => console.log(error)}
-                onResolve={(res) => console.log(res)}
+                onResolve={facebookLoginHanler}
               >
                 <div className="link">
                   <img src={facebook} alt="" />
