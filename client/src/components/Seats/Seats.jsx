@@ -264,6 +264,34 @@ const Seats = ({
     getSeats();
   }, []);
 
+
+  const handleContinue = () => {
+
+    if (
+      bookingDetails.boardingPoint.id &&
+      bookingDetails.droppingPoint &&
+      bookingDetails.selectedSeats.length !== 0
+    ) {
+      navigate("/busbooking/payment", {
+        state: {
+          sourceCity,
+          destinationCity,
+          routeScheduleId,
+          inventoryType,
+          doj,
+          pickUpTime,
+          reachTime,
+          travelTime,
+          busType,
+          busName,
+          bookingDetails,
+        },
+      });
+    } else {
+      alert("Please select seats, boarding and droping points");
+    }
+  }
+
   return (
     <div className="seats">
       <div className="seatsLeft">
@@ -354,23 +382,7 @@ const Seats = ({
 
         <div className="continue">
           <Button
-            onClicked={() =>
-              navigate("/busbooking/payment", {
-                state: {
-                  sourceCity,
-                  destinationCity,
-                  routeScheduleId,
-                  inventoryType,
-                  doj,
-                  pickUpTime,
-                  reachTime,
-                  travelTime,
-                  busType,
-                  busName,
-                  bookingDetails,
-                },
-              })
-            }
+            onClicked={() => handleContinue()}
             text={"Continue"}
           />
         </div>
