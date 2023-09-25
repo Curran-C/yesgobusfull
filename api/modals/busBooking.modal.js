@@ -41,7 +41,7 @@ const busBookingSchema = new Schema({
   doj: Date,
   routeScheduleId: String,
   boardingPoint: boardingPointSchema,
-  droppingPoint:droppingPointSchema,
+  droppingPoint: droppingPointSchema,
   busOperator: String,
   busType: String,
   selectedSeats: String,
@@ -61,7 +61,11 @@ const busBookingSchema = new Schema({
   tid: String,
   buspnr: String,
   opPNR: String,
-});
+},
+  {
+    timestamps: true,
+  }
+);
 
 
 const BusBooking = mongoose.model("BusBooking", busBookingSchema);
