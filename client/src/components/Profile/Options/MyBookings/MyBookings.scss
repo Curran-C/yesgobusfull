@@ -21,12 +21,10 @@
 
       font-size: 20px;
       font-weight: 500;
+    }
 
-      &:focus,
-      &:hover,
-      &:active {
-        color: var(--orange);
-      }
+    .tab__btn.active {
+      color: var(--orange);
     }
   }
 

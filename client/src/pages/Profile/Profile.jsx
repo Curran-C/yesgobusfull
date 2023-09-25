@@ -23,7 +23,9 @@ export default function Profile() {
         {/* Sidebar */}
         <aside className="profile__sidebar">
           <button
-            className="sidebar__button user"
+            className={`sidebar__button user ${
+              profileOption === "profile" ? "active" : ""
+            } `}
             onClick={() => {
               setProfileOption("profile");
             }}
@@ -32,7 +34,9 @@ export default function Profile() {
             My Profile
           </button>
           <button
-            className="sidebar__button"
+            className={`sidebar__button ${
+              profileOption === "booking" ? "active" : ""
+            } `}
             onClick={() => {
               setProfileOption("booking");
             }}
@@ -40,15 +44,16 @@ export default function Profile() {
             <TicketIcon style={{ width: "20px" }} />
             My Booking
           </button>
-          <button
-            className="sidebar__button"
-            // onClick={() => {
-            //   setProfileOption("notification");
-            // }}
+          {/* <button
+            className={`sidebar__button ${profileOption === "notification" ? "active" : ""} `}
+            id="notification"
+            onClick={() => {
+              setProfileOption("notification");
+            }}
           >
             <NotificationIcon style={{ width: "20px" }} />
             Notifications
-          </button>
+          </button> */}
         </aside>
 
         {/* Main */}

@@ -44,6 +44,31 @@
       flex-direction: row;
     }
 
+    &::before {
+      content: "";
+      position: absolute;
+      top: 200px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.025;
+      background: url("../../assets/contact/watermark.svg") no-repeat center;
+      background-size: 70%;
+
+      @media (min-width: 768px) {
+        background-size: 70%;
+      }
+
+      @media (min-width: 1024px) {
+        background-size: 70%;
+      }
+
+      @media (min-width: 1440px) {
+        background-size: 70%;
+        left: 50px;
+      }
+    }
+
     .profile__sidebar {
       border: 1px solid rgba(220, 220, 220, 1);
       border-radius: 20px;
@@ -80,20 +105,16 @@
         @media (min-width: 768px) {
           justify-content: flex-start;
         }
-
-        &:active,
-        &:focus {
-          color: white;
-          background-color: var(--orange);
-        }
       }
 
-      .sidebar__button.user {
-        &:active,
-        &:focus {
-          svg {
-            fill: white;
-          }
+      .sidebar__button.active {
+        color: white;
+        background-color: var(--orange);
+      }
+
+      .sidebar__button.user.active {
+        svg {
+          fill: white;
         }
       }
     }
