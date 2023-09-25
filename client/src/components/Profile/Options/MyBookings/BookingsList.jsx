@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { WatermarkIcon } from "../../../../assets/contact";
 
 export default function BookingsList({ bookingData, selectedTab }) {
@@ -6,7 +7,9 @@ export default function BookingsList({ bookingData, selectedTab }) {
     if (selectedTab === "upcoming") {
       return (
         <>
-          <button className="orange-btn">Download Ticket</button>
+          <Link to={`/busbooking/ticket`}>
+            <button className="orange-btn">Download Ticket</button>
+          </Link>
           <button className="red-btn">Cancel Ticket</button>
         </>
       );

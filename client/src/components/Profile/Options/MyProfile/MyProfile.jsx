@@ -2,10 +2,14 @@ import React from "react";
 import "./MyProfile.scss";
 
 export default function MyProfile() {
+  function handleSubmit(e) {
+    e.preventDefault();
+  }
+
   return (
     <div className="my__profile">
       <h1>Profile Info</h1>
-      <div className="info__grid">
+      <form onSubmit={handleSubmit} autoComplete="off" className="info__grid">
         <input
           type="Name"
           id="name"
@@ -30,13 +34,23 @@ export default function MyProfile() {
           className="profile__input"
         />
 
-        <input
-          type="text"
+        <select
           name="gender"
           id="gender"
-          placeholder="Gender"
-          className="profile__input"
-        />
+          className="profile__input select"
+          defaultValue={"Select Gender"}
+        >
+          <option
+            value="Select Gender"
+            disabled
+            style={{ color: "rgba(121, 121, 121, 1)" }}
+          >
+            Select Gender
+          </option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+          <option value="other">Other</option>
+        </select>
 
         <input
           type="password"
@@ -44,10 +58,13 @@ export default function MyProfile() {
           id="password"
           placeholder="Password"
           className="profile__input"
+          autoComplete="new-password"
         />
 
-        <button className="save-btn orange__button">Save</button>
-      </div>
+        <button type="submit" className="save-btn orange__button">
+          Save
+        </button>
+      </form>
     </div>
   );
 }
