@@ -141,3 +141,28 @@ export const facebookSignUp = async ({ name, email }) => {
     };
   }
 };
+
+export const updateUserProfile = async (userId, updatedData) => {
+  try {
+    const existingUser = await User.findByIdAndUpdate(userId, updatedData, { new: true });
+
+    if (!existingUser) {
+      return {
+        status: 404,
+        message: "User not found",
+      };
+    }
+    existingUser.password = undefined;
+    return {
+      status: 200,
+      message: "Profile updated successfully",
+      data: existingUser,
+    };
+  } catch (err) {
+    console.log(err);
+    return {
+      status: 500,
+      message: err.message || "Internal server error",
+    };
+  }
+};

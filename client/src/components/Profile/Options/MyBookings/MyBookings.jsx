@@ -1,27 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./MyBookings.scss";
 import BookingsList from "./BookingsList";
+import axios from "axios";
 
 export default function MyBookings() {
-  // Mock data for ticket
-  const bookingData = {
-    from: "Mysore",
-    to: "Bangalore",
-    date: "Tuesday, 04 July, 2023",
-    class: "TATA A/C Sleeper (2+1) 44 Seats",
-    boarding: {
-      time: "19:00",
-      date: "4th July 2023",
-      location: "Infosys Gate",
-      subLocation: "INFOSYS GATE NO 2,134,33",
-    },
-    dropping: {
-      time: "21:00",
-      date: "4th July 2023",
-      location: "Hcross",
-      subLocation: "Hcross high way , bng",
-    },
-  };
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+  const [bookingDetails, setBookingDetails] = useState(null);
+
+  useEffect(() => {
+    const getBookingDetails = async () => {
+      try {
+        const { data: getBookingDetails } = await axios.get(
+          `${
+            import.meta.env.VITE_BASE_URL
+          }/api/busBooking/getAllBookings/${loggedInUser._id}`
+        );
+        console.log(getBookingDetails); 
+        setBookingDetails(getBookingDetails.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBookingDetails();
+  }, []);
+
 
   const [selectedTab, setSelectedTab] = useState("upcoming");
 
@@ -50,7 +52,7 @@ export default function MyBookings() {
       </div>
 
       {/* data container */}
-      <BookingsList bookingData={bookingData} selectedTab={selectedTab} />
+      <BookingsList bookingData={bookingDetails} selectedTab={selectedTab} />
     </div>
   );
 }
