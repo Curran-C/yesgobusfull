@@ -29,17 +29,20 @@ export default function MyBookings() {
     <div className="my__bookings">
       {/* Tabs for my bookings */}
       <div className="tabs">
-        <button className="tab__btn" onClick={() => setSelectedTab("upcoming")}>
+        <button
+          className={`tab__btn ${selectedTab === "upcoming" ? "active" : ""} `}
+          onClick={() => setSelectedTab("upcoming")}
+        >
           Upcoming
         </button>
         <button
-          className="tab__btn"
+          className={`tab__btn ${selectedTab === "completed" ? "active" : ""} `}
           onClick={() => setSelectedTab("completed")}
         >
           Completed
         </button>
         <button
-          className="tab__btn"
+          className={`tab__btn ${selectedTab === "cancelled" ? "active" : ""} `}
           onClick={() => setSelectedTab("cancelled")}
         >
           Cancelled
