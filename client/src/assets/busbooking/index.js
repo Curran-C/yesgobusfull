@@ -10,6 +10,7 @@ import ladiesavailable from "./ladiesavailable.png";
 import ladiesbooked from "./ladiesbooked.png";
 import selected from "./selected.png";
 import driver from "./driver.png";
+import selectedFill from "./selectedFilled.svg";
 
 export {
   twowayarrow,
@@ -24,4 +25,5 @@ export {
   ladiesbooked,
   selected,
   driver,
+  selectedFill,
 };

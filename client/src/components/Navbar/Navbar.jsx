@@ -5,7 +5,7 @@ import Button from "../Button/Button";
 
 import "./Navbar.scss";
 import { blacklogo } from "../../assets/homepage";
-import UserIcon from "../Profile/Icons/UserIcon";
+import UserIcon from "../SvgIcons/UserIcon";
 
 const Navbar = ({ page }) => {
   const [showMenu, setShowMenu] = useState(false);

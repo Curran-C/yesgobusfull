@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import "./Profile.scss";
 import { Navbar } from "../../components";
-import UserIcon from "../../components/Profile/Icons/UserIcon";
-import TicketIcon from "../../components/Profile/Icons/TicketIcon";
-import NotificationIcon from "../../components/Profile/Icons/NotificationIcon";
+import UserIcon from "../../components/SvgIcons/UserIcon";
+import TicketIcon from "../../components/SvgIcons/TicketIcon";
+import NotificationIcon from "../../components/SvgIcons/NotificationIcon";
 import MyProfile from "../../components/Profile/Options/MyProfile/MyProfile";
 import MyBookings from "../../components/Profile/Options/MyBookings/MyBookings";
 import { useNavigate } from "react-router-dom";
