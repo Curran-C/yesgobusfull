@@ -231,3 +231,24 @@ export const getBookingById = async (bookingId) => {
     throw error.message;
   }
 };
+
+
+export const getAllBookings = async (userId) => {
+  try {
+    const booking = await BusBooking.find({userId});
+    if (!booking) {
+      return {
+        status: 404,
+        message: "Booking not found",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Booking retrieved",
+      data: booking,
+    };
+  } catch (error) {
+    throw error.message;
+  }
+};

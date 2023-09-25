@@ -1,9 +1,41 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./MyProfile.scss";
+import axios from "axios";
 
 export default function MyProfile() {
-  function handleSubmit(e) {
+  const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
+
+  const [formData, setFormData] = useState({
+    fullName: loggedInUser.fullName || "",
+    email: loggedInUser.email || "",
+    phoneNumber: loggedInUser.phoneNumber || "",
+    gender: loggedInUser.gender || "Select Gender",
+  });
+
+  function handleInputChange(e) {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  }
+
+  const handleSubmit = async(e) => {
     e.preventDefault();
+    console.log(formData);
+    try {
+      const { data: updatedUser } = await axios.patch(
+        `${
+          import.meta.env.VITE_BASE_URL
+        }/api/user/updateProfile/${loggedInUser._id}`, formData
+      );
+      if(updatedUser.status === 200) {
+        localStorage.setItem("loggedInUser", JSON.stringify(updatedUser.data));
+        alert("Profile Updated"); 
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -13,9 +45,11 @@ export default function MyProfile() {
         <input
           type="Name"
           id="name"
-          name="name"
+          name="fullName"
           placeholder="Enter Name"
           className="profile__input"
+          value={formData.fullName}
+          onChange={handleInputChange}
         />
 
         <input
@@ -24,21 +58,26 @@ export default function MyProfile() {
           id="email"
           placeholder="Enter Email"
           className="profile__input"
+          value={formData.email}
+          onChange={handleInputChange}
         />
 
         <input
           type="tel"
-          name="mobile"
+          name="phoneNumber"
           id="mobile"
           placeholder="Mobile Number"
           className="profile__input"
+          value={formData.phoneNumber}
+          onChange={handleInputChange}
         />
 
         <select
           name="gender"
           id="gender"
           className="profile__input select"
-          defaultValue={"Select Gender"}
+          value={formData.gender}
+          onChange={handleInputChange}
         >
           <option
             value="Select Gender"
@@ -52,14 +91,16 @@ export default function MyProfile() {
           <option value="other">Other</option>
         </select>
 
-        <input
+        {/* <input
           type="password"
           name="password"
           id="password"
           placeholder="Password"
           className="profile__input"
           autoComplete="new-password"
-        />
+          value={formData.password}
+          onChange={handleInputChange}
+        /> */}
 
         <button type="submit" className="save-btn orange__button">
           Save

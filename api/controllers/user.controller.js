@@ -3,6 +3,7 @@ import {
   signIn,
   googleSignUp,
   facebookSignUp,
+  updateUserProfile,
 } from "../service/user.service.js";
 
 export const signUpController = async (req, res) => {
@@ -54,6 +55,16 @@ export const facebookSignInController = async (req, res) => {
   try {
     const { name, email } = req.body;
     const result = await facebookSignUp({ name, email });
+    res.status(result.status).send(result);
+  } catch (err) {
+    res.status(500).json({ message: "An error occurred while signing in" });
+  }
+};
+
+export const updateUserProfileController = async (req, res) => {
+  try {
+    const { userId } = req.params
+    const result = await updateUserProfile(userId, req.body);
     res.status(result.status).send(result);
   } catch (err) {
     res.status(500).json({ message: "An error occurred while signing in" });

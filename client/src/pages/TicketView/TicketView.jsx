@@ -9,32 +9,16 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
-
+import { useNavigate } from "react-router-dom";
 const contactNumber = "040-22233311";
 
 export default function TicketView() {
+  const [downloaded, setDownloaded] = useState(false);
+  const navigate = useNavigate();
   const urlSearchParams = new URLSearchParams(window.location.search);
   const bookingId = urlSearchParams.get("bookingId");
   const [bookingDetails, setBookingDetails] = useState(null);
-  // Mock data for ticket
-  // const bookingData = {
-  //   from: "Mysore",
-  //   to: "Bangalore",
-  //   date: "Tuesday, 04 July, 2023",
-  //   class: "TATA A/C Sleeper (2+1) 44 Seats",
-  //   boarding: {
-  //     time: "19:00",
-  //     date: "4th July 2023",
-  //     location: "Infosys Gate",
-  //     subLocation: "INFOSYS GATE NO 2,134,33",
-  //   },
-  //   dropping: {
-  //     time: "21:00",
-  //     date: "4th July 2023",
-  //     location: "Hcross",
-  //     subLocation: "Hcross high way , bng",
-  //   },
-  // };
+  const downloadParam = urlSearchParams.get("download");
 
   const handleDownloadPDF = () => {
     const element = document.querySelector(".ticketview__wrapper");
@@ -71,14 +55,17 @@ export default function TicketView() {
         button.style.display = "block";
       });
     });
+    setDownloaded(true);
   };
 
   useEffect(() => {
+    if (downloadParam === "1" && downloaded === false) {
+      handleDownloadPDF();
+    }
     const getBookingDetails = async () => {
       try {
         const { data: getBookingDetails } = await axios.get(
-          `${
-            import.meta.env.VITE_BASE_URL
+          `${import.meta.env.VITE_BASE_URL
           }/api/busBooking/getBookingById/${bookingId}`
         );
         setBookingDetails(getBookingDetails.data);
@@ -88,7 +75,7 @@ export default function TicketView() {
     };
     getBookingDetails();
   }, []);
-  
+
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
@@ -130,7 +117,7 @@ export default function TicketView() {
           <div className="dropping__details">
             <p>Dropping Points Details</p>
             <p className="orange-btn">
-               {bookingDetails?.reachTime}
+              {bookingDetails?.reachTime}
             </p>
             <div>
               {/* <p className="location">{bookingData.dropping.location}</p> */}
@@ -224,7 +211,7 @@ export default function TicketView() {
         <Link to={`/`} className="home">
           Home
         </Link>
-        
+
         <button className="download" onClick={() => handleDownloadPDF()}>Download Ticket</button>
       </div>
     </div>
