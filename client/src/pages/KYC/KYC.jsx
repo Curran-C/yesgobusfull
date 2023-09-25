@@ -31,7 +31,7 @@ const KYC = () => {
         `${import.meta.env.VITE_BASE_URL}/api/driver/signup`,
         user
       );
-      console.log(response.data)
+      console.log(response.data);
       setDriverId(response.data.data._id);
       // navigate(`/cabs/kyc/payment`, {
       //   state: {
@@ -73,9 +73,9 @@ const KYC = () => {
       if (
         response.data?.status === "success" &&
         response.data?.data?.full_name
-          .replace(/\s/g, '')
+          .replace(/\s/g, "")
           .toLowerCase()
-          .includes(user.accHolderName.replace(/\s/g, '').toLowerCase())
+          .includes(user.accHolderName.replace(/\s/g, "").toLowerCase())
       ) {
         alert("Account verified");
       } else {
@@ -163,6 +163,13 @@ const KYC = () => {
               givenName={"pincode"}
               title={"Pin Code"}
               type={"number"}
+              isKyc={true}
+            />
+            <Input
+              onChanged={setUser}
+              givenName={"vehicleNumber"}
+              title={"Vehicle Number"}
+              type={"text"}
               isKyc={true}
             />
           </div>

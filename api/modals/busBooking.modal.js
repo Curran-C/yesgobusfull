@@ -8,6 +8,12 @@ const boardingPointSchema = new Schema({
   time: String,
 });
 
+const droppingPointSchema = new Schema({
+  id: String,
+  location: String,
+  time: String,
+});
+
 const seatDetailsSchema = new Schema({
   age: String,
   name: String,
@@ -35,6 +41,10 @@ const busBookingSchema = new Schema({
   doj: Date,
   routeScheduleId: String,
   boardingPoint: boardingPointSchema,
+  droppingPoint: droppingPointSchema,
+  busOperator: String,
+  busType: String,
+  selectedSeats: String,
   customerName: String,
   customerLastName: String,
   customerEmail: String,
@@ -51,7 +61,11 @@ const busBookingSchema = new Schema({
   tid: String,
   buspnr: String,
   opPNR: String,
-});
+},
+  {
+    timestamps: true,
+  }
+);
 
 
 const BusBooking = mongoose.model("BusBooking", busBookingSchema);

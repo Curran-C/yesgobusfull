@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { hamburger } from "../../assets";
-import { logoblack } from "../../assets/homepage/index";
+import { blacklogo } from "../../assets/homepage/index";
 import Button from "../Button/Button";
 
 import "./KycNavbar.scss";
@@ -31,7 +31,11 @@ const KycNavbar = () => {
       {/* navlinks */}
       <div className="left">
         <a href="/">
-          <img src={logoblack} alt="" />
+          <img
+            src={blacklogo}
+            alt=""
+            style={{ width: "80px", height: "80px" }}
+          />
         </a>
         <a href="/cabs">
           <span>Cab</span>

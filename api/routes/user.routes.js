@@ -3,6 +3,8 @@ import {
   signUpController,
   signInController,
   googleSignInController,
+  facebookSignInController,
+  updateUserProfileController,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -10,5 +12,7 @@ const router = express.Router();
 router.post("/signup", signUpController);
 router.post("/signin", signInController);
 router.post("/googleSignIn", googleSignInController);
+router.post("/facebookSignIn", facebookSignInController);
+router.patch("/updateProfile/:userId", updateUserProfileController);
 
 export default router;

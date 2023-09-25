@@ -11,6 +11,7 @@ import {
   searchCity,
   updateBookings,
   getBookingById,
+  getAllBookings,
 } from "../service/buBooking.service.js";
 
 export const getCityListController = async (req, res) => {
@@ -182,6 +183,21 @@ export const getBookingByIdController = async (req, res) => {
   try {
     const { bookingId } = req.params;
     const response = await getBookingById(bookingId);
+    res.status(response.status).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while getting booking details",
+    });
+  }
+};
+
+
+export const getAllBookingsController = async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const response = await getAllBookings(userId);
     res.status(response.status).send(response);
   } catch (error) {
     console.log(error);

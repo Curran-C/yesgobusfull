@@ -36,6 +36,33 @@
   }
 
   .right {
+    .user {
+      color: inherit;
+      text-decoration: none;
+      margin: 0;
+      padding: 0;
+      font-weight: 600;
+
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+
+      .user-icon {
+        background-color: #fd5901;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5em;
+        color: white;
+
+        svg {
+          fill: white;
+        }
+      }
+    }
   }
   .hamburger {
     display: none;
