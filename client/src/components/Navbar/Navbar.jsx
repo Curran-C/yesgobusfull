@@ -5,17 +5,17 @@ import Button from "../Button/Button";
 
 import "./Navbar.scss";
 import { blacklogo } from "../../assets/homepage";
-import UserIcon from "../Profile/Icons/UserIcon";
+import UserIcon from "../SvgIcons/UserIcon";
 
 const Navbar = ({ page }) => {
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("loggedInUser");
-    navigate("/login");
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem("token");
+  //   localStorage.removeItem("loggedInUser");
+  //   navigate("/login");
+  // };
 
   const loggedInUser = localStorage.getItem("loggedInUser");
 

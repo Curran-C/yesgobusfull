@@ -7,6 +7,7 @@ import {
   ladiesavailable,
   ladiesbooked,
   selected,
+  selectedFill,
 } from "../../assets/busbooking";
 import PickUpAndDropPoints from "../PickUpAndDropPoints/PickUpAndDropPoints";
 import SeatLegend from "../SeatLegend/SeatLegend";
@@ -35,7 +36,6 @@ const Seats = ({
   price,
   seatDetails,
 }) => {
-
   //* states
   const navigate = useNavigate();
   const [boardingPoints, setBoardingPoint] = useState([]);
@@ -61,7 +61,15 @@ const Seats = ({
     tax: 0,
     totalFare: 0,
   });
-  const seatSelectionHandler = (seatId, fare, tax, totalFare, isLadiesSeat, isAC, isSleeper) => {
+  const seatSelectionHandler = (
+    seatId,
+    fare,
+    tax,
+    totalFare,
+    isLadiesSeat,
+    isAC,
+    isSleeper
+  ) => {
     return setBookingDetails((prev) => {
       let newSelected = [...prev.selectedSeats];
       let newFare = prev.fare;
@@ -72,9 +80,9 @@ const Seats = ({
       let newLadiesSeat = [...prev.ladiesSeat];
       let newAC = [...prev.ac];
       let newSleeper = [...prev.sleeper];
-  
+
       const seatIndex = newSelected.indexOf(seatId);
-  
+
       if (seatIndex === -1) {
         newSelected.push(seatId);
         newFare += fare;
@@ -96,7 +104,7 @@ const Seats = ({
         newSleeper.splice(seatIndex, 1);
         newLadiesSeat.splice(seatIndex, 1);
       }
-  
+
       return {
         ...prev,
         selectedSeats: newSelected,
@@ -111,7 +119,6 @@ const Seats = ({
       };
     });
   };
-  
 
   const lowerTierSeats = seatDetails.filter((seat) => seat.zIndex === 0);
   const upperTierSeats = seatDetails.filter((seat) => seat.zIndex === 1);
@@ -124,19 +131,29 @@ const Seats = ({
 
     for (let row = 0; row < numRows; row++) {
       const seatRow = [];
-  
+
       for (let col = 0; col < numCols; col++) {
         const seat = seats.find((s) => s.row === row && s.column === col);
-  
+
         if (seat) {
           if (seat.available) {
             if (selectedSeats.includes(seat.id)) {
               seatRow.push(
                 <td key={seat.id}>
                   <img
-                    onClick={() => seatSelectionHandler(seat.id, seat.fare, seat.serviceTaxAmount, seat.totalFareWithTaxes, seat.ladiesSeat, seat.ac, seat.sleeper)}
+                    onClick={() =>
+                      seatSelectionHandler(
+                        seat.id,
+                        seat.fare,
+                        seat.serviceTaxAmount,
+                        seat.totalFareWithTaxes,
+                        seat.ladiesSeat,
+                        seat.ac,
+                        seat.sleeper
+                      )
+                    }
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
-                    src={selected}
+                    src={selectedFill}
                     alt="selected seat"
                   />
                 </td>
@@ -146,7 +163,17 @@ const Seats = ({
                 seatRow.push(
                   <td key={seat.id}>
                     <img
-                      onClick={() => seatSelectionHandler(seat.id, seat.fare, seat.serviceTaxAmount, seat.totalFareWithTaxes, seat.ladiesSeat, seat.ac, seat.sleeper)}
+                      onClick={() =>
+                        seatSelectionHandler(
+                          seat.id,
+                          seat.fare,
+                          seat.serviceTaxAmount,
+                          seat.totalFareWithTaxes,
+                          seat.ladiesSeat,
+                          seat.ac,
+                          seat.sleeper
+                        )
+                      }
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                       src={ladiesavailable}
                       alt="available ladies"
@@ -157,7 +184,17 @@ const Seats = ({
                 seatRow.push(
                   <td key={seat.id}>
                     <img
-                      onClick={() => seatSelectionHandler(seat.id, seat.fare, seat.serviceTaxAmount, seat.totalFareWithTaxes, seat.ladiesSeat, seat.ac, seat.sleeper)}
+                      onClick={() =>
+                        seatSelectionHandler(
+                          seat.id,
+                          seat.fare,
+                          seat.serviceTaxAmount,
+                          seat.totalFareWithTaxes,
+                          seat.ladiesSeat,
+                          seat.ac,
+                          seat.sleeper
+                        )
+                      }
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                       src={available}
                       alt="available"
@@ -193,10 +230,10 @@ const Seats = ({
           seatRow.push(<td key={`empty-${row}-${col}`}></td>);
         }
       }
-  
+
       seatTable.push(<tr key={`row-${row}`}>{seatRow}</tr>);
     }
-  
+
     return (
       <table>
         <tbody>{seatTable}</tbody>
@@ -205,7 +242,7 @@ const Seats = ({
   };
 
   useEffect(() => {
-    const getSeats = async() => {
+    const getSeats = async () => {
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
@@ -223,9 +260,37 @@ const Seats = ({
         alert("Something went wrong");
         console.error("Something went wrong:", error);
       }
-    }
+    };
     getSeats();
   }, []);
+
+
+  const handleContinue = () => {
+
+    if (
+      bookingDetails.boardingPoint.id &&
+      bookingDetails.droppingPoint &&
+      bookingDetails.selectedSeats.length !== 0
+    ) {
+      navigate("/busbooking/payment", {
+        state: {
+          sourceCity,
+          destinationCity,
+          routeScheduleId,
+          inventoryType,
+          doj,
+          pickUpTime,
+          reachTime,
+          travelTime,
+          busType,
+          busName,
+          bookingDetails,
+        },
+      });
+    } else {
+      alert("Please select seats, boarding and droping points");
+    }
+  }
 
   return (
     <div className="seats">
@@ -279,7 +344,7 @@ const Seats = ({
         <div className="legend">
           <SeatLegend title={"Booked"} img={booked} />
           <SeatLegend title={"Available"} img={available} />
-          <SeatLegend title={"Selected"} img={selected} />
+          <SeatLegend title={"Selected"} img={selectedFill} />
           <SeatLegend
             title={"Ladies"}
             subtitle={"(Available)"}
@@ -317,23 +382,7 @@ const Seats = ({
 
         <div className="continue">
           <Button
-            onClicked={() =>
-              navigate('/busbooking/payment', {
-                state: {
-                  sourceCity,
-                  destinationCity,
-                  routeScheduleId,
-                  inventoryType,
-                  doj,
-                  pickUpTime,
-                  reachTime,
-                  travelTime,
-                  busType,
-                  busName,
-                  bookingDetails,
-                },
-              })
-            }
+            onClicked={() => handleContinue()}
             text={"Continue"}
           />
         </div>

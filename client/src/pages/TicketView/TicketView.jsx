@@ -5,29 +5,81 @@ import { Link } from "react-router-dom";
 import Terms from "../../components/TicketView/Terms";
 import CustomerSupport from "../../components/TicketView/CustomerSupport";
 import TicketHead from "../../components/TicketView/TicketHead";
-
+import { useState, useEffect } from "react";
+import axios from "axios";
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { useNavigate } from "react-router-dom";
 const contactNumber = "040-22233311";
 
 export default function TicketView() {
-  // Mock data for ticket
-  const bookingData = {
-    from: "Mysore",
-    to: "Bangalore",
-    date: "Tuesday, 04 July, 2023",
-    class: "TATA A/C Sleeper (2+1) 44 Seats",
-    boarding: {
-      time: "19:00",
-      date: "4th July 2023",
-      location: "Infosys Gate",
-      subLocation: "INFOSYS GATE NO 2,134,33",
-    },
-    dropping: {
-      time: "21:00",
-      date: "4th July 2023",
-      location: "Hcross",
-      subLocation: "Hcross high way , bng",
-    },
+  const [downloaded, setDownloaded] = useState(false);
+  const navigate = useNavigate();
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const bookingId = urlSearchParams.get("bookingId");
+  const [bookingDetails, setBookingDetails] = useState(null);
+  const downloadParam = urlSearchParams.get("download");
+
+  const handleDownloadPDF = () => {
+    const element = document.querySelector(".ticketview__wrapper");
+    const buttons = document.querySelectorAll(".action__buttons button");
+    buttons.forEach((button) => {
+      button.style.display = "none";
+    });
+    html2canvas(element, {
+      allowTaint: false,
+      removeContainer: true,
+      backgroundColor: "#ffffff",
+      scale: window.devicePixelRatio,
+      useCORS: false,
+    }).then((canvas) => {
+      const contentDataURL = canvas.toDataURL("image/png");
+      const imgWidth = 210;
+      const pageHeight = 295;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+      let pdf = new jsPDF("p", "mm", "a4");
+      let position = 5;
+
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      pdf.save(`${bookingId}.pdf`);
+      buttons.forEach((button) => {
+        button.style.display = "block";
+      });
+    });
+    setDownloaded(true);
   };
+
+  useEffect(() => {
+    if (downloadParam === "1" && downloaded === false) {
+      handleDownloadPDF();
+    }
+    const getBookingDetails = async () => {
+      try {
+        const { data: getBookingDetails } = await axios.get(
+          `${import.meta.env.VITE_BASE_URL
+          }/api/busBooking/getBookingById/${bookingId}`
+        );
+        setBookingDetails(getBookingDetails.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    getBookingDetails();
+  }, []);
+
+  function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  }
 
   return (
     <div className="ticketview__wrapper">
@@ -38,15 +90,15 @@ export default function TicketView() {
         {/* Journey from and to */}
         <div className="journey__details">
           <h1>
-            {bookingData.from} to {bookingData.to}
+            {bookingDetails?.sourceCity} to {bookingDetails?.destinationCity}
           </h1>
-          <p>{bookingData.date}</p>
+          <p>{formatDate(bookingDetails?.doj)}</p>
         </div>
 
         {/* Bus class */}
         <div className="bus__details">
-          <h3>Yesgobus</h3>
-          <p>{bookingData.class}</p>
+          <h3>{bookingDetails?.busOperator}</h3>
+          <p>{bookingDetails?.busType}</p>
         </div>
 
         {/* Pickup and Drop details */}
@@ -54,22 +106,22 @@ export default function TicketView() {
           <div className="boarding__details">
             <p>Boarding Points Details</p>
             <p className="orange-btn">
-              {bookingData.boarding.time}, {bookingData.boarding.date}
+              {bookingDetails?.pickUpTime}
             </p>
             <div>
-              <p className="location">{bookingData.boarding.location}</p>
-              <p className="sub-location">{bookingData.boarding.subLocation}</p>
+              {/* <p className="location">{bookingDetails?.boardingPoint.location}</p> */}
+              <p className="sub-location">{bookingDetails?.boardingPoint?.location}</p>
             </div>
           </div>
 
           <div className="dropping__details">
             <p>Dropping Points Details</p>
             <p className="orange-btn">
-              {bookingData.dropping.time}, {bookingData.dropping.date}
+              {bookingDetails?.reachTime}
             </p>
             <div>
-              <p className="location">{bookingData.dropping.location}</p>
-              <p className="sub-location">{bookingData.dropping.subLocation}</p>
+              {/* <p className="location">{bookingData.dropping.location}</p> */}
+              <p className="sub-location">{bookingDetails?.droppingPoint?.location}</p>
             </div>
           </div>
         </div>
@@ -84,11 +136,11 @@ export default function TicketView() {
           <div className="schedule">
             <div className="reporting">
               <p>Reporting Time</p>
-              <p>{bookingData.boarding.time}</p>
+              <p>{bookingDetails?.pickUpTime}</p>
             </div>
             <div className="arriving">
               <p>Arriving Time</p>
-              <p>{bookingData.dropping.time}</p>
+              <p>{bookingDetails?.reachTime}</p>
             </div>
           </div>
         </div>
@@ -114,35 +166,35 @@ export default function TicketView() {
                   className="font-24"
                   style={{ textAlign: "left", width: "30%", minWidth: "20ch" }}
                 >
-                  Pramod
+                  {bookingDetails?.customerName} {bookingDetails?.customerLastName}
                 </td>
                 <td
                   className="font-24"
                   style={{ width: "7.5%", minWidth: "5ch" }}
                 >
-                  28
+                  {bookingDetails?.blockSeatPaxDetails[0].age}
                 </td>
                 <td
                   className="font-24"
                   style={{ width: "7.5%", minWidth: "8ch" }}
                 >
-                  E 05
+                  {bookingDetails?.selectedSeats}
                 </td>
                 <td
                   className="font-24"
                   style={{ width: "50%", minWidth: "40ch" }}
                 >
-                  <p>Yesgobus Booking ID {"KA-10987645823CGX"}</p>
-                  <p>Operator PNR #{"523565"}</p>
+                  <p>Yesgobus Booking ID {bookingDetails?.tid}</p>
+                  <p>Operator PNR :{bookingDetails?.opPNR}</p>
                   <div className="price">
-                    <p>₹ {"830.00"}</p>
+                    <p>₹ {bookingDetails?.totalAmount}</p>
                   </div>
                   <p>
                     You have saved ₹ {"30.00"}
                     <span style={{ fontSize: "20px" }}> Via yesgobus</span>
                   </p>
                   <p className="font-400">
-                    Booked on {"03-07-2023"} at : {"08:19:00 Pm"}
+                    Booked on {formatDate(bookingDetails?.createdAt)}
                   </p>
                 </td>
               </tr>
@@ -159,7 +211,8 @@ export default function TicketView() {
         <Link to={`/`} className="home">
           Home
         </Link>
-        <button className="download">Download Ticket</button>
+
+        <button className="download" onClick={() => handleDownloadPDF()}>Download Ticket</button>
       </div>
     </div>
   );

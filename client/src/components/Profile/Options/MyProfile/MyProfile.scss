@@ -13,7 +13,7 @@
 
   .info__grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
     gap: 2.5em;
 
     @media (min-width: 1200px) {
@@ -26,12 +26,25 @@
       outline: none;
 
       background-color: #fafafa;
+      color: rgba(121, 121, 121, 1);
       padding: 1em 1.5em;
       font-size: 1rem;
     }
 
+    .select {
+      appearance: none;
+      font-size: inherit;
+      font-family: inherit;
+      color: rgba(121, 121, 121, 1);
+
+      option {
+        color: black;
+      }
+    }
+
     .save-btn {
       grid-column: 1/2;
+      padding-inline: 1em;
     }
   }
 }

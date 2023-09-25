@@ -173,6 +173,12 @@ const Payment = () => {
             ...blockSeatRequestBody,
             userId: loggedInUser._id,
             totalAmount: bookingDetails?.totalFare,
+            busOperator: busName,
+            busType: busType,
+            selectedSeats: bookingDetails.selectedSeats?.join(", "),
+            pickUpTime: pickUpTime,
+            reachTime: reachTime,
+            droppingPoint: bookingDetails.droppingPoint,
           }
         );
 

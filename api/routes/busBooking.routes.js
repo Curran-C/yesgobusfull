@@ -12,6 +12,7 @@ import {
     searchCityController,
     updateBookingsController,
     getBookingByIdController,
+    getAllBookingsController,
 } from "../controllers/busBooking.controller.js";
 import { authenticateUser } from "../middleware/authenticateUser.js";
 
@@ -35,6 +36,7 @@ router.get("/searchCity/:searchParam", searchCityController);
 router.post("/bookBus", bookBusController);
 router.patch("/updateBooking/:bookingId", updateBookingsController);
 router.get("/getBookingById/:bookingId", getBookingByIdController);
+router.get("/getAllBookings/:userId", getAllBookingsController);
 
 
 export default router;

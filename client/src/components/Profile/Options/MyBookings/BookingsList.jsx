@@ -1,13 +1,27 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { WatermarkIcon } from "../../../../assets/contact";
 
 export default function BookingsList({ bookingData, selectedTab }) {
-  const TicketOptions = ({ selectedTab }) => {
+  function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  }
+  const TicketOptions = ({ selectedTab, bookingId, tid }) => {
+    const handleCancelTicket = async (bookingId, tid) => {
+      try {
+        console.log(bookingId, tid);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     if (selectedTab === "upcoming") {
       return (
         <>
-          <button className="orange-btn">Download Ticket</button>
-          <button className="red-btn">Cancel Ticket</button>
+          <Link to={`/busbooking/ticket?bookingId=${bookingId}&download=1`}>
+            <button className="orange-btn">Download Ticket</button>
+          </Link>
+          <button className="red-btn" onClick={() => handleCancelTicket(bookingId, tid)}>Cancel Ticket</button>
         </>
       );
     } else if (selectedTab === "completed") {
@@ -28,28 +42,32 @@ export default function BookingsList({ bookingData, selectedTab }) {
         />
       </div>
 
-      {/* Journey details */}
-      <div className="journey__details">
-        <h1>
-          {bookingData.from} to {bookingData.to}
-        </h1>
-        <p>{bookingData.date}</p>
-      </div>
+      {bookingData?.map((booking, index) => (
+        <div key={index}>
+          {/* Journey details */}
+          <div className="journey__details">
+            <h1>
+              {booking.sourceCity} to {booking.destinationCity}
+            </h1>
+            <p>{formatDate(booking.doj)}</p>
+          </div>
 
-      {/* Bus class */}
-      <div className="bus__details">
-        <h3>Yesgobus</h3>
-        <p>{bookingData.class}</p>
-      </div>
+          {/* Bus class */}
+          <div className="bus__details">
+            <h3>{booking.busOperator}</h3>
+            <p>{booking.busType}</p>
+          </div>
 
-      <div
-        className="ticket__options"
-        style={{
-          justifyContent: `${selectedTab === "upcoming" ? "" : "center"}`,
-        }}
-      >
-        <TicketOptions selectedTab={selectedTab} />
-      </div>
+          <div
+            className="ticket__options"
+            style={{
+              justifyContent: `${selectedTab === "upcoming" ? "" : "center"}`,
+            }}
+          >
+            <TicketOptions selectedTab={selectedTab} bookingId={booking._id} tid={booking.tid} />
+          </div>
+        </div>
+      ))}
     </div>
   );
 }
