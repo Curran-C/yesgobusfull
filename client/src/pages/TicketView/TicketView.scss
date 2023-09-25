@@ -18,6 +18,7 @@
   position: relative;
 
   &::before {
+    z-index: -100;
     content: "";
     position: absolute;
     top: 0px;
