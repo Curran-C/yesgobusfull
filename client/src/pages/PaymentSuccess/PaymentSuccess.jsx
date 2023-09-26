@@ -15,9 +15,6 @@ const PaymentSuccess = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   console.log(bookingId);
   useEffect(() => {
-    // const sendMessage = async () => {
-
-    // }
     const getBookingDetails = async () => {
       try {
         const { data: getBookingDetails } = await axios.get(
@@ -26,16 +23,16 @@ const PaymentSuccess = () => {
           }/api/busBooking/getBookingById/${bookingId}`
         );
         setBookingDetails(getBookingDetails.data);
-        const {data: sendMessageResponse} = await axios.post(
-          `${
-            import.meta.env.VITE_BASE_URL
-          }/api/busBooking/sendBookingConfirmationMessage`, {
-            tid: getBookingDetails.data.tid,
-            opPNR: getBookingDetails.data.opPNR,
-            doj: getBookingDetails.data.doj,
-            toNumber: getBookingDetails.data.customerPhone,
-          }
-        );
+        // const {data: sendMessageResponse} = await axios.post(
+        //   `${
+        //     import.meta.env.VITE_BASE_URL
+        //   }/api/busBooking/sendBookingConfirmationMessage`, {
+        //     tid: getBookingDetails.data.tid,
+        //     opPNR: getBookingDetails.data.opPNR,
+        //     doj: getBookingDetails.data.doj,
+        //     toNumber: getBookingDetails.data.customerPhone,
+        //   }
+        // );
       } catch (error) {
         console.log(error);
       }
