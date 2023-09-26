@@ -6,7 +6,7 @@ import axios from "axios";
 export default function MyBookings() {
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   const [bookingDetails, setBookingDetails] = useState(null);
-
+  const [cancelled, setCancelled] = useState(false);
   useEffect(() => {
     const getBookingDetails = async () => {
       try {
@@ -22,7 +22,7 @@ export default function MyBookings() {
       }
     };
     getBookingDetails();
-  }, []);
+  }, [cancelled]);
 
 
   const [selectedTab, setSelectedTab] = useState("upcoming");
@@ -52,7 +52,7 @@ export default function MyBookings() {
       </div>
 
       {/* data container */}
-      <BookingsList bookingData={bookingDetails} selectedTab={selectedTab} />
+      <BookingsList bookingData={bookingDetails} selectedTab={selectedTab} setCancelled={setCancelled} cancelled={cancelled}/>
     </div>
   );
 }

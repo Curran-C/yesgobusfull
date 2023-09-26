@@ -112,6 +112,8 @@ const BusBooking = () => {
       setNoOfBuses(response.data.data.length);
     } catch (error) {
       // alert("Something went wrong");
+      setBusDetails([]);
+      setNoOfBuses(0);
       console.error("omething went wrong:", error);
     } finally {
       setLoading(false);
@@ -261,6 +263,7 @@ const BusBooking = () => {
                   dropLocationOne={bus.droppingPoints}
                   // dropLocationTwo={dropLocationTwo}
                   backSeat={true}
+                  cancellationPolicy={bus.cancellationPolicy}
                 />
               ))}
 

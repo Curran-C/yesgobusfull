@@ -1,19 +1,46 @@
 .Payment {
+    .loading-spinner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(255, 255, 255, 0.8);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+    }
+
+    .ant-spin {
+        font-size: 24px;
+    }
+
+    .ant-spin-dot {
+        i {
+            background-color: #1890ff;
+        }
+    }
+
     .navbar {
         padding: 0px 50px;
         height: 130px;
+
         .left {
             a {
                 color: black;
             }
         }
     }
+
     .container {
         display: flex;
         padding: 30px;
         justify-content: space-between;
+
         .containerleft {
             width: 60%;
+
             h5 {
                 font-size: 20px;
                 color: #9a9898;
@@ -32,20 +59,24 @@
                 padding: 20px;
                 height: 250px;
                 border: 1px solid #dadada;
+
                 .reviewleft {
                     display: flex;
                     flex-direction: column;
                     align-items: start;
                     justify-content: space-between;
+
                     .to {
                         display: flex;
                         gap: 30px;
                     }
+
                     .liveLocation {
                         display: flex;
                         gap: 10px;
                     }
                 }
+
                 .reviewright {
                     display: flex;
                     align-items: end;
@@ -53,13 +84,16 @@
                     text-align: left;
                     flex-direction: column;
                     font-size: 15px;
+
                     span {
                         font-weight: 600;
                     }
+
                     span:nth-child(2) {
                         font-size: 14px;
                         font-weight: 200;
                     }
+
                     a {
                         font-size: 12px;
                     }
@@ -78,22 +112,27 @@
                 margin-top: 30px;
                 flex-direction: column;
                 gap: 20px;
+
                 span {
                     font-size: 30px;
                     font-weight: 500;
                 }
+
                 display: flex;
                 flex-direction: column;
+
                 .detailsContainer {
                     display: flex;
                     gap: 30px;
                     flex-wrap: wrap;
                     padding: 30px;
                     border: 1px solid #dadada;
+
                     .genderContainer {
                         display: flex;
                         flex-direction: column;
                         gap: 3px;
+
                         select {
                             width: 300px;
                             padding: 15px 20px;
@@ -110,9 +149,11 @@
                 padding: 30px;
                 margin-top: 30px;
                 border: 1px solid #dadada;
+
                 hr {
                     width: 100%;
                 }
+
                 .checks {
                     margin-top: 20px;
                     display: flex;
@@ -120,6 +161,7 @@
                     gap: 30px;
                     font-size: 18px;
                     font-weight: 500;
+
                     .checkbox-round {
                         width: 1.3em;
                         height: 1.3em;
@@ -139,6 +181,7 @@
                 }
             }
         }
+
         .containerright {
             display: flex;
             flex-direction: column;
@@ -146,6 +189,7 @@
             width: 30%;
             gap: 20px;
             padding: 30px;
+
             .paymentCard {
                 padding: 20px;
                 display: flex;
@@ -153,25 +197,30 @@
                 align-items: start;
                 border: 1px solid #dadada;
                 width: 100%;
+
                 .prices {
                     display: flex;
                     flex-direction: column;
                     width: 100%;
                     margin-bottom: 30px;
+
                     hr {
                         width: 100%;
                         border: none;
                         height: 1px;
                         background-color: #dadada;
                     }
+
                     .price {
                         display: flex;
                         justify-content: space-between;
+
                         p:nth-child(1) {
                             color: #6d6d6d;
                         }
                     }
                 }
+
                 .promo {
                     display: flex;
                     flex-direction: column;
@@ -179,10 +228,12 @@
                     max-width: 300px;
                     border: 1px solid #dadada;
                     padding: 30px 30px;
+
                     .heading {
                         display: flex;
                         gap: 20px;
                     }
+
                     hr {
                         margin-bottom: 20px;
                         width: 100%;
@@ -190,6 +241,7 @@
                         height: 1px;
                         background-color: #dadada;
                     }
+
                     input {
                         padding: 10px 5px;
                         outline: none;
@@ -200,8 +252,10 @@
             }
         }
     }
+
     .popularBusRoutes {
         padding: 50px;
+
         .popularBusRoutesContainer {
             justify-content: center;
             display: flex;
@@ -218,19 +272,24 @@
 @media (max-width: 768px) {
     .container {
         padding: 10px;
+
         .containerleft {
             width: 50%;
             margin-right: 40px;
+
             .reviewsCard {
                 width: 400px;
             }
+
             .destinations {
                 flex-wrap: wrap;
             }
         }
+
         .containerright {
             width: 50%;
             padding: 10px;
+
             .promo {
                 width: 150px;
             }
@@ -243,16 +302,19 @@
         .container {
             flex-direction: column;
             justify-content: center;
+
             .containerleft {
                 width: 100%;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
+
                 .reviewsCard {
                     width: 350px;
                 }
             }
+
             .containerright {
                 width: 90%;
             }
