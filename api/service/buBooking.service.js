@@ -235,7 +235,7 @@ export const getBookingById = async (bookingId) => {
 
 export const getAllBookings = async (userId) => {
   try {
-    const booking = await BusBooking.find({userId});
+    const booking = await BusBooking.find({userId: userId,bookingStatus: "paid" });
     if (!booking) {
       return {
         status: 404,
