@@ -19,8 +19,10 @@ import axios from "axios";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { bookSeat } from "../../../../api/service/buBooking.service";
+import { Spin } from "antd";
 
 const Payment = () => {
+  const [loading, setLoading] = useState(false);
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!loggedInUser) {
     return <Navigate to="/login" replace />;
@@ -51,6 +53,7 @@ const Payment = () => {
     busType,
     busName,
     bookingDetails,
+    cancellationPolicy,
   } = location.state || {};
   const [executed, setExecuted] = useState(false);
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -63,6 +66,7 @@ const Payment = () => {
   //verify payment and book ticket
   useEffect(() => {
     const paymentVerification = async () => {
+      setLoading(true);
       // get bookings
       const getBookingDetails = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBookingById/${bookingId}`
@@ -101,8 +105,10 @@ const Payment = () => {
             );
 
             // navigate to payment successfull page
+            setLoading(false);
             navigate(`/busbooking/payment/success?bookingId=${bookingId}`);
           } else {
+            setLoading(false);
             navigate("/busbooking/payment/failure");
           }
         } else {
@@ -166,7 +172,7 @@ const Payment = () => {
         blockSeatPaxDetails: seatObjects,
         inventoryType: inventoryType,
       };
-      
+
       // block seat
       const blockSeat = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
@@ -186,6 +192,7 @@ const Payment = () => {
             pickUpTime: pickUpTime,
             reachTime: reachTime,
             droppingPoint: bookingDetails.droppingPoint,
+            cancellationPolicy: cancellationPolicy,
           }
         );
 
@@ -249,12 +256,12 @@ const Payment = () => {
       errors.mobile = "Mobile is required";
     }
 
-    if(!userData.age?.trim()) {
+    if (!userData.age?.trim()) {
       errors.age = "Age is required";
     }
     if (!userData.address?.trim()) {
       errors.address = "Address is required";
-    } 
+    }
     if (!userData.idNumber?.trim()) {
       errors.idNumber = "ID Number is required";
     }
@@ -529,6 +536,11 @@ const Payment = () => {
         </div>
       </div>
       <Footer />
+      {loading ? (
+        <div className="loading-spinner">
+          <Spin size="large" />
+        </div>
+      ) : null}
     </div>
   );
 };

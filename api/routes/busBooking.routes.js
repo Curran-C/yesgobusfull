@@ -13,6 +13,7 @@ import {
     updateBookingsController,
     getBookingByIdController,
     getAllBookingsController,
+    sendBookingConfirmationMessage,
 } from "../controllers/busBooking.controller.js";
 import { authenticateUser } from "../middleware/authenticateUser.js";
 
@@ -37,6 +38,6 @@ router.post("/bookBus", bookBusController);
 router.patch("/updateBooking/:bookingId", updateBookingsController);
 router.get("/getBookingById/:bookingId", getBookingByIdController);
 router.get("/getAllBookings/:userId", getAllBookingsController);
-
+router.post("/sendBookingConfirmationMessage", sendBookingConfirmationMessage);
 
 export default router;

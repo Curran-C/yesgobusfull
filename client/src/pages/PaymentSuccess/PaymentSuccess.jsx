@@ -15,6 +15,9 @@ const PaymentSuccess = () => {
   const [bookingDetails, setBookingDetails] = useState(null);
   console.log(bookingId);
   useEffect(() => {
+    // const sendMessage = async () => {
+
+    // }
     const getBookingDetails = async () => {
       try {
         const { data: getBookingDetails } = await axios.get(
@@ -23,6 +26,16 @@ const PaymentSuccess = () => {
           }/api/busBooking/getBookingById/${bookingId}`
         );
         setBookingDetails(getBookingDetails.data);
+        const {data: sendMessageResponse} = await axios.post(
+          `${
+            import.meta.env.VITE_BASE_URL
+          }/api/busBooking/sendBookingConfirmationMessage`, {
+            tid: getBookingDetails.data.tid,
+            opPNR: getBookingDetails.data.opPNR,
+            doj: getBookingDetails.data.doj,
+            toNumber: getBookingDetails.data.customerPhone,
+          }
+        );
       } catch (error) {
         console.log(error);
       }
@@ -31,40 +44,6 @@ const PaymentSuccess = () => {
   }, []);
 
   const handleDownloadPDF = () => {
-    // const element = document.querySelector(".container");
-    // const buttons = document.querySelectorAll(".buttons button");
-    // buttons.forEach((button) => {
-    //   button.style.display = "none";
-    // });
-    // html2canvas(element, {
-    //   allowTaint: false,
-    //   removeContainer: true,
-    //   backgroundColor: "#ffffff",
-    //   scale: window.devicePixelRatio,
-    //   useCORS: false,
-    // }).then((canvas) => {
-    //   const contentDataURL = canvas.toDataURL("image/png");
-    //   const imgWidth = 210;
-    //   const pageHeight = 295;
-    //   const imgHeight = (canvas.height * imgWidth) / canvas.width;
-    //   let heightLeft = imgHeight;
-    //   let pdf = new jsPDF("p", "mm", "a4");
-    //   let position = 5;
-
-    //   pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-    //   heightLeft -= pageHeight;
-
-    //   while (heightLeft >= 0) {
-    //     position = heightLeft - imgHeight;
-    //     pdf.addPage();
-    //     pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-    //     heightLeft -= pageHeight;
-    //   }
-    //   pdf.save(`${bookingId}.pdf`);
-    //   buttons.forEach((button) => {
-    //     button.style.display = "block";
-    //   });
-    // });
     navigate(`/busbooking/ticket?bookingId=${bookingId}&download=1`);
   };
 
