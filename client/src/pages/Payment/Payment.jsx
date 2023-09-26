@@ -96,7 +96,7 @@ const Payment = () => {
                 bookingStatus: "paid",
                 tid: bookSeat?.data.BookingDetail.etstnumber,
                 buspnr: bookSeat?.data.buspnr,
-                opPNR: bookSeat?.data.opPNR,
+                opPNR: bookSeat?.data.BookingDetail.opPNR,
               }
             );
 

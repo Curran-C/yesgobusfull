@@ -21,7 +21,7 @@ export default function TicketView() {
   const downloadParam = urlSearchParams.get("download");
 
   const handleDownloadPDF = () => {
-    const element = document.querySelector(".ticketview__wrapper");
+    const element = document.querySelector(".ticket");
     const buttons = document.querySelectorAll(".action__buttons button");
     buttons.forEach((button) => {
       button.style.display = "none";

@@ -26,7 +26,7 @@ router.post("/searchBus", searchBusController);
 router.post("/getSeatLayout", getSeatLayoutController);
 router.post("/blockSeat", blockSeatController);
 router.get("/bookSeat/:ticketKey", bookSeatController);
-router.get("/cancelTicket", cancelTicketController);
+router.post("/cancelTicket", cancelTicketController);
 
 router.get("/getFilters", getBusFiltersController);
 router.post("/getBusDetails", getBusDetailsController);

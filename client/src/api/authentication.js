@@ -20,3 +20,25 @@ export const facebookLoginAPI = async (fbResponse) => {
     console.error("Error logging in using facebook : ", error);
   }
 };
+
+export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
+  try {
+    const { data: cancelTicketResponse } = await axios.post("/api/busBooking/cancelTicket", cancelTicketData);
+    if (cancelTicketResponse.apiStatus?.success) {
+      refundData.amount = parseFloat(cancelTicketResponse.totalRefundAmount);
+      const { data: refundResponse } = await axios.post("/api/payment/refundPayment", refundData);
+      if (refundResponse.success === "true") {
+        const updateDetails = {
+          bookingStatus: "cancelled",
+          totalRefundAmount: cancelTicketResponse.totalRefundAmount,
+          cancelChargesPercentage: cancelTicketResponse.cancelChargesPercentage,
+          cancellationCharges: cancelTicketResponse.cancellationCharges,
+        }
+        const updateBookingResponse = await axios.patch(`/api/busBooking/updateBooking/${bookingId}`, updateDetails);
+        return updateBookingResponse;
+      }
+    }
+  } catch (error) {
+    console.error("Error cancelling the ticket : ", error);
+  }
+};
