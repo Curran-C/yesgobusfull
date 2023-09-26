@@ -21,7 +21,7 @@ export default function TicketView() {
   const downloadParam = urlSearchParams.get("download");
 
   const handleDownloadPDF = () => {
-    const element = document.querySelector(".ticketview__wrapper");
+    const element = document.querySelector(".ticket");
     const buttons = document.querySelectorAll(".action__buttons button");
     buttons.forEach((button) => {
       button.style.display = "none";
@@ -59,9 +59,6 @@ export default function TicketView() {
   };
 
   useEffect(() => {
-    if (downloadParam === "1" && downloaded === false) {
-      handleDownloadPDF();
-    }
     const getBookingDetails = async () => {
       try {
         const { data: getBookingDetails } = await axios.get(
@@ -69,6 +66,12 @@ export default function TicketView() {
           }/api/busBooking/getBookingById/${bookingId}`
         );
         setBookingDetails(getBookingDetails.data);
+        if (downloadParam === "1" && downloaded === false) {
+          handleDownloadPDF();
+          setTimeout(() => {
+            navigate("/profile");
+          }, 100);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -189,10 +192,10 @@ export default function TicketView() {
                   <div className="price">
                     <p>₹ {bookingDetails?.totalAmount}</p>
                   </div>
-                  <p>
+                  {/* <p>
                     You have saved ₹ {"30.00"}
                     <span style={{ fontSize: "20px" }}> Via yesgobus</span>
-                  </p>
+                  </p> */}
                   <p className="font-400">
                     Booked on {formatDate(bookingDetails?.createdAt)}
                   </p>
@@ -204,7 +207,7 @@ export default function TicketView() {
 
         <CustomerSupport contactNumber={contactNumber} />
 
-        <Terms />
+        <Terms cancellationPolicy={bookingDetails?.cancellationPolicy}/>
       </section>
 
       <div className="action__buttons">

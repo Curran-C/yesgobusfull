@@ -25,6 +25,7 @@ const BusBookingCard = ({
   reachLocation,
   price,
   seatsLeft,
+  cancellationPolicy,
   // pickUpTimes,
   // pickUpLocationOne,
   // pickUpLocationTwo,
@@ -126,6 +127,7 @@ const BusBookingCard = ({
           busType={busType}
           price={price}
           seatDetails={seatDetails}
+          cancellationPolicy={cancellationPolicy}
         />
       )}
     </div>

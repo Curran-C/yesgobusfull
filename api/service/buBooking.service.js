@@ -191,9 +191,9 @@ export const searchCity = async (searchParam) => {
 export const updateBookings = async (bookingId, bookingDetails) => {
   try {
     const updatedBooking = await BusBooking.findOneAndUpdate(
-      { _id: bookingId }, 
-      { $set: bookingDetails }, 
-      { new: true } 
+      { _id: bookingId },
+      { $set: bookingDetails },
+      { new: true }
     );
     if (!updatedBooking) {
       return {
@@ -235,7 +235,7 @@ export const getBookingById = async (bookingId) => {
 
 export const getAllBookings = async (userId) => {
   try {
-    const booking = await BusBooking.find({userId: userId,bookingStatus: "paid" });
+    const booking = await BusBooking.find({ userId: userId, bookingStatus: "paid" });
     if (!booking) {
       return {
         status: 404,

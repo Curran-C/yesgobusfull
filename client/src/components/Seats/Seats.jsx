@@ -285,6 +285,7 @@ const Seats = ({
           busType,
           busName,
           bookingDetails,
+          cancellationPolicy,
         },
       });
     } else {
