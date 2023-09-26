@@ -35,7 +35,7 @@ export const initiatePayment = async (args) => {
     "merchantId": process.env.MERCHANT_ID,
     "merchantTransactionId": merchantTransactionId,
     "merchantUserId": merchantUserId,
-    "amount": amount*100,
+    "amount": amount * 100,
     "redirectUrl": redirectUrl,
     "redirectMode": "GET",
     "callbackUrl": "https://webhook.site/callback-url",
@@ -91,4 +91,41 @@ export const checkPaymentStatus = async (args) => {
   const url = `https://api.phonepe.com/apis/hermes${apiEndpoint}`;
 
   return sendRequest(url, "GET", headers, requestData);
+};
+
+//payment refund
+export const refundPayment = async (args) => {
+  const { amount, merchantTransactionId } = args;
+  const newMerchantId = `R${merchantTransactionId}`;
+  const payload = {
+    "merchantId": process.env.MERCHANT_ID,
+    "originalTransactionId": merchantTransactionId,
+    "merchantTransactionId": newMerchantId,
+    "amount": amount * 100,
+    "callbackUrl": "https://webhook.site/callback-url",
+  };
+
+  const payloadString = JSON.stringify(payload);
+  const base64Payload = Buffer.from(payloadString).toString('base64');
+  const requestData = {
+    request: base64Payload
+  }
+
+  const apiEndpoint = "/pg/v1/refund";
+  const saltKey = process.env.SALT_KEY;
+  const saltIndex = process.env.SALT_INDEX;
+
+  const concatenatedData = base64Payload + apiEndpoint + saltKey;
+  const sha256Hash = crypto.createHash('sha256');
+  const checksum = sha256Hash.update(concatenatedData).digest('hex');
+  const xVerify = checksum.toString() + "###" + saltIndex;
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-VERIFY': xVerify,
+  };
+  // const url = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/refund";
+  const url = "https://api.phonepe.com/apis/hermes/pg/v1/refund";
+
+  return sendRequest(url, "POST", headers, requestData);
 };
