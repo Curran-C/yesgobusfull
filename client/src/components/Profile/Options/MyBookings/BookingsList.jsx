@@ -1,27 +1,41 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { WatermarkIcon } from "../../../../assets/contact";
+import { cancelTicket } from "../../../../api/authentication";
 
-export default function BookingsList({ bookingData, selectedTab }) {
+export default function BookingsList({ bookingData, selectedTab, setCancelled, cancelled }) {
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   }
-  const TicketOptions = ({ selectedTab, bookingId, tid }) => {
-    const handleCancelTicket = async (bookingId, tid) => {
+  const TicketOptions = ({ selectedTab, bookingData, tid }) => {
+    const handleCancelTicket = async (bookingData, tid) => {
       try {
-        console.log(bookingId, tid);
+        const seatNbrsToCancel = bookingData.selectedSeats.split(',').map(seat => seat.trim());;
+        const cancelTicketData = {
+          etsTicketNo: bookingData.tid,
+          seatNbrsToCancel: seatNbrsToCancel,
+        }
+        const refundData = {
+          merchantTransactionId: bookingData.merchantTransactionId,
+        }
+        const cancelTicketResponse = await cancelTicket(refundData, cancelTicketData, bookingData._id);
+        if (cancelTicketResponse.status === 200) {
+          alert("Booking Cancelled. Refund will be processed soon");
+          setCancelled(!cancelled);
+        }
       } catch (error) {
+        alert("Oops this ticket can not be cancelled");
         console.log(error);
       }
     }
     if (selectedTab === "upcoming") {
       return (
         <>
-          <Link to={`/busbooking/ticket?bookingId=${bookingId}&download=1`}>
+          <Link to={`/busbooking/ticket?bookingId=${bookingData._id}&download=1`}>
             <button className="orange-btn">Download Ticket</button>
           </Link>
-          <button className="red-btn" onClick={() => handleCancelTicket(bookingId, tid)}>Cancel Ticket</button>
+          <button className="red-btn" onClick={() => handleCancelTicket(bookingData, tid)}>Cancel Ticket</button>
         </>
       );
     } else if (selectedTab === "completed") {
@@ -64,7 +78,7 @@ export default function BookingsList({ bookingData, selectedTab }) {
               justifyContent: `${selectedTab === "upcoming" ? "" : "center"}`,
             }}
           >
-            <TicketOptions selectedTab={selectedTab} bookingId={booking._id} tid={booking.tid} />
+            <TicketOptions selectedTab={selectedTab} bookingData={booking} tid={booking.tid} />
           </div>
         </div>
       ))}

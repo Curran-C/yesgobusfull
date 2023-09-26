@@ -13,6 +13,7 @@ import {
   getBookingById,
   getAllBookings,
 } from "../service/buBooking.service.js";
+import { sendMessage } from "../utils/sendMessage.js";
 
 export const getCityListController = async (req, res) => {
   try {
@@ -207,3 +208,17 @@ export const getAllBookingsController = async (req, res) => {
     });
   }
 };
+
+export const sendBookingConfirmationMessage = async (req, res) => {
+  try {
+    const { tid, opPNR, doj, toNumber } = req.body;
+    const response = await sendMessage(tid, opPNR, doj, toNumber);
+    res.status(200).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while getting booking details",
+    });
+  }
+}

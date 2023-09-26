@@ -19,8 +19,10 @@ import axios from "axios";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { bookSeat } from "../../../../api/service/buBooking.service";
+import { Spin } from "antd";
 
 const Payment = () => {
+  const [loading, setLoading] = useState(false);
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!loggedInUser) {
     return <Navigate to="/login" replace />;
@@ -51,6 +53,7 @@ const Payment = () => {
     busType,
     busName,
     bookingDetails,
+    cancellationPolicy,
   } = location.state || {};
   const [executed, setExecuted] = useState(false);
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -63,6 +66,7 @@ const Payment = () => {
   //verify payment and book ticket
   useEffect(() => {
     const paymentVerification = async () => {
+      setLoading(true);
       // get bookings
       const getBookingDetails = await axios.get(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBookingById/${bookingId}`
@@ -84,7 +88,7 @@ const Payment = () => {
             `${import.meta.env.VITE_BASE_URL
             }/api/busBooking/bookSeat/${blockTicketId}`
           );
-          
+
           // if booking is successfull
           if (bookSeat.data.status === "success") {
 
@@ -96,13 +100,15 @@ const Payment = () => {
                 bookingStatus: "paid",
                 tid: bookSeat?.data.BookingDetail.etstnumber,
                 buspnr: bookSeat?.data.buspnr,
-                opPNR: bookSeat?.data.opPNR,
+                opPNR: bookSeat?.data.BookingDetail.opPNR,
               }
             );
 
             // navigate to payment successfull page
+            setLoading(false);
             navigate(`/busbooking/payment/success?bookingId=${bookingId}`);
           } else {
+            setLoading(false);
             navigate("/busbooking/payment/failure");
           }
         } else {
@@ -119,6 +125,13 @@ const Payment = () => {
 
   //handle payment
   const handlePayment = async () => {
+    //validate input
+    const errors = validateUserData();
+    if (Object.keys(errors).length > 0) {
+      alert("Please fill in all the traveler details.");
+      return;
+    }
+
     //seats data
     const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
       return {
@@ -179,6 +192,7 @@ const Payment = () => {
             pickUpTime: pickUpTime,
             reachTime: reachTime,
             droppingPoint: bookingDetails.droppingPoint,
+            cancellationPolicy: cancellationPolicy,
           }
         );
 
@@ -210,6 +224,8 @@ const Payment = () => {
         } else {
           alert("Please try with other seat or bus.");
         }
+      } else {
+        alert("Seat is already blocked, Please try with other seat or bus.");
       }
     } catch (error) {
       console.log(error);
@@ -221,6 +237,35 @@ const Payment = () => {
     setUserData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
+  };
+
+  //validation
+  const validateUserData = () => {
+    const errors = {};
+    if (!userData.firstName?.trim()) {
+      errors.firstName = "First name is required";
+    }
+    if (!userData.lastName?.trim()) {
+      errors.lastName = "Last name is required";
+    }
+    if (!userData.email?.trim()) {
+      errors.email = "Email is required";
+    }
+
+    if (!userData.mobile?.trim()) {
+      errors.mobile = "Mobile is required";
+    }
+
+    if (!userData.age?.trim()) {
+      errors.age = "Age is required";
+    }
+    if (!userData.address?.trim()) {
+      errors.address = "Address is required";
+    }
+    if (!userData.idNumber?.trim()) {
+      errors.idNumber = "ID Number is required";
+    }
+    return errors;
   };
 
   return (
@@ -308,7 +353,7 @@ const Payment = () => {
               <Input
                 title={"Age"}
                 type={"number"}
-                placeholder={"40"}
+                placeholder={"Enter Age"}
                 onChanged={handleInputChange}
                 givenName={"age"}
               />
@@ -491,6 +536,11 @@ const Payment = () => {
         </div>
       </div>
       <Footer />
+      {loading ? (
+        <div className="loading-spinner">
+          <Spin size="large" />
+        </div>
+      ) : null}
     </div>
   );
 };
