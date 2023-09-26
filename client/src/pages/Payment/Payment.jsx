@@ -84,7 +84,7 @@ const Payment = () => {
             `${import.meta.env.VITE_BASE_URL
             }/api/busBooking/bookSeat/${blockTicketId}`
           );
-          
+
           // if booking is successfull
           if (bookSeat.data.status === "success") {
 
@@ -119,6 +119,13 @@ const Payment = () => {
 
   //handle payment
   const handlePayment = async () => {
+    //validate input
+    const errors = validateUserData();
+    if (Object.keys(errors).length > 0) {
+      alert("Please fill in all the traveler details.");
+      return;
+    }
+
     //seats data
     const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
       return {
@@ -159,7 +166,7 @@ const Payment = () => {
         blockSeatPaxDetails: seatObjects,
         inventoryType: inventoryType,
       };
-
+      
       // block seat
       const blockSeat = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
@@ -210,6 +217,8 @@ const Payment = () => {
         } else {
           alert("Please try with other seat or bus.");
         }
+      } else {
+        alert("Seat is already blocked, Please try with other seat or bus.");
       }
     } catch (error) {
       console.log(error);
@@ -221,6 +230,35 @@ const Payment = () => {
     setUserData((prev) => {
       return { ...prev, [e.target.name]: e.target.value };
     });
+  };
+
+  //validation
+  const validateUserData = () => {
+    const errors = {};
+    if (!userData.firstName?.trim()) {
+      errors.firstName = "First name is required";
+    }
+    if (!userData.lastName?.trim()) {
+      errors.lastName = "Last name is required";
+    }
+    if (!userData.email?.trim()) {
+      errors.email = "Email is required";
+    }
+
+    if (!userData.mobile?.trim()) {
+      errors.mobile = "Mobile is required";
+    }
+
+    if(!userData.age?.trim()) {
+      errors.age = "Age is required";
+    }
+    if (!userData.address?.trim()) {
+      errors.address = "Address is required";
+    } 
+    if (!userData.idNumber?.trim()) {
+      errors.idNumber = "ID Number is required";
+    }
+    return errors;
   };
 
   return (
@@ -308,7 +346,7 @@ const Payment = () => {
               <Input
                 title={"Age"}
                 type={"number"}
-                placeholder={"40"}
+                placeholder={"Enter Age"}
                 onChanged={handleInputChange}
                 givenName={"age"}
               />
