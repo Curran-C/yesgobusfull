@@ -35,6 +35,7 @@ const Seats = ({
   busName,
   price,
   seatDetails,
+  cancellationPolicy,
 }) => {
   //* states
   const navigate = useNavigate();

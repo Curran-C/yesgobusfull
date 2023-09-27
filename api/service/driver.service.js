@@ -1,6 +1,7 @@
 import Driver from "../modals/driver.modal.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { sendMail } from "../utils/helper.js";
 
 export const signUp = async (userData) => {
   try {
@@ -12,7 +13,22 @@ export const signUp = async (userData) => {
         password: hashedPassword,
       });
       await newUser.save();
-      
+      const message = `
+        New user signed up:
+        Name: ${newUser.firstName} ${newUser.lastName}
+        Email: ${newUser.email}
+        Phone: ${newUser.phNum}
+        pancard: ${newUser.pancard || ""}
+        aadhar: ${newUser.pancard || ""}
+        driving license: ${newUser.drivinglicense || ""}
+        vehicleNumber:  ${newUser.vehicleNumber || ""}
+        Bank details
+        
+        Acc Holder Name:${newUser.accHolderName}
+        Bank Acc Num:${newUser.bankAccNum}
+        ifsc:${newUser.ifsc}
+      `;
+      await sendMail('yesgobus.help@gmail.com', 'New User Sign Up', message);
       return {
         status: 200,
         message: "SignUp Successful",

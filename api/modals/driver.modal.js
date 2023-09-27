@@ -70,7 +70,11 @@ const driverSchema = new Schema(
     paymentStatus: {
       type: String,
       default: "pending",
-    }
+    },
+    vehicleNumber: {
+      type: String,
+      required: true
+    },
   },
   {
     timestamps: true

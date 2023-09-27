@@ -93,7 +93,7 @@ const Payment = () => {
           if (bookSeat.data.status === "success") {
 
             // update booking in the db
-            const updatePaymentDetails = await axios.patch(
+            const { data: updatePaymentDetails } = await axios.patch(
               `${import.meta.env.VITE_BASE_URL
               }/api/busBooking/updateBooking/${bookingId}`,
               {
@@ -103,7 +103,17 @@ const Payment = () => {
                 opPNR: bookSeat?.data.BookingDetail.opPNR,
               }
             );
-
+            const mailBody = {
+              tid: bookSeat?.data.BookingDetail.etstnumber,
+              opPNR: bookSeat?.data.BookingDetail.opPNR,
+              doj: formatDate(updatePaymentDetails?.data.doj),
+              to: updatePaymentDetails?.data.email,
+            }
+            const sendMail = await axios.post(
+              `${import.meta.env.VITE_BASE_URL
+              }/api/busBooking/sendBookingConfirmationEmail`,
+              mailBody
+            );
             // navigate to payment successfull page
             setLoading(false);
             navigate(`/busbooking/payment/success?bookingId=${bookingId}`);
@@ -122,6 +132,11 @@ const Payment = () => {
   }, [paymentVerify]);
 
   const date = new Date();
+
+  function formatDate(dateString) {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  }
 
   //handle payment
   const handlePayment = async () => {
