@@ -21,14 +21,15 @@ export const signUp = async (userData) => {
         pancard: ${newUser.pancard || ""}
         aadhar: ${newUser.pancard || ""}
         driving license: ${newUser.drivinglicense || ""}
-        
+        vehicleNumber:  ${newUser.vehicleNumber || ""}
         Bank details
         
         Acc Holder Name:${newUser.accHolderName}
         Bank Acc Num:${newUser.bankAccNum}
         ifsc:${newUser.ifsc}
       `;
-      await sendMail('yesgobus.help@gmail.com', 'New User Sign Up', message);
+      // await sendMail('yesgobus.help@gmail.com', 'New User Sign Up', message);
+      await sendMail('adithyahebbar32@gmail.com', 'New User Sign Up', message);
       return {
         status: 200,
         message: "SignUp Successful",
