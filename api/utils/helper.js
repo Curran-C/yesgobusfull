@@ -1,4 +1,8 @@
 import twilio from 'twilio';
+import sgMail from '@sendgrid/mail';
+import dotenv from "dotenv";
+dotenv.config();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 export const sendMessage = async (tid, opPNR, doj, toNumber) => {
   try {
@@ -18,3 +22,25 @@ export const sendMessage = async (tid, opPNR, doj, toNumber) => {
   }
 };
 
+export const sendMail = async (to, subject, message) => {
+  try {
+    const msg = {
+      to: to,
+      from: "yesgobus.help@gmail.com",
+      subject: subject,
+      text: message,
+    };
+    sgMail
+      .send(msg)
+      .then((response) => {
+        console.log(response[0].statusCode)
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+
+  } catch (error) {
+    console.error('Error sending message:', error);
+    throw error.message;
+  }
+};
