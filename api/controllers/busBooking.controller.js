@@ -13,7 +13,7 @@ import {
   getBookingById,
   getAllBookings,
 } from "../service/buBooking.service.js";
-import { sendMessage } from "../utils/sendMessage.js";
+import { sendMessage, sendMail } from "../utils/helper.js";
 
 export const getCityListController = async (req, res) => {
   try {
@@ -214,6 +214,25 @@ export const sendBookingConfirmationMessage = async (req, res) => {
     const { tid, opPNR, doj, toNumber } = req.body;
     const response = await sendMessage(tid, opPNR, doj, toNumber);
     res.status(200).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while getting booking details",
+    });
+  }
+}
+
+export const sendBookingConfirmationEmail = async (req, res) => {
+  try {
+    const { tid, opPNR, doj, to } = req.body;
+    const messageBody = `Your booking confirmation for YesGoBus:\nTicket Number: ${tid}\nopPNR: ${opPNR}\nDeparture Date: ${doj}\nThank you for choosing YesGoBus!`;
+    const subject = "Booking Confirmation";
+    await sendMail(to, subject, messageBody);
+    res.status(200).send({
+      status: 200,
+      message: "Email Sent",
+    });
   } catch (error) {
     console.log(error);
     return res.status(500).send({
