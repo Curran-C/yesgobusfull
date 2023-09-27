@@ -277,9 +277,9 @@ const Payment = () => {
     if (!userData.address?.trim()) {
       errors.address = "Address is required";
     }
-    if (!userData.idNumber?.trim()) {
-      errors.idNumber = "ID Number is required";
-    }
+    // if (!userData.idNumber?.trim()) {
+    //   errors.idNumber = "ID Number is required";
+    // }
     return errors;
   };
 
@@ -412,15 +412,15 @@ const Payment = () => {
                 placeholder={"1234567890"}
                 onChanged={handleInputChange}
                 givenName={"mobile"}
-                value={userData.mobile}
+                value={userData.mobile} 
               />
-              <Input
+              {/* <Input
                 title={"Altername Number"}
                 type={"number"}
                 placeholder={"1234567890"}
                 onChanged={handleInputChange}
                 givenName={"alternativeNumber"}
-              />
+              /> */}
               <Input
                 title={"Address"}
                 type={"text"}
@@ -527,7 +527,7 @@ const Payment = () => {
           />
         </div>
       </div>
-      <div className="popularBusRoutes">
+      {/* <div className="popularBusRoutes">
         <Title title={"Popular Bus Routes"} subtitle={"View More"} />
 
         <div className="popularBusRoutesContainer">
@@ -549,7 +549,7 @@ const Payment = () => {
             to={"Kunigal, Hassan, Sakaleshpura"}
           />
         </div>
-      </div>
+      </div> */}
       <Footer />
       {loading ? (
         <div className="loading-spinner">
