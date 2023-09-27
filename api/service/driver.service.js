@@ -28,7 +28,7 @@ export const signUp = async (userData) => {
         Bank Acc Num:${newUser.bankAccNum}
         ifsc:${newUser.ifsc}
       `;
-      await sendMail('adithyahebbar32@gmail.com', 'New User Sign Up', message);
+      await sendMail('yesgobus.help@gmail.com', 'New User Sign Up', message);
       return {
         status: 200,
         message: "SignUp Successful",
