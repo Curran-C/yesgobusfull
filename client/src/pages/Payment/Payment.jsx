@@ -412,7 +412,7 @@ const Payment = () => {
                 placeholder={"1234567890"}
                 onChanged={handleInputChange}
                 givenName={"mobile"}
-                value={userData.mobile} 
+                value={userData.mobile}
               />
               {/* <Input
                 title={"Altername Number"}
@@ -433,10 +433,13 @@ const Payment = () => {
 
           {/* Picode Details */}
           <div className="details">
+          <div class="label-container">
             <span>Enter ID Proof</span>
+            <label className="optional">*optional</label>
+            </div>
             <div className="detailsContainer">
               <div className="genderContainer">
-                <label htmlFor="gender">ID Type</label>
+                  <label htmlFor="gender">ID Type</label>
                 <select
                   name="idType"
                   id="idType"
