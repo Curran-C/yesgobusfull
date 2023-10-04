@@ -103,43 +103,43 @@ const Payment = () => {
                 opPNR: bookSeat?.data.BookingDetail.opPNR,
               }
             );
-            
-            // send mail
-            const mailBody = {
-              fullName: updatePaymentDetails?.data.customerName,
-              sourceCity: updatePaymentDetails?.data.sourceCity,
-              destinationCity: updatePaymentDetails?.data.destinationCity,
-              seats: updatePaymentDetails?.data.selectedSeats,
-              amount: updatePaymentDetails?.data.totalAmount,
-              pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
-              opPNR: bookSeat?.data.BookingDetail.opPNR,
-              doj: formatDate(updatePaymentDetails?.data.doj),
-              to: updatePaymentDetails?.data.customerEmail,
-            }
-            const sendMail = await axios.post(
-              `${import.meta.env.VITE_BASE_URL
-              }/api/busBooking/sendBookingConfirmationEmail`,
-              mailBody
-            );
+            if (updatePaymentDetails) {
+              // send mail
+              const mailBody = {
+                fullName: updatePaymentDetails?.data.customerName,
+                sourceCity: updatePaymentDetails?.data.sourceCity,
+                destinationCity: updatePaymentDetails?.data.destinationCity,
+                seats: updatePaymentDetails?.data.selectedSeats,
+                amount: updatePaymentDetails?.data.totalAmount,
+                pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
+                opPNR: updatePaymentDetails?.data.opPNR,
+                doj: formatDate(updatePaymentDetails?.data.doj),
+                to: updatePaymentDetails?.data.customerEmail,
+              }
+              const sendMail = await axios.post(
+                `${import.meta.env.VITE_BASE_URL
+                }/api/busBooking/sendBookingConfirmationEmail`,
+                mailBody
+              );
 
-            //send sms
-            const messageBody = {
-              fullName: updatePaymentDetails?.data.customerName,
-              sourceCity: updatePaymentDetails?.data.sourceCity,
-              destinationCity: updatePaymentDetails?.data.destinationCity,
-              seats: updatePaymentDetails?.data.selectedSeats,
-              amount: updatePaymentDetails?.data.totalAmount,
-              pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
-              opPNR: bookSeat?.data.BookingDetail.opPNR,
-              doj: formatDate(updatePaymentDetails?.data.doj),
-              to: updatePaymentDetails?.data.customerPhone,
+              //send sms
+              const messageBody = {
+                fullName: updatePaymentDetails?.data.customerName,
+                sourceCity: updatePaymentDetails?.data.sourceCity,
+                destinationCity: updatePaymentDetails?.data.destinationCity,
+                seats: updatePaymentDetails?.data.selectedSeats,
+                amount: updatePaymentDetails?.data.totalAmount,
+                pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
+                opPNR: updatePaymentDetails?.data.opPNR.split("/")[0],
+                doj: formatDate(updatePaymentDetails?.data.doj),
+                to: updatePaymentDetails?.data.customerPhone,
+              }
+              const sendMessage = await axios.post(
+                `${import.meta.env.VITE_BASE_URL
+                }/api/busBooking/sendBookingConfirmationMessage`,
+                messageBody,
+              );
             }
-            const sendMessage = await axios.post(
-              `${import.meta.env.VITE_BASE_URL
-              }/api/busBooking/sendBookingConfirmationMessage`,
-              messageBody,
-            );
-
             // navigate to payment successfull page
             setLoading(false);
             navigate(`/busbooking/payment/success?bookingId=${bookingId}`);

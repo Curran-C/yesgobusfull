@@ -21,21 +21,25 @@ export const facebookLoginAPI = async (fbResponse) => {
   }
 };
 
+function formatDate(dateString) {
+  const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+  return new Date(dateString).toLocaleDateString(undefined, options);
+}
+
 export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
   try {
     const { data: cancelTicketResponse } = await axios.post("/api/busBooking/cancelTicket", cancelTicketData);
     if (cancelTicketResponse.apiStatus?.success) {
       refundData.amount = parseFloat(cancelTicketResponse.totalRefundAmount);
       const { data: refundResponse } = await axios.post("/api/payment/refundPayment", refundData);
-      if (refundResponse.success === "true") {
+      if (refundResponse) {
         const updateDetails = {
           bookingStatus: "cancelled",
           totalRefundAmount: cancelTicketResponse.totalRefundAmount,
           cancelChargesPercentage: cancelTicketResponse.cancelChargesPercentage,
           cancellationCharges: cancelTicketResponse.cancellationCharges,
         }
-        const {data: updateBookingResponse} = await axios.patch(`/api/busBooking/updateBooking/${bookingId}`, updateDetails);
-
+        const { data: updateBookingResponse } = await axios.patch(`/api/busBooking/updateBooking/${bookingId}`, updateDetails);
         // send mail
         const mailBody = {
           fullName: updateBookingResponse?.data.customerName,
@@ -44,7 +48,7 @@ export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
           seats: updateBookingResponse?.data.selectedSeats,
           amount: updateBookingResponse?.data.totalAmount,
           pickUpLocation: updateBookingResponse?.data.boardingPoint.location,
-          opPNR: bookSeat?.data.BookingDetail.opPNR,
+          opPNR: updateBookingResponse?.data.opPNR,
           doj: formatDate(updateBookingResponse?.data.doj),
           to: updateBookingResponse?.data.customerEmail,
         }
@@ -62,7 +66,7 @@ export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
           seats: updateBookingResponse?.data.selectedSeats,
           amount: updateBookingResponse?.data.totalAmount,
           pickUpLocation: updateBookingResponse?.data.boardingPoint.location,
-          opPNR: bookSeat?.data.BookingDetail.opPNR,
+          opPNR: updateBookingResponse?.data.opPNR.split("/")[0],
           doj: formatDate(updateBookingResponse?.data.doj),
           to: updateBookingResponse?.data.customerPhone,
         }
