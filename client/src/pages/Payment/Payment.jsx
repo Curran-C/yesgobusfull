@@ -103,17 +103,43 @@ const Payment = () => {
                 opPNR: bookSeat?.data.BookingDetail.opPNR,
               }
             );
+            
+            // send mail
             const mailBody = {
-              tid: bookSeat?.data.BookingDetail.etstnumber,
+              fullName: updatePaymentDetails?.data.customerName,
+              sourceCity: updatePaymentDetails?.data.sourceCity,
+              destinationCity: updatePaymentDetails?.data.destinationCity,
+              seats: updatePaymentDetails?.data.selectedSeats,
+              amount: updatePaymentDetails?.data.totalAmount,
+              pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
               opPNR: bookSeat?.data.BookingDetail.opPNR,
               doj: formatDate(updatePaymentDetails?.data.doj),
-              to: updatePaymentDetails?.data.email,
+              to: updatePaymentDetails?.data.customerEmail,
             }
             const sendMail = await axios.post(
               `${import.meta.env.VITE_BASE_URL
               }/api/busBooking/sendBookingConfirmationEmail`,
               mailBody
             );
+
+            //send sms
+            const messageBody = {
+              fullName: updatePaymentDetails?.data.customerName,
+              sourceCity: updatePaymentDetails?.data.sourceCity,
+              destinationCity: updatePaymentDetails?.data.destinationCity,
+              seats: updatePaymentDetails?.data.selectedSeats,
+              amount: updatePaymentDetails?.data.totalAmount,
+              pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
+              opPNR: bookSeat?.data.BookingDetail.opPNR,
+              doj: formatDate(updatePaymentDetails?.data.doj),
+              to: updatePaymentDetails?.data.customerPhone,
+            }
+            const sendMessage = await axios.post(
+              `${import.meta.env.VITE_BASE_URL
+              }/api/busBooking/sendBookingConfirmationMessage`,
+              messageBody,
+            );
+
             // navigate to payment successfull page
             setLoading(false);
             navigate(`/busbooking/payment/success?bookingId=${bookingId}`);
@@ -433,13 +459,13 @@ const Payment = () => {
 
           {/* Picode Details */}
           <div className="details">
-          <div class="label-container">
-            <span>Enter ID Proof</span>
-            <label className="optional">*optional</label>
+            <div class="label-container">
+              <span>Enter ID Proof</span>
+              <label className="optional">*optional</label>
             </div>
             <div className="detailsContainer">
               <div className="genderContainer">
-                  <label htmlFor="gender">ID Type</label>
+                <label htmlFor="gender">ID Type</label>
                 <select
                   name="idType"
                   id="idType"

@@ -34,7 +34,44 @@ export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
           cancelChargesPercentage: cancelTicketResponse.cancelChargesPercentage,
           cancellationCharges: cancelTicketResponse.cancellationCharges,
         }
-        const updateBookingResponse = await axios.patch(`/api/busBooking/updateBooking/${bookingId}`, updateDetails);
+        const {data: updateBookingResponse} = await axios.patch(`/api/busBooking/updateBooking/${bookingId}`, updateDetails);
+
+        // send mail
+        const mailBody = {
+          fullName: updateBookingResponse?.data.customerName,
+          sourceCity: updateBookingResponse?.data.sourceCity,
+          destinationCity: updateBookingResponse?.data.destinationCity,
+          seats: updateBookingResponse?.data.selectedSeats,
+          amount: updateBookingResponse?.data.totalAmount,
+          pickUpLocation: updateBookingResponse?.data.boardingPoint.location,
+          opPNR: bookSeat?.data.BookingDetail.opPNR,
+          doj: formatDate(updateBookingResponse?.data.doj),
+          to: updateBookingResponse?.data.customerEmail,
+        }
+        const sendMail = await axios.post(
+          `${import.meta.env.VITE_BASE_URL
+          }/api/busBooking/sendCancelTicketEmail`,
+          mailBody
+        );
+
+        //send sms
+        const messageBody = {
+          fullName: updateBookingResponse?.data.customerName,
+          sourceCity: updateBookingResponse?.data.sourceCity,
+          destinationCity: updateBookingResponse?.data.destinationCity,
+          seats: updateBookingResponse?.data.selectedSeats,
+          amount: updateBookingResponse?.data.totalAmount,
+          pickUpLocation: updateBookingResponse?.data.boardingPoint.location,
+          opPNR: bookSeat?.data.BookingDetail.opPNR,
+          doj: formatDate(updateBookingResponse?.data.doj),
+          to: updateBookingResponse?.data.customerPhone,
+        }
+        const sendMessage = await axios.post(
+          `${import.meta.env.VITE_BASE_URL
+          }/api/busBooking/sendCancelTicketMessage`,
+          messageBody,
+        );
+
         return updateBookingResponse;
       }
     }
