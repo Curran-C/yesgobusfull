@@ -1,21 +1,31 @@
-import twilio from 'twilio';
+// import twilio from 'twilio';
 import sgMail from '@sendgrid/mail';
 import dotenv from "dotenv";
+import axios from "axios";
+
 dotenv.config();
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-export const sendMessage = async (tid, opPNR, doj, toNumber) => {
+export const sendMessage = async (message, to, templateId) => {
   try {
-    const accountSid = process.env.TWILIO_ACCOUNT_SID;
-    const authToken = process.env.TWILIO_AUTH_TOKEN;
-    const client = twilio(accountSid, authToken);
-
-    const message = await client.messages.create({
-      body: `Your booking confirmation for YesGoBus:\nTicket Number: ${tid}\nopPNR: ${opPNR}\nDeparture Date: ${doj}\nThank you for choosing YesGoBus!`,
-      from: '+13159049690',
-      to: toNumber
-    });
-    return message.sid;
+    const authKey = process.env.AUTH_KEY;
+    const senderId = process.env.SENDER_ID;
+    const baseUrl = "http://sms.chotaweb.com/api/sendhttp.php";
+    const response = axios.get(`${baseUrl}?
+    authkey=${authKey}&
+    mobiles=91${to}&
+    message=${message}&
+    sender=${senderId}&
+    route=4&
+    country=91&
+    DLT_TE_ID=${templateId}
+    `);
+    if(response) {
+      return {
+        status: 200,
+        message: "SMS sent successfully",
+      }
+    }
   } catch (error) {
     console.error('Error sending message:', error.message);
     throw error.message;

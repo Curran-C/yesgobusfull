@@ -15,6 +15,8 @@ import {
     getAllBookingsController,
     sendBookingConfirmationMessage,
     sendBookingConfirmationEmail,
+    sendCancelTicketMessage,
+    sendCancelTicketEmail,
 } from "../controllers/busBooking.controller.js";
 import { authenticateUser } from "../middleware/authenticateUser.js";
 
@@ -39,7 +41,11 @@ router.post("/bookBus", bookBusController);
 router.patch("/updateBooking/:bookingId", updateBookingsController);
 router.get("/getBookingById/:bookingId", getBookingByIdController);
 router.get("/getAllBookings/:userId", getAllBookingsController);
+
+//message and email
 router.post("/sendBookingConfirmationMessage", sendBookingConfirmationMessage);
+router.post("/sendCancelTicketMessage", sendCancelTicketMessage);
 router.post("/sendBookingConfirmationEmail", sendBookingConfirmationEmail);
+router.post("/sendCancelTicketEmail", sendCancelTicketEmail);
 
 export default router;

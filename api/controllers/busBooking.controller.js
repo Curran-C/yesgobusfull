@@ -211,23 +211,77 @@ export const getAllBookingsController = async (req, res) => {
 
 export const sendBookingConfirmationMessage = async (req, res) => {
   try {
-    const { tid, opPNR, doj, toNumber } = req.body;
-    const response = await sendMessage(tid, opPNR, doj, toNumber);
+    const { fullName, opPNR, doj, sourceCity, destinationCity, seats, amount, pickUpLocation, to } = req.body;
+    const truncatedPickupLocation =
+      pickUpLocation.length > 15
+        ? pickUpLocation.substring(0, 15) + '...'
+        : pickUpLocation;
+    const message =
+      `Dear ${fullName} Your PNR: ${opPNR} Journey: ${sourceCity} to  ${destinationCity} Seat: ${seats} Amount Rs.${amount} Date: ${doj} Contact: +91${to} Pickup: ${truncatedPickupLocation} Is Booked. Thank You, Shine Gobus`;
+    const templateId = process.env.BOOKING_CONFIRMATION_TEMPLATE_ID;
+    const response = await sendMessage(message, to, templateId);
     res.status(200).send(response);
   } catch (error) {
     console.log(error);
     return res.status(500).send({
       status: 500,
-      message: "An error occurred while getting booking details",
+      message: "An error occurred while sending sms",
     });
   }
 }
 
 export const sendBookingConfirmationEmail = async (req, res) => {
   try {
-    const { tid, opPNR, doj, to } = req.body;
-    const messageBody = `Your booking confirmation for YesGoBus:\nTicket Number: ${tid}\nopPNR: ${opPNR}\nDeparture Date: ${doj}\nThank you for choosing YesGoBus!`;
+    const { fullName, opPNR, doj, sourceCity, destinationCity, seats, amount, pickUpLocation, to } = req.body;
+    const message =`Dear ${fullName},
+      Your PNR: ${opPNR}
+      Journey: ${sourceCity} to  ${destinationCity}
+      Seat: ${seats}
+      Amount Rs.${amount}
+      Date: ${doj}
+      Email: ${to}
+      Pickup: ${pickUpLocation} Is Booked.
+      Thank You, Shine Gobus`;
     const subject = "Booking Confirmation";
+    await sendMail(to, subject, message);
+    res.status(200).send({
+      status: 200,
+      message: "Email Sent",
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while sending mail",
+    });
+  }
+}
+
+export const sendCancelTicketMessage = async (req, res) => {
+  try {
+    const { fullName, opPNR, sourceCity, destinationCity, to } = req.body;
+    const message =
+      `Dear ${fullName} Your PNR: ${opPNR} Journey: ${sourceCity} to  ${destinationCity} is Cancelled. Thank You, Shine Gobus`;
+    const templateId = process.env.BOOKING_CANCELLATION_TEMPLATE_ID;
+    const response = await sendMessage(message, to, templateId);
+    res.status(200).send(response);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({
+      status: 500,
+      message: "An error occurred while sending sms",
+    });
+  }
+}
+
+export const sendCancelTicketEmail = async (req, res) => {
+  try {
+    const { fullName, opPNR, sourceCity, destinationCity, to } = req.body;
+    const messageBody =`Dear ${fullName} 
+      Your PNR: ${opPNR} 
+      Journey: ${sourceCity} to  ${destinationCity} is Cancelled. 
+      Thank You, Shine Gobus`;
+    const subject = "Booking Cancelled";
     await sendMail(to, subject, messageBody);
     res.status(200).send({
       status: 200,
@@ -237,7 +291,7 @@ export const sendBookingConfirmationEmail = async (req, res) => {
     console.log(error);
     return res.status(500).send({
       status: 500,
-      message: "An error occurred while getting booking details",
+      message: "An error occurred while sending mail",
     });
   }
 }
