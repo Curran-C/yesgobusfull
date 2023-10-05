@@ -1,21 +1,40 @@
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { blackhamburger, hamburger, logo } from "../../assets";
 import { useNavigate, Link } from "react-router-dom";
 import Button from "../Button/Button";
-
 import "./Navbar.scss";
 import { blacklogo } from "../../assets/homepage";
 import UserIcon from "../SvgIcons/UserIcon";
 
 const Navbar = ({ page }) => {
+
+  const googleTranslateElementInit = () => {
+    new window.google.translate.TranslateElement(
+      {
+        pageLanguage: "en",
+        // includedLanguages: 'en,ms,ta,zh-CN',
+        layout: window.google.translate.TranslateElement.InlineLayout.TOP_RIGHT,
+      },
+      "google_translate_element"
+    );
+  };
+
+  useEffect(() => {
+  const translateElement = document.getElementById("google_translate_element");
+  if (translateElement) { 
+    translateElement.innerHTML = "";
+  }
+    const script = document.createElement("script");
+    script.src =
+      "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
+    script.async = true;
+    document.body.appendChild(script);
+    window.googleTranslateElementInit = googleTranslateElementInit;
+  }, []);
+  
+
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
-
-  // const handleLogout = () => {
-  //   localStorage.removeItem("token");
-  //   localStorage.removeItem("loggedInUser");
-  //   navigate("/login");
-  // };
 
   const loggedInUser = localStorage.getItem("loggedInUser");
 
@@ -30,9 +49,6 @@ const Navbar = ({ page }) => {
       <a href="/cabs">
         <span>Cabs</span>
       </a>
-      {/* <a>
-        <span>Offers</span>
-      </a> */}
       <a href="/contactus">
         <span>Contact Us</span>
       </a>
@@ -41,8 +57,6 @@ const Navbar = ({ page }) => {
 
   return (
     <nav className="navbar burger">
-      {/*logo*/}
-      {/* navlinks */}
       <div className="left">
         {page === "home" ? (
           <img
@@ -68,9 +82,6 @@ const Navbar = ({ page }) => {
         <a href="/cabs">
           <span>Cabs</span>
         </a>
-        {/* <a>
-          <span>Offers</span>
-        </a> */}
         <a href="/contactus">
           <span>Contact Us</span>
         </a>
@@ -78,7 +89,6 @@ const Navbar = ({ page }) => {
 
       <div className="right">
         {loggedInUser ? (
-          // <Button text="Logout" onClicked={handleLogout} />
           <Link to={`/profile`} className="user">
             <span className="user-icon">
               <UserIcon />
@@ -90,9 +100,9 @@ const Navbar = ({ page }) => {
             <Button text="Login / Signup" />
           </a>
         )}
+         <div id="google_translate_element"></div>
       </div>
-
-      {/* burger menu */}
+     
       {page === "home" ? (
         <img
           className="hamburger"
