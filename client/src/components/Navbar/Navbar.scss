@@ -36,6 +36,12 @@
   }
 
   .right {
+    position: relative;
+    #google_translate_element {
+      position: absolute;
+      top: -30px;
+      right: -40px;
+    }
     .user {
       color: inherit;
       text-decoration: none;
