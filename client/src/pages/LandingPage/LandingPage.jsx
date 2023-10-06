@@ -315,14 +315,14 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="customerReviews">
+      {/* <div className="customerReviews">
         <Title title={"Customer Reviews"} subtitle={"View More"} />
         <div className="customerReviewsContainer">
           <ReviewCard />
           <ReviewCard />
           <ReviewCard />
         </div>
-      </div>
+      </div> */}
 
       <div className="about">
         <TitleAndText

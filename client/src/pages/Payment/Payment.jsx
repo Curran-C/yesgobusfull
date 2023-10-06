@@ -148,6 +148,7 @@ const Payment = () => {
             navigate("/busbooking/payment/failure");
           }
         } else {
+          setLoading(false);
           alert("Payment Failed");
         }
       }
@@ -166,6 +167,7 @@ const Payment = () => {
 
   //handle payment
   const handlePayment = async () => {
+    setLoading(true);
     //validate input
     const errors = validateUserData();
     if (Object.keys(errors).length > 0) {
@@ -219,7 +221,7 @@ const Payment = () => {
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
         blockSeatRequestBody
       );
-
+      console.log(blockSeat?.data?.apiStatus?.success);
       if (blockSeat?.data?.apiStatus?.success === true) {
         const { data: bookResponse } = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
@@ -256,6 +258,7 @@ const Payment = () => {
             }
           );
           if (updatePaymentDetails.status === 200) {
+            setLoading(false);
             window.open(
               response.data.data.instrumentResponse.redirectInfo.url,
               "_blank",
@@ -263,9 +266,11 @@ const Payment = () => {
             );
           }
         } else {
+          setLoading(false);
           alert("Please try with other seat or bus.");
         }
       } else {
+        setLoading(false);
         alert("Seat is already blocked, Please try with other seat or bus.");
       }
     } catch (error) {

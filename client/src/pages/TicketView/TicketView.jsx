@@ -32,6 +32,7 @@ export default function TicketView() {
       backgroundColor: "#ffffff",
       scale: window.devicePixelRatio,
       useCORS: false,
+      windowWidth: '1400px'
     }).then((canvas) => {
       const contentDataURL = canvas.toDataURL("image/png");
       const imgWidth = 210;

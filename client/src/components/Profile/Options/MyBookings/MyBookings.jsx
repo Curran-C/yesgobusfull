@@ -11,12 +11,31 @@ export default function MyBookings() {
     const getBookingDetails = async () => {
       try {
         const { data: getBookingDetails } = await axios.get(
-          `${
-            import.meta.env.VITE_BASE_URL
+          `${import.meta.env.VITE_BASE_URL
           }/api/busBooking/getAllBookings/${loggedInUser._id}`
         );
-        console.log(getBookingDetails); 
-        setBookingDetails(getBookingDetails.data);
+        const currentDate = new Date();
+        const upcomingBookings = [];
+        const completedBookings = [];
+        const cancelledBookings = [];
+
+        getBookingDetails.data.forEach(booking => {
+          const doj = new Date(booking.doj);
+          console.log(doj < currentDate);
+          if (doj > currentDate && booking.bookingStatus === "paid") {
+            upcomingBookings.push(booking);
+          } else if (doj < currentDate && booking.bookingStatus === "paid") {
+            completedBookings.push(booking);
+          } else if (booking.bookingStatus === "cancelled") {
+            cancelledBookings.push(booking);
+          }
+        });
+
+        setBookingDetails({
+          upcoming: upcomingBookings,
+          completed: completedBookings,
+          cancelled: cancelledBookings
+        });
       } catch (error) {
         console.log(error);
       }
