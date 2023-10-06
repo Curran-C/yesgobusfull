@@ -1,4 +1,27 @@
 .my__bookings {
+  .loading-spinner {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+  }
+
+  .ant-spin {
+    font-size: 24px;
+  }
+
+  .ant-spin-dot {
+    i {
+      background-color: #1890ff;
+    }
+  }
+
   .tabs {
     padding-inline: 2em;
     padding-top: 2em;

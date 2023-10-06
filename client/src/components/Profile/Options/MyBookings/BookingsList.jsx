@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { WatermarkIcon } from "../../../../assets/contact";
 import { cancelTicket } from "../../../../api/authentication";
+import { Spin } from "antd";
 
 export default function BookingsList({ bookingData, selectedTab, setCancelled, cancelled }) {
+  const [loading, setLoading] = useState(false);
+
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   }
   const TicketOptions = ({ selectedTab, bookingData, tid }) => {
     const handleCancelTicket = async (bookingData, tid) => {
+      setLoading(true);
       try {
         const seatNbrsToCancel = bookingData.selectedSeats.split(',').map(seat => seat.trim());;
         const cancelTicketData = {
@@ -27,12 +31,14 @@ export default function BookingsList({ bookingData, selectedTab, setCancelled, c
       } catch (error) {
         alert("Oops this ticket can not be cancelled");
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
     if (selectedTab === "upcoming") {
       return (
         <>
-          <Link to={`/busbooking/ticket?bookingId=${bookingData._id}&download=1`}>
+          <Link to={`/busbooking/ticket?bookingId=${bookingData._id}`}>
             <button className="orange-btn">Download Ticket</button>
           </Link>
           <button className="red-btn" onClick={() => handleCancelTicket(bookingData, tid)}>Cancel Ticket</button>
@@ -56,7 +62,7 @@ export default function BookingsList({ bookingData, selectedTab, setCancelled, c
         />
       </div>
 
-      {bookingData?.map((booking, index) => (
+      {bookingData?.[selectedTab]?.map((booking, index) => (
         <div key={index}>
           {/* Journey details */}
           <div className="journey__details">
@@ -82,6 +88,11 @@ export default function BookingsList({ bookingData, selectedTab, setCancelled, c
           </div>
         </div>
       ))}
+      {loading ? (
+        <div className="loading-spinner">
+          <Spin size="large" />
+        </div>
+      ) : null}
     </div>
   );
 }

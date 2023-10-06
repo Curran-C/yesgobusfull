@@ -12,7 +12,7 @@ const Navbar = ({ page }) => {
     new window.google.translate.TranslateElement(
       {
         pageLanguage: "en",
-        // includedLanguages: 'en,ms,ta,zh-CN',
+        includedLanguages: 'en,kn',
         layout: window.google.translate.TranslateElement.InlineLayout.TOP_RIGHT,
       },
       "google_translate_element"
@@ -100,9 +100,9 @@ const Navbar = ({ page }) => {
             <Button text="Login / Signup" />
           </a>
         )}
-         <div id="google_translate_element"></div>
+         {/* <div id="google_translate_element"></div> */}
       </div>
-     
+      <div id="google_translate_element"></div>
       {page === "home" ? (
         <img
           className="hamburger"
