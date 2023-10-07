@@ -4,8 +4,9 @@ import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { cityMapping } from "../../utils/cityMapping";
 
-const LeftFilter = ({sourceCity, destinationCity, doj, onFilterChange}) => {
+const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
   const [range, setRange] = useState([100, 3000]);
   const [filters, setFilters] = useState([]);
   const [boardingPointsFilter, setBoardingPointsFilter] = useState([]);
@@ -27,6 +28,12 @@ const LeftFilter = ({sourceCity, destinationCity, doj, onFilterChange}) => {
 
   useEffect(() => {
     const getFilters = async () => {
+      // let boardingPoints = [];
+      if (sourceCity in cityMapping) {
+        const mapping = cityMapping[sourceCity];
+        sourceCity = mapping.sourceCity;
+        // boardingPoints = mapping.boardingPoints;
+      }
       try {
         const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/busBooking/getFilters`, {
           params: {
@@ -48,7 +55,7 @@ const LeftFilter = ({sourceCity, destinationCity, doj, onFilterChange}) => {
     let updatedBoardingPointsFilter = boardingPointsFilter;
     let updatedDroppingPointsFilter = droppingPointsFilter;
     let updatedBusPartnerFilter = busPartnerFilter;
-  
+
     if (filterName === "boardingPoints") {
       updatedBoardingPointsFilter = selectedFilters;
     }
@@ -67,8 +74,8 @@ const LeftFilter = ({sourceCity, destinationCity, doj, onFilterChange}) => {
     setDroppingPointsFilter(updatedDroppingPointsFilter);
     setBusPartnerFilter(updatedBusPartnerFilter);
   };
-  
-  
+
+
 
   return (
     <div className="leftFilter">

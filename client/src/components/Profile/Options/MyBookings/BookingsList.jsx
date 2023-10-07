@@ -2,39 +2,53 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { WatermarkIcon } from "../../../../assets/contact";
 import { cancelTicket } from "../../../../api/authentication";
-import { Spin } from "antd";
+import { Modal, Button, Spin } from "antd";
 
 export default function BookingsList({ bookingData, selectedTab, setCancelled, cancelled }) {
   const [loading, setLoading] = useState(false);
+  const [isCancelModalVisible, setIsCancelModalVisible] = useState(false);
+  const [ticketToCancel, setTicketToCancel] = useState(null);
 
   function formatDate(dateString) {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   }
-  const TicketOptions = ({ selectedTab, bookingData, tid }) => {
-    const handleCancelTicket = async (bookingData, tid) => {
-      setLoading(true);
-      try {
-        const seatNbrsToCancel = bookingData.selectedSeats.split(',').map(seat => seat.trim());;
-        const cancelTicketData = {
-          etsTicketNo: bookingData.tid,
-          seatNbrsToCancel: seatNbrsToCancel,
-        }
-        const refundData = {
-          merchantTransactionId: bookingData.merchantTransactionId,
-        }
-        const cancelTicketResponse = await cancelTicket(refundData, cancelTicketData, bookingData._id);
-        if (cancelTicketResponse.status === 200) {
-          alert("Booking Cancelled. Refund will be processed soon");
-          setCancelled(!cancelled);
-        }
-      } catch (error) {
-        alert("Oops this ticket can not be cancelled");
-        console.log(error);
-      } finally {
-        setLoading(false);
+
+  const handleCancelTicket = (bookingData, tid) => {
+    setTicketToCancel(bookingData);
+    setIsCancelModalVisible(true);
+  };
+
+  const confirmCancelTicket = async () => {
+    setLoading(true);
+    try {
+      const seatNbrsToCancel = ticketToCancel.selectedSeats.split(',').map(seat => seat.trim());
+      const cancelTicketData = {
+        etsTicketNo: ticketToCancel.tid,
+        seatNbrsToCancel: seatNbrsToCancel,
+      };
+      const refundData = {
+        merchantTransactionId: ticketToCancel.merchantTransactionId,
+      };
+      const cancelTicketResponse = await cancelTicket(refundData, cancelTicketData, ticketToCancel._id);
+      if (cancelTicketResponse.status === 200) {
+        alert("Booking Cancelled. Refund will be processed soon");
+        setCancelled(!cancelled);
       }
+    } catch (error) {
+      alert("Oops, this ticket cannot be cancelled");
+      console.log(error);
+    } finally {
+      setLoading(false);
+      setIsCancelModalVisible(false); 
     }
+  };
+
+  const handleCancelModalClose = () => {
+    setIsCancelModalVisible(false);
+  };
+
+  const TicketOptions = ({ selectedTab, bookingData, tid }) => {
     if (selectedTab === "upcoming") {
       return (
         <>
@@ -93,6 +107,23 @@ export default function BookingsList({ bookingData, selectedTab, setCancelled, c
           <Spin size="large" />
         </div>
       ) : null}
+
+      {/* Cancelation Confirmation Modal */}
+      <Modal
+        title="Confirm Ticket Cancellation"
+        visible={isCancelModalVisible}
+        onCancel={handleCancelModalClose}
+        footer={[
+          <Button key="cancel" onClick={handleCancelModalClose}>
+            Cancel
+          </Button>,
+          <Button key="confirm" type="primary" style={{ backgroundColor: 'red', borderColor: 'red' }} onClick={confirmCancelTicket}>
+            Confirm
+          </Button>,
+        ]}
+      >
+        Are you sure you want to cancel this ticket?
+      </Modal>
     </div>
   );
 }
