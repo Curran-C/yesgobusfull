@@ -94,7 +94,7 @@ const BusBookingCard = ({
         </div> */}
         <Spin
           spinning={seatLoading}
-          colorText="#fd5901"
+          // colorText="#fd5901"
           className="loading_seats"
         />
         {/* <hr /> */}

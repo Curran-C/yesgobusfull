@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 
+//routes
 import userRoutes from "./routes/user.routes.js";
 import cabRoutes from "./routes/cab.routes.js";
 import cabBookingRoutes from "./routes/cabbooking.routes.js";
@@ -11,6 +12,9 @@ import busBookingRoutes from "./routes/busBooking.routes.js";
 import paymentRoutes from "./routes/payment.routes.js";
 import driverRoutes from "./routes/driver.routes.js";
 import kycRoutes from "./routes/verifykyc.routes.js";
+
+//schedular
+import schedular from "./utils/scheduler.js";
 
 dotenv.config();
 const app = express();

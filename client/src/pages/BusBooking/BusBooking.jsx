@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { Spin } from "antd";
 import { useLocation, Navigate } from "react-router-dom";
+import { cityMapping } from "../../utils/cityMapping";
 
 const BusBooking = () => {
   const loggedInUser = localStorage.getItem("loggedInUser");
@@ -26,23 +27,6 @@ const BusBooking = () => {
   const [noOfBuses, setNoOfBuses] = useState(0);
   const [busDetails, setBusDetails] = useState([]);
   const [loading, setLoading] = useState(false);
-  //pickup
-  // const pickUpTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
-  // const pickUpLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
-  // const pickUpLocationTwo = [
-  //   "INFOSYS GATE NO 2,134,33",
-  //   "Wipro GATE NO 2,134,33",
-  //   "Bus stand NO 2,134,33",
-  // ];
-
-  // //drop
-  // const dropTimes = ["19:00, 4 JUL", "19:00, 4 JUL", "19:00, 4 JUL"];
-  // const dropLocationOne = ["Infosys Gate", "Wipro Gate", "Bus Stand"];
-  // const dropLocationTwo = [
-  //   "INFOSYS GATE NO 2,134,33",
-  //   "Wipro GATE NO 2,134,33",
-  //   "Bus stand NO 2,134,33",
-  // ];
 
   //dates
   const date = new Date();
@@ -98,6 +82,13 @@ const BusBooking = () => {
     setSelectedDate(doj);
     setLoading(true);
     setNoOfBuses(0);
+
+    let boardingPoints = [];
+    if (sourceCity in cityMapping) {
+      const mapping = cityMapping[sourceCity];
+      sourceCity = mapping.sourceCity;
+      boardingPoints = mapping.boardingPoints;
+    }
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBusDetails`,
@@ -105,6 +96,7 @@ const BusBooking = () => {
           sourceCity: sourceCity,
           destinationCity: destinationCity,
           doj: doj,
+          boardingPoints,
           ...filters,
         }
       );
