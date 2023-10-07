@@ -41,7 +41,7 @@ const PaymentSuccess = () => {
   }, []);
 
   const handleDownloadPDF = () => {
-    navigate(`/busbooking/ticket?bookingId=${bookingId}&download=1`);
+    navigate(`/busbooking/ticket?bookingId=${bookingId}`);
   };
 
   // Navigate to ticket view. Add query params here.
