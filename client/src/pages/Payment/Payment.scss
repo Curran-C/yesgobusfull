@@ -325,10 +325,19 @@
 .label-container {
     display: flex;
     align-items: center;
-  }
-  
-  label.optional {
+}
+
+label.optional {
     color: red;
-    margin-left: 5px; /* Add some spacing between "ID Type" and "*optional" */
-  }
-  
+    margin-left: 5px;
+    /* Add some spacing between "ID Type" and "*optional" */
+}
+
+.loading-modal {
+    text-align: center;
+}
+
+.loading-message {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
