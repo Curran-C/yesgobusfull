@@ -62,6 +62,8 @@ const Seats = ({
     tax: 0,
     totalFare: 0,
   });
+
+  // seat select handler
   const seatSelectionHandler = (
     seatId,
     fare,
@@ -85,15 +87,19 @@ const Seats = ({
       const seatIndex = newSelected.indexOf(seatId);
 
       if (seatIndex === -1) {
-        newSelected.push(seatId);
-        newFare += fare;
-        newTax += tax;
-        newTotalFare += totalFare;
-        newSeatFares.push(fare);
-        newSeatTotalFares.push(totalFare);
-        newAC.push(isAC);
-        newSleeper.push(isSleeper);
-        newLadiesSeat.push(isLadiesSeat);
+        if (newSelected.length < 5) {
+          newSelected.push(seatId);
+          newFare += fare;
+          newTax += tax;
+          newTotalFare += totalFare;
+          newSeatFares.push(fare);
+          newSeatTotalFares.push(totalFare);
+          newAC.push(isAC);
+          newSleeper.push(isSleeper);
+          newLadiesSeat.push(isLadiesSeat);
+        } else {
+          alert("Maximum 5 seats are allowed.");
+        }
       } else {
         newSelected.splice(seatIndex, 1);
         newFare -= fare;
@@ -120,6 +126,7 @@ const Seats = ({
       };
     });
   };
+
 
   const lowerTierSeats = seatDetails.filter((seat) => seat.zIndex === 0);
   const upperTierSeats = seatDetails.filter((seat) => seat.zIndex === 1);

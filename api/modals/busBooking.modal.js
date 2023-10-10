@@ -67,6 +67,10 @@ const busBookingSchema = new Schema({
   pickUpTime: String,
   reachTime: String,
   cancellationPolicy:String,
+  sentBookingRemainer: {
+    type: String,
+    default: false,
+  },
 },
   {
     timestamps: true,

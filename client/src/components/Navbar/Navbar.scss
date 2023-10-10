@@ -153,8 +153,9 @@
 
 #google_translate_element {
   position: fixed;
-  right: 20px;
-  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  top: -10px;
   color: black;
   padding: 10px;
   border-radius: 5px;

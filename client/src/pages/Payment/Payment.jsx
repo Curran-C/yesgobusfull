@@ -31,8 +31,8 @@ const Payment = () => {
   const [firstName, lastName] = loggedInUser.fullName.split(" ");
 
   const [userData, setUserData] = useState({
-    firstName: firstName || "",
-    lastName: lastName || "",
+    // firstName: firstName || "",
+    // lastName: lastName || "",
     email: loggedInUser.email || "",
     mobile: loggedInUser.phoneNumber || "",
     gender: "M",
@@ -167,14 +167,14 @@ const Payment = () => {
 
   //handle payment
   const handlePayment = async () => {
-    setLoading(true);
+    
     //validate input
     const errors = validateUserData();
     if (Object.keys(errors).length > 0) {
       alert("Please fill in all the traveler details.");
       return;
     }
-
+    setLoading(true);
     //seats data
     const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
       return {
@@ -184,16 +184,16 @@ const Payment = () => {
         sleeper: bookingDetails?.sleeper[index],
         fare: bookingDetails?.seatFares[index],
         totalFareWithTaxes: bookingDetails?.seatTotalFares[index],
-        name: userData.firstName,
-        age: userData.age,
-        sex: userData.gender,
-        lastName: userData.lastName,
+        name: userData[`firstName_${index}`],
+        age: userData[`age_${index}`],
+        sex: userData[`gender_${index}`],
+        lastName: userData[`lastName_${index}`],
         mobile: userData.mobile,
         title: " ",
         email: userData.email,
         idType: userData.idType,
         idNumber: userData.idNumber,
-        nameOnId: userData.firstName,
+        nameOnId: userData[`firstName_${index}`],
         primary: true,
       };
     });
@@ -206,8 +206,8 @@ const Payment = () => {
         doj: doj,
         routeScheduleId: routeScheduleId,
         boardingPoint: bookingDetails?.boardingPoint,
-        customerName: userData.firstName,
-        customerLastName: userData.lastName,
+        customerName: firstName,
+        customerLastName: lastName,
         customerEmail: userData.email,
         customerPhone: userData.mobile,
         emergencyPhNumber: userData.alternativeNumber,
@@ -215,7 +215,7 @@ const Payment = () => {
         blockSeatPaxDetails: seatObjects,
         inventoryType: inventoryType,
       };
-
+      console.log(blockSeatRequestBody);
       // block seat
       const blockSeat = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
@@ -287,13 +287,28 @@ const Payment = () => {
 
   //validation
   const validateUserData = () => {
+    const numberOfTravelers = bookingDetails.selectedSeats.length;
     const errors = {};
-    if (!userData.firstName?.trim()) {
-      errors.firstName = "First name is required";
+    for (let index = 0; index < numberOfTravelers; index++) {
+      const firstNameKey = `firstName_${index}`;
+      const lastNameKey = `lastName_${index}`;
+      const ageKey = `age_${index}`;
+      const genderKey = `gender_${index}`;
+
+      if (!userData[firstNameKey]?.trim()) {
+        errors[firstNameKey] = `First name for Traveler ${index + 1} is required`;
+      }
+      if (!userData[lastNameKey]?.trim()) {
+        errors[lastNameKey] = `Last name for Traveler ${index + 1} is required`;
+      }
+      if (!userData[ageKey]?.trim()) {
+        errors[ageKey] = `Age for Traveler ${index + 1} is required`;
+      }
+      if (!userData[genderKey]?.trim()) {
+        errors[genderKey] = `Gender for Traveler ${index + 1} is required`;
+      }
     }
-    if (!userData.lastName?.trim()) {
-      errors.lastName = "Last name is required";
-    }
+
     if (!userData.email?.trim()) {
       errors.email = "Email is required";
     }
@@ -301,16 +316,9 @@ const Payment = () => {
     if (!userData.mobile?.trim()) {
       errors.mobile = "Mobile is required";
     }
-
-    if (!userData.age?.trim()) {
-      errors.age = "Age is required";
-    }
     if (!userData.address?.trim()) {
       errors.address = "Address is required";
     }
-    // if (!userData.idNumber?.trim()) {
-    //   errors.idNumber = "ID Number is required";
-    // }
     return errors;
   };
 
@@ -379,50 +387,54 @@ const Payment = () => {
           {/* Traveller details */}
           <div className="details">
             <span>Enter Traveller Details</span>
-            <div className="detailsContainer">
-              <Input
-                title={"First Name"}
-                type={"text"}
-                placeholder={"First name"}
-                onChanged={handleInputChange}
-                givenName={"firstName"}
-                value={userData.firstName}
-              />
-              <Input
-                title={"Last Name"}
-                type={"text"}
-                placeholder={"Last name"}
-                onChanged={handleInputChange}
-                givenName={"lastName"}
-                value={userData.lastName}
-              />
-              <Input
-                title={"Age"}
-                type={"number"}
-                placeholder={"Enter Age"}
-                onChanged={handleInputChange}
-                givenName={"age"}
-              />
-              {/* <Input title={"Age"} type={"number"} placeholder={"40"} /> */}
-              {/* <Input
-                title={"Gender"}
-                type={"text"}
-                placeholder={"Male / Female / Other"}
-              /> */}
-              <div className="genderContainer">
-                <label htmlFor="gender">Gender</label>
-                <select
-                  name="gender"
-                  id="gender"
-                  value={userData.gender}
-                  onChange={handleInputChange}
-                >
-                  <option value="M">Male</option>
-                  <option value="F">Female</option>
-                  <option value="O">Other</option>
-                </select>
+
+            {bookingDetails.selectedSeats.map((seat, index) => (
+              <div key={index} className="travelerDetails">
+                <h3>Traveler {index + 1}:</h3>
+                <div className="detailsContainer">
+
+                  <Input
+                    title={"First Name"}
+                    type={"text"}
+                    placeholder={"First name"}
+                    onChanged={(e) => handleInputChange(e, `firstName_${index}`)}
+                    givenName={`firstName_${index}`}
+                    value={userData[`firstName_${index}`] || ''}
+                  />
+                  <Input
+                    title={"Last Name"}
+                    type={"text"}
+                    placeholder={"Last name"}
+                    onChanged={(e) => handleInputChange(e, `lastName_${index}`)}
+                    givenName={`lastName_${index}`}
+                    value={userData[`lastName_${index}`] || ''}
+                  />
+                  <Input
+                    title={"Age"}
+                    type={"number"}
+                    placeholder={"Enter Age"}
+                    onChanged={(e) => handleInputChange(e, `age_${index}`)}
+                    givenName={`age_${index}`}
+                    value={userData[`age_${index}`] || ''}
+                  />
+                  <div className="genderContainer">
+                    <label htmlFor={`gender_${index}`}>Gender</label>
+                    <select
+                      name={`gender_${index}`}
+                      id={`gender_${index}`}
+                      value={userData[`gender_${index}`] || ''}
+                      onChange={(e) => handleInputChange(e, `gender_${index}`)}
+                    >
+                      <option value="">Select Gender</option>
+                      <option value="M">Male</option>
+                      <option value="F">Female</option>
+                      <option value="O">Other</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-            </div>
+            ))}
+
           </div>
 
           {/* Contact Details */}

@@ -17,6 +17,8 @@
       margin-bottom: 30px;
       // gap: 20px;
       .title {
+        position: sticky;
+        top: 0;
         background: #ededed;
         padding: 15px 5px;
         font-size: 16px;
