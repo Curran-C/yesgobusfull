@@ -10,6 +10,7 @@ const InfoCard = ({
   subtitle,
   onChanged,
   suggestions,
+  placeholder
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const infoCardRef = useRef(null);
@@ -64,6 +65,7 @@ const InfoCard = ({
               value={title}
               onChange={handleInputChange}
               onClick={handleInputClick}
+              placeholder={placeholder}
             />
           )
         ) : (
