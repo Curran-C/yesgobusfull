@@ -463,7 +463,7 @@ const Payment = () => {
           </div>
 
           {/* Picode Details */}
-          <div className="details">
+          {/* <div className="details">
             <div class="label-container">
               <span>Enter ID Proof</span>
               <label className="optional">*optional</label>
@@ -488,14 +488,8 @@ const Payment = () => {
                 onChanged={handleInputChange}
                 givenName={"idNumber"}
               />
-              {/* <Input title={"State"} type={"text"} placeholder={"Karnataka"} />
-              <Input
-                title={"Address"}
-                type={"text"}
-                placeholder={"Address (optional)"}
-              /> */}
             </div>
-          </div>
+          </div> */}
 
           {/* Trip Type */}
           {/* <div className="tripType">
