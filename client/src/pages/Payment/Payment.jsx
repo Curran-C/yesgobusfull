@@ -20,6 +20,7 @@ import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { bookSeat } from "../../../../api/service/buBooking.service";
 import { Spin } from "antd";
+import { Modal } from "antd";
 
 const Payment = () => {
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,7 @@ const Payment = () => {
   }
 
   const [firstName, lastName] = loggedInUser.fullName.split(" ");
+  const [loadingModalVisible, setLoadingModalVisible] = useState(false);
 
   const [userData, setUserData] = useState({
     // firstName: firstName || "",
@@ -167,14 +169,14 @@ const Payment = () => {
 
   //handle payment
   const handlePayment = async () => {
-    
+
     //validate input
     const errors = validateUserData();
     if (Object.keys(errors).length > 0) {
       alert("Please fill in all the traveler details.");
       return;
     }
-    setLoading(true);
+    setLoadingModalVisible(true);
     //seats data
     const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
       return {
@@ -215,14 +217,14 @@ const Payment = () => {
         blockSeatPaxDetails: seatObjects,
         inventoryType: inventoryType,
       };
-      console.log(blockSeatRequestBody);
       // block seat
       const blockSeat = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
         blockSeatRequestBody
       );
-      console.log(blockSeat?.data?.apiStatus?.success);
       if (blockSeat?.data?.apiStatus?.success === true) {
+        // setLoading(false);
+        setLoadingModalVisible(true);
         const { data: bookResponse } = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
           {
@@ -258,7 +260,7 @@ const Payment = () => {
             }
           );
           if (updatePaymentDetails.status === 200) {
-            setLoading(false);
+            setLoadingModalVisible(false);
             window.open(
               response.data.data.instrumentResponse.redirectInfo.url,
               "_blank",
@@ -270,10 +272,11 @@ const Payment = () => {
           alert("Please try with other seat or bus.");
         }
       } else {
-        setLoading(false);
+        setLoadingModalVisible(false);
         alert("Seat is already blocked, Please try with other seat or bus.");
       }
     } catch (error) {
+      setLoadingModalVisible(false);
       console.log(error);
       console.error("Something went wrong:", error);
     }
@@ -475,7 +478,7 @@ const Payment = () => {
           </div>
 
           {/* Picode Details */}
-          <div className="details">
+          {/* <div className="details">
             <div class="label-container">
               <span>Enter ID Proof</span>
               <label className="optional">*optional</label>
@@ -500,14 +503,8 @@ const Payment = () => {
                 onChanged={handleInputChange}
                 givenName={"idNumber"}
               />
-              {/* <Input title={"State"} type={"text"} placeholder={"Karnataka"} />
-              <Input
-                title={"Address"}
-                type={"text"}
-                placeholder={"Address (optional)"}
-              /> */}
             </div>
-          </div>
+          </div> */}
 
           {/* Trip Type */}
           {/* <div className="tripType">
@@ -602,6 +599,17 @@ const Payment = () => {
           <Spin size="large" />
         </div>
       ) : null}
+      <Modal
+        visible={loadingModalVisible}
+        closable={false}
+        footer={null}
+        centered
+        maskClosable={false}
+        className="loading-modal"
+      >
+        <p className="loading-message">Loading... Taking you to the payment page.</p>
+      </Modal>
+
     </div>
   );
 };

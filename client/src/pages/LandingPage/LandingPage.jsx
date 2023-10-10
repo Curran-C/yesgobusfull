@@ -59,8 +59,8 @@ const LandingPage = () => {
   const day = String(currentDate.getDate()).padStart(2, "0");
   currentDate = `${year}-${month}-${day}`;
 
-  const [fromLocation, setFromLocation] = useState("Mysore");
-  const [toLocation, setToLocation] = useState("Bangalore");
+  const [fromLocation, setFromLocation] = useState("");
+  const [toLocation, setToLocation] = useState("");
   const [selectedDate, setSelectedDate] = useState(currentDate);
 
   const [locationOneSuggestions, setLocationOneSuggestions] = useState([]);
@@ -154,6 +154,7 @@ const LandingPage = () => {
               inputField={true}
               onChanged={setFromLocation}
               suggestions={locationOneSuggestions}
+              placeholder={"From"}
             />
             <img
               src={fromto}
@@ -179,6 +180,7 @@ const LandingPage = () => {
               inputField={true}
               onChanged={setToLocation}
               suggestions={locationTwoSuggestions}
+              placeholder={"To"}
             />
             {/* <img src={mic} alt="" /> */}
             <InfoCard
