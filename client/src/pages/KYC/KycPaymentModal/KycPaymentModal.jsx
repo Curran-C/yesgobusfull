@@ -39,7 +39,7 @@ const KycPaymentModal = ({ onCancel, driverId }) => {
   let address = {
     line1: "yesgobus",
     line2: "No. 17074",
-    line3: "Basavan Bagewadi, Nidagun DL,",
+    line3: "Basavan Bagewadi, Nidagundi,",
     line4: "Vijayapura, Bijapur-586213",
   };
   return (

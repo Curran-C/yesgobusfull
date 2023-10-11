@@ -50,9 +50,21 @@ const BusBooking = () => {
   const day = String(currentDate.getDate()).padStart(2, "0");
   currentDate = `${year}-${month}-${day}`;
 
-  const [fromLocation, setFromLocation] = useState("Mysore");
-  const [toLocation, setToLocation] = useState("Bangalore");
+  const [fromLocation, setFromLocation] = useState(
+    localStorage.getItem("sourceCity") || "Mysore"
+  );
+  const [toLocation, setToLocation] = useState(
+    localStorage.getItem("destinationCity") || "Bangalore"
+  );
   const [selectedDate, setSelectedDate] = useState(currentDate);
+
+
+  // useEffect(() => {
+  //   const storedSourceCity = localStorage.getItem("sourceCity") || "Mysore";
+  //   const storedDestinationCity = localStorage.getItem("destinationCity") || "Bangalore";
+  //   setFromLocation(storedSourceCity);
+  //   setToLocation(storedDestinationCity);
+  // }, []);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
@@ -66,7 +78,7 @@ const BusBooking = () => {
       setSelectedDate(doj);
       handleSearch(sourceCity, destinationCity, doj);
     } else {
-      handleSearch("Mysore", "Bangalore", currentDate);
+      handleSearch(fromLocation, toLocation, currentDate);
     }
   }, []);
 
@@ -77,6 +89,8 @@ const BusBooking = () => {
     filters,
     returnDate
   ) => {
+    localStorage.setItem("sourceCity", sourceCity);
+    localStorage.setItem("destinationCity", destinationCity);
     setFromLocation(sourceCity);
     setToLocation(destinationCity);
     setSelectedDate(doj);
@@ -229,36 +243,38 @@ const BusBooking = () => {
               <ColumnNames noOfBuses={noOfBuses} />
 
               {busDetails?.map((bus) => (
-                <BusBookingCard
-                  key={bus.routeScheduleId}
-                  routeScheduleId={bus.routeScheduleId}
-                  inventoryType={bus.inventoryType}
-                  sourceCity={fromLocation}
-                  destinationCity={toLocation}
-                  doj={selectedDate}
-                  title={bus.operatorName}
-                  busName={bus.operatorName}
-                  busType={bus.busType}
-                  rating={5}
-                  noOfReviews={100}
-                  pickUpLocation={fromLocation}
-                  pickUpTime={bus.departureTime}
-                  reachLocation={toLocation}
-                  reachTime={bus.arrivalTime}
-                  travelTime={formatTravelTime(bus.durationInMins)}
-                  seatsLeft={bus.availableSeats}
-                  price={priceToDisplay(bus.fare)}
-                  // pickUpTimes={pickUpTimes}
-                  pickUpLocationOne={bus.boardingPoints}
-                  // pickUpLocationTwo={pickUpLocationTwo}
-                  // dropTimes={dropTimes}
-                  dropLocationOne={bus.droppingPoints}
-                  // dropLocationTwo={dropLocationTwo}
-                  backSeat={true}
-                  cancellationPolicy={bus.cancellationPolicy}
-                />
-              ))}
+                <div className="bus-card-container">
+                  <BusBookingCard
+                    key={bus.routeScheduleId}
+                    routeScheduleId={bus.routeScheduleId}
+                    inventoryType={bus.inventoryType}
+                    sourceCity={fromLocation}
+                    destinationCity={toLocation}
+                    doj={selectedDate}
+                    title={bus.operatorName}
+                    busName={bus.operatorName}
+                    busType={bus.busType}
+                    rating={5}
+                    noOfReviews={100}
+                    pickUpLocation={fromLocation}
+                    pickUpTime={bus.departureTime}
+                    reachLocation={toLocation}
+                    reachTime={bus.arrivalTime}
+                    travelTime={formatTravelTime(bus.durationInMins)}
+                    seatsLeft={bus.availableSeats}
+                    price={priceToDisplay(bus.fare)}
+                    // pickUpTimes={pickUpTimes}
+                    pickUpLocationOne={bus.boardingPoints}
+                    // pickUpLocationTwo={pickUpLocationTwo}
+                    // dropTimes={dropTimes}
+                    dropLocationOne={bus.droppingPoints}
+                    // dropLocationTwo={dropLocationTwo}
+                    backSeat={true}
+                    cancellationPolicy={bus.cancellationPolicy}
+                  />
+                </div>
 
+              ))}
             </div>
           </Spin>
         </div>
