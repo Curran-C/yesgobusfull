@@ -33,10 +33,8 @@ const ContactUs = () => {
           <Card
             img={locationIcon}
             title={"Our address"}
-            subtitle={`No. 17074,
-              Basavan Bagewadi, Nidagun
-              DL,
-              Vijayapura, Bijapur - 586213`}
+            subtitle={`No. 17074, Basavan Bagewadi,
+            Nidagundi, Vijayapura, Bijapur - 586213`}
             // text={"Call Us"}
           />
         </div>

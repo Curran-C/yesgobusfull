@@ -6,7 +6,7 @@ const ColumnNames = ({ noOfBuses }) => {
       <span>
         Showing <b>{noOfBuses} Buses</b>
       </span>
-      {/* <div className="tableTitles">
+      <div className="tableTitles">
         <p>BUS OPERATOR</p>
         <div>
           <p>DEPARTURE</p>
@@ -14,7 +14,7 @@ const ColumnNames = ({ noOfBuses }) => {
           <p>ARRIVAL</p>
           <p>PRICE</p>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

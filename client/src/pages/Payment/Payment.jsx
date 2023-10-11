@@ -33,8 +33,8 @@ const Payment = () => {
   const [loadingModalVisible, setLoadingModalVisible] = useState(false);
 
   const [userData, setUserData] = useState({
-    // firstName: firstName || "",
-    // lastName: lastName || "",
+    firstName_0: firstName || "",
+    lastName_0: lastName || "",
     email: loggedInUser.email || "",
     mobile: loggedInUser.phoneNumber || "",
     gender: "M",
