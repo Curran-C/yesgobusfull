@@ -33,13 +33,33 @@ const Payment = () => {
   const [loadingModalVisible, setLoadingModalVisible] = useState(false);
 
   const [userData, setUserData] = useState({
-    // firstName: firstName || "",
-    // lastName: lastName || "",
+    firstName_0: firstName || "",
+    lastName_0: lastName || "",
     email: loggedInUser.email || "",
     mobile: loggedInUser.phoneNumber || "",
     gender: "M",
     idType: "PAN",
   });
+
+  const [countdown, setCountdown] = useState(10);
+  const [startCountdown, setStartCountdown] = useState(false);
+
+  const updateCountdown = () => {
+    if (countdown > 0) {
+      setCountdown(countdown - 1);
+    }
+  };
+
+  useEffect(() => {
+    if (startCountdown) {
+      const countdownTimer = setInterval(updateCountdown, 1000);
+      return () => {
+        clearInterval(countdownTimer);
+      };
+    }
+  }, [startCountdown, countdown]);
+
+  const [errorMessage, setErrorMessage] = useState('');
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -176,6 +196,7 @@ const Payment = () => {
       alert("Please fill in all the traveler details.");
       return;
     }
+    setStartCountdown(true);
     setLoadingModalVisible(true);
     //seats data
     const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
@@ -261,6 +282,8 @@ const Payment = () => {
           );
           if (updatePaymentDetails.status === 200) {
             setLoadingModalVisible(false);
+            setStartCountdown(false);
+            setCountdown(10);
             window.open(
               response.data.data.instrumentResponse.redirectInfo.url,
               "_blank",
@@ -269,11 +292,17 @@ const Payment = () => {
           }
         } else {
           setLoading(false);
-          alert("Please try with other seat or bus.");
+          setStartCountdown(false);
+          setCountdown(10);
+          // alert("Please try with other seat or bus.");
+          setErrorMessage("Please try with other seat or bus.");
         }
       } else {
         setLoadingModalVisible(false);
-        alert("Seat is already blocked, Please try with other seat or bus.");
+        setStartCountdown(false);
+        setCountdown(10);
+        // alert("Seat is already blocked, Please try with other seat or bus.");
+        setErrorMessage("Seat is already blocked or There is an issue with the operator, Please try with other seat or bus.");
       }
     } catch (error) {
       setLoadingModalVisible(false);
@@ -607,9 +636,16 @@ const Payment = () => {
         maskClosable={false}
         className="loading-modal"
       >
-        <p className="loading-message">Loading... Taking you to the payment page.</p>
+        <p className="loading-message">Loading... Taking you to the payment page in {countdown} seconds.</p>
       </Modal>
-
+      {errorMessage && (
+        <div className="modal" onClick={() => setErrorMessage('')}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close" onClick={() => setErrorMessage('')}>Close</span>
+            <p className="error-message">{errorMessage}</p>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

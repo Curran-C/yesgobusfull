@@ -222,14 +222,14 @@ const LandingPage = () => {
       <div className="popularBusTicket">
         <Title title={"Popular Bus Ticket"} />
         <div className="wrapper">
-          <InfoCard
+          {/* <InfoCard
             img={wifi}
             title={"FREE WIFI"}
             subtitle={"We have buses equipped with Wi-Fi and sockets"}
-          />
+          /> */}
           <InfoCard
             img={bus}
-            title={"SHUTTLE TO THE BUS"}
+            title={"BUS BOOKING SERVICES"}
             subtitle={"Free Taxi On The Bus"}
           />
           <InfoCard
@@ -301,14 +301,14 @@ const LandingPage = () => {
       <div className="whyChooseYesGoBus">
         <Title title={"Why YesGoBus For Bus Booking"} />
         <div className="whyChooseYesGoBusContainer">
-          <InfoCard img={routes} title={"1000+"} subtitle={"Routes"} />
-          <InfoCard img={orangeBus} title={"250+"} subtitle={"BUS PARTNERS"} />
+          <InfoCard img={routes} title={"10000+"} subtitle={"Routes"} />
+          <InfoCard img={orangeBus} title={"3500+"} subtitle={"BUS PARTNERS"} />
           <InfoCard
             img={filledticket}
             title={"30 SEC"}
             subtitle={"routeINSTANT E-TICKET & REFUND"}
           />
-          <InfoCard img={smile} title={"1 CR"} subtitle={"HAPPY CUSTOMERS"} />
+          <InfoCard img={smile} title={"1 million"} subtitle={"HAPPY CUSTOMERS"} />
           <InfoCard
             img={custcare}
             title={"24/7"}
