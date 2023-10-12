@@ -2,26 +2,24 @@ import React, { useState, useEffect, useRef } from "react";
 import "./BusRouteCard.scss";
 
 const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
+  const [inputValue, setInputValue] = useState(location);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
+  const delay = 1000; 
 
   const handleInputChange = (e) => {
-    const inputValue = e.target.value;
-    setLocation(inputValue);
-    if (inputValue) {
-      setShowSuggestions(true);
-    } else {
-      setShowSuggestions(false);
-    }
+    const newInputValue = e.target.value;
+    setInputValue(newInputValue);
+    setShowSuggestions(true);
   };
 
   const handleDateChange = (e) => {
-    const inputValue = e.target.value;
-    setLocation(inputValue);
+    const newInputValue = e.target.value;
+    setInputValue(newInputValue);
   };
 
   const handleSuggestionClick = (suggestion) => {
-    setLocation(suggestion);
+    setInputValue(suggestion);
     setShowSuggestions(false);
   };
 
@@ -30,6 +28,16 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
       setShowSuggestions(false);
     }
   };
+
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      setLocation(inputValue);
+    }, delay);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [inputValue]);
 
   useEffect(() => {
     document.addEventListener("click", handleClickOutside);
@@ -46,11 +54,11 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
     <div className="BusRouteCard" ref={inputRef}>
       <p>{title}</p>
       {date ? (
-        <input type="date" value={location} onChange={handleDateChange} />
+        <input type="date" value={inputValue} onChange={handleDateChange} />
       ) : (
         <input
           type="search"
-          value={location}
+          value={inputValue}
           onChange={handleInputChange}
           onClick={handleInputClick}
         />
