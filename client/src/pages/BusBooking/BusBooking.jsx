@@ -116,11 +116,13 @@ const BusBooking = () => {
       );
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
+      setLoading(false);      
     } catch (error) {
       // alert("Something went wrong");
       setBusDetails([]);
       setNoOfBuses(0);
-      console.error("omething went wrong:", error);
+      console.error("Something went wrong:", error);
+      setLoading(false);
     } finally {
       setLoading(false);
     }
