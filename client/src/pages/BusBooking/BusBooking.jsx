@@ -58,7 +58,6 @@ const BusBooking = () => {
   );
   const [selectedDate, setSelectedDate] = useState(currentDate);
 
-
   // useEffect(() => {
   //   const storedSourceCity = localStorage.getItem("sourceCity") || "Mysore";
   //   const storedDestinationCity = localStorage.getItem("destinationCity") || "Bangalore";
@@ -116,7 +115,7 @@ const BusBooking = () => {
       );
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
-      setLoading(false);      
+      setLoading(false);
     } catch (error) {
       // alert("Something went wrong");
       setBusDetails([]);
@@ -201,6 +200,14 @@ const BusBooking = () => {
         </div>
 
         <div className="right">
+          <div className="mobile-filter">
+            <LeftFilter
+              sourceCity={fromLocation}
+              destinationCity={toLocation}
+              doj={selectedDate}
+              onFilterChange={handleFilter}
+            />
+          </div>
           <div className="dates">
             {dates.map((date) => (
               <p className="date" onClick={() => handleDateFilter(date)}>
@@ -275,7 +282,6 @@ const BusBooking = () => {
                     cancellationPolicy={bus.cancellationPolicy}
                   />
                 </div>
-
               ))}
             </div>
           </Spin>
