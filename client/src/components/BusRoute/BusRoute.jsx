@@ -14,7 +14,9 @@ const BusRoute = ({
 }) => {
   const [locationOneSuggestions, setLocationOneSuggestions] = useState([]);
   const [locationTwoSuggestions, setLocationTwoSuggestions] = useState([]);
-
+  const [sourceCity, setSourceCity] = useState(locationOne);
+  const [destinationCity, setDestinationCity] = useState(locationTwo);
+  
   const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
     try {
       if (query.length > 3) {
@@ -44,7 +46,7 @@ const BusRoute = ({
     <div className="BusRoute">
       <BusRouteCard
         title="From"
-        location={locationOne}
+        location={sourceCity}
         setLocation={(value) => onSearch(value, locationTwo, departureDate)}
         suggestions={locationOneSuggestions}
       />
@@ -61,12 +63,15 @@ const BusRoute = ({
           } else {
             image.style.transform = "";
           }
+          setDestinationCity(locationOne);
+          setSourceCity(locationTwo);
+          console.log(sourceCity);
           onSearch(locationTwo, locationOne, departureDate);
         }}
       />
       <BusRouteCard
         title="To"
-        location={locationTwo}
+        location={destinationCity}
         setLocation={(value) => onSearch(locationOne, value, departureDate)}
         suggestions={locationTwoSuggestions}
       />
