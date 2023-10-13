@@ -21,7 +21,7 @@ const BusBookingCardInfo = ({
         {button && (
           <Button
             onClicked={() => setShowSeats(!showSeats)}
-            text={buttonText || "Select"}
+            text={showSeats? "Unselect" : buttonText || "Select"}
           />
         )}
         {rating && (
