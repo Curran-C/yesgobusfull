@@ -26,11 +26,11 @@ const BusBookingCard = ({
   price,
   seatsLeft,
   cancellationPolicy,
-  // pickUpTimes,
-  // pickUpLocationOne,
+  pickUpTimes,
+  pickUpLocationOne,
   // pickUpLocationTwo,
-  // dropTimes,
-  // dropLocationOne,
+  dropTimes,
+  dropLocationOne,
   // dropLocationTwo,
   backSeat,
 }) => {
@@ -39,6 +39,10 @@ const BusBookingCard = ({
   const [seatLoading, setSeatLoading] = useState(false);
 
   const fetchSeatData = async () => {
+    if (!showSeats === false) {
+      setShowSeats(!showSeats);
+      return
+    }
     setSeatLoading(true);
     let seatData = [];
     try {
@@ -59,7 +63,7 @@ const BusBookingCard = ({
     }
     setSeatDetails(seatData);
     setSeatLoading(false);
-    setShowSeats(true);
+    setShowSeats(!showSeats);
   };
 
   return (
@@ -117,10 +121,10 @@ const BusBookingCard = ({
           destinationCity={destinationCity}
           doj={doj}
           // pickUpTimes={pickUpTimes}
-          // pickUpLocationOne={pickUpLocationOne}
+          pickUpLocationOne={pickUpLocationOne}
           // pickUpLocationTwo={pickUpLocationTwo}
           // dropTimes={dropTimes}
-          // dropLocationOne={dropLocationOne}
+          dropLocationOne={dropLocationOne}
           // dropLocationTwo={dropLocationTwo}
           backSeat={backSeat}
           busName={busName}
