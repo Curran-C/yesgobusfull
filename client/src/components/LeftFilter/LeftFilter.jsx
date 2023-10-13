@@ -21,10 +21,9 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
       droppingPoints: droppingPointsFilter,
       busPartners: busPartnerFilter,
       minPrice: newRange[0],
-      maxPrice: newRange[1]
+      maxPrice: newRange[1],
     });
   };
-
 
   useEffect(() => {
     const getFilters = async () => {
@@ -35,19 +34,22 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
         // boardingPoints = mapping.boardingPoints;
       }
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/busBooking/getFilters`, {
-          params: {
-            sourceCity: sourceCity,
-            destinationCity: destinationCity,
-            doj: doj,
-          },
-        });
+        const response = await axios.get(
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/getFilters`,
+          {
+            params: {
+              sourceCity: sourceCity,
+              destinationCity: destinationCity,
+              doj: doj,
+            },
+          }
+        );
         setFilters(response?.data?.data);
-        console.log(response.data.data)
+        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching filters:", error);
       }
-    }
+    };
     getFilters();
   }, [sourceCity, destinationCity, doj]);
 
@@ -75,32 +77,10 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
     setBusPartnerFilter(updatedBusPartnerFilter);
   };
 
-
-
   return (
     <div className="leftFilter">
       <h4>Filter</h4>
       <div className="filters">
-        {/* <LeftFilterBox
-          title={"Price Drop"}
-          points={["1", "2", "3"]}
-          count={[12, 16, 78]}
-        />
-        <LeftFilterBox
-          title={"Deals & Offers"}
-          points={["1", "2", "3"]}
-          count={[12, 16, 78]}
-        />
-        <LeftFilterBox
-          title={"Free Cancellation"}
-          points={["1", "2", "3"]}
-          count={[12, 16, 78]}
-        />
-        <LeftFilterBox
-          title={"Safety Feature"}
-          points={["1", "2", "3"]}
-          count={[12, 16, 78]}
-        /> */}
         <LeftFilterBox
           title={"Boarding Points"}
           points={filters.boardingPoints}
