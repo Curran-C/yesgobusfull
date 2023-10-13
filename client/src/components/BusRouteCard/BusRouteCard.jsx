@@ -3,9 +3,14 @@ import "./BusRouteCard.scss";
 
 const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
   const [inputValue, setInputValue] = useState(location);
+  
+  useEffect(() => {
+    setInputValue(location);
+  }, [location]);
+  
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
-  const delay = 1000; 
+  const delay = 1000;
 
   const handleInputChange = (e) => {
     const newInputValue = e.target.value;
