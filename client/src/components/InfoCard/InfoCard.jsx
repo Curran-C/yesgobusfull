@@ -58,7 +58,7 @@ const InfoCard = ({
       <h1 className="infotitle">
         {inputField ? (
           date ? (
-            <input type="date" value={title} onChange={handleDateChange} />
+            <input type="date" className="date" value={title} onChange={handleDateChange} />
           ) : (
             <input
               type="search"

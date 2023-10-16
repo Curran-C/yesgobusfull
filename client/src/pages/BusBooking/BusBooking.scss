@@ -1,143 +1,160 @@
 .busBooking {
-    .navbar {
-        padding: 0px 50px;
-        height: 130px;
+  .navbar {
+    padding: 0px 50px;
+    height: 130px;
 
-        .left {
-            a {
-                color: black;
-            }
-        }
+    .left {
+      a {
+        color: black;
+      }
+    }
+  }
+
+  .container {
+    padding: 60px;
+    display: flex;
+
+    .left {
+      width: 18%;
     }
 
-    .container {
-        padding: 60px;
+    .right {
+      width: 80%;
+
+      .mobile-filter {
+        display: none;
+      }
+
+      .dates {
         display: flex;
+        gap: 10px;
+        padding: 30px;
+        .date {
+          border: 1px solid #d0d0d0;
+          padding: 20px 20px;
+          min-width: 100px;
+          border-radius: 50%;
 
-        .left {
-            width: 18%;
+          &:hover {
+            cursor: pointer;
+            background-color: rgb(222, 219, 219);
+          }
+        }
+      }
+
+      .exclusiveOffers {
+        padding: 50px;
+        overflow-x: scroll;
+
+        h1 {
+          font-size: 18px;
         }
 
-        .right {
-            width: 80%;
+        .offers {
+          margin-top: 30px;
+          display: flex;
+          // justify-content: space-evenly;
+          flex-wrap: wrap;
+          gap: 10px;
 
-            .dates {
-                display: flex;
-                gap: 10px;
-                padding: 30px;
+          .offersCard {
+            min-width: 300px;
+            max-width: 300px;
+            min-height: 150px;
+            max-height: 150px;
+            padding: 10px;
+            gap: 20px;
 
-                .date {
-                    border: 1px solid #d0d0d0;
-                    padding: 20px 20px;
-                    min-width: 100px;
+            .container {
+              padding: 0px 5px;
 
-                    &:hover {
-                        cursor: pointer;
-                    }
+              .left {
+                width: auto;
+
+                img {
+                  width: 80px;
+                  height: 80px;
                 }
+              }
+
+              .right {
+                width: auto;
+              }
             }
-
-            .exclusiveOffers {
-                padding: 50px;
-                overflow-x: scroll;
-
-                h1 {
-                    font-size: 18px;
-                }
-
-                .offers {
-                    margin-top: 30px;
-                    display: flex;
-                    // justify-content: space-evenly;
-                    flex-wrap: wrap;
-                    gap: 10px;
-
-                    .offersCard {
-                        min-width: 300px;
-                        max-width: 300px;
-                        min-height: 150px;
-                        max-height: 150px;
-                        padding: 10px;
-                        gap: 20px;
-
-                        .container {
-                            padding: 0px 5px;
-
-                            .left {
-                                width: auto;
-
-                                img {
-                                    width: 80px;
-                                    height: 80px;
-                                }
-                            }
-
-                            .right {
-                                width: auto;
-                            }
-                        }
-                    }
-                }
-            }
-
-            .wrapper {
-                padding: 50px;
-                display: flex;
-                flex-direction: column;
-                gap: 40px;
-
-                .bus-card-container {
-                    margin-bottom: -30px;
-                }
-
-                @media (max-width: 768px) {
-                    .bus-card-container {
-                        margin-bottom: -30px;
-                    }
-                }
-
-            }
+          }
         }
+      }
+
+      .wrapper {
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+
+        .bus-card-container {
+          margin-bottom: -30px;
+        }
+
+        @media (max-width: 768px) {
+          .bus-card-container {
+            margin-bottom: -30px;
+          }
+        }
+      }
     }
+  }
 }
 
 @media (max-width: 1024px) {
-    .busBooking {
-        .container {
-            padding: 10px;
+  .busBooking {
+    .container {
+      padding: 10px;
 
-            .left {
-                width: 0%;
+      .left {
+        display: none;
+      }
+
+      .right {
+        width: 100%;
+
+        .mobile-filter {
+          display: block;
+          .leftFilter {
+            .filters {
+              display: flex;
+              flex-direction: column;
+              .priceRange {
+                flex-grow: 1;
+              }
             }
-
-            .right {
-                width: 100%;
-
-                .dates {
-                    overflow-x: scroll;
-                }
-
-                .exclusiveOffers {
-                    overflow-x: scroll;
-
-                    .offers {
-                        flex-wrap: nowrap;
-                        // justify-content: space-around;
-                    }
-                }
-            }
+          }
         }
+
+        .dates {
+          overflow-x: scroll;
+        }
+
+        .exclusiveOffers {
+          overflow-x: scroll;
+
+          .offers {
+            flex-wrap: nowrap;
+            // justify-content: space-around;
+          }
+        }
+      }
     }
+  }
 }
 
 @media (max-width: 426px) {
-    .busBooking {
-        .container {
-            .right {
-                .wrapper {
-                    padding: 0px;
-                }
-            }
+  .busBooking {
+    .container {
+      .right {
+        .wrapper {
+          padding: 0px;
         }
+      }
     }
+  }
 }

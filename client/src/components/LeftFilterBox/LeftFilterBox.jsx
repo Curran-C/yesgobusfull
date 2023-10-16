@@ -20,10 +20,9 @@ const LeftFilterBox = ({ title, points, count, name, onFilterChange }) => {
       ? selectedPoints.filter((filter) => filter !== point)
       : [...selectedPoints, point];
 
-      setSelectedPoints(updatedFilters);
-      onFilterChange(name, updatedFilters);
+    setSelectedPoints(updatedFilters);
+    onFilterChange(name, updatedFilters);
   };
-
 
   return (
     <div className="LeftFilterBox">

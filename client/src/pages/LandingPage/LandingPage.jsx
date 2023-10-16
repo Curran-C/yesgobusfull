@@ -150,7 +150,7 @@ const LandingPage = () => {
             <InfoCard
               img={office}
               title={fromLocation}
-              subtitle={"From"}
+              // subtitle={"From"}
               inputField={true}
               onChanged={setFromLocation}
               suggestions={locationOneSuggestions}
@@ -176,7 +176,7 @@ const LandingPage = () => {
             <InfoCard
               img={office}
               title={toLocation}
-              subtitle={"Destination"}
+              // subtitle={"Destination"}
               inputField={true}
               onChanged={setToLocation}
               suggestions={locationTwoSuggestions}
@@ -186,7 +186,7 @@ const LandingPage = () => {
             <InfoCard
               img={calender}
               title={selectedDate}
-              subtitle={"Select Date"}
+              // subtitle={"Select Date"}
               date={true}
               inputField={true}
               onChanged={handleDateInputChange}
@@ -229,7 +229,7 @@ const LandingPage = () => {
           /> */}
           <InfoCard
             img={bus}
-            title={"BUS BOOKING SERVICES"}
+            title={"CONVENIENT Booking"}
             subtitle={"Free Taxi On The Bus"}
           />
           <InfoCard

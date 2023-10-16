@@ -23,10 +23,10 @@ const Seats = ({
   destinationCity,
   doj,
   // pickUpTimes,
-  // pickUpLocationOne,
+  pickUpLocationOne,
   // pickUpLocationTwo,
   // dropTimes,
-  // dropLocationOne,
+  dropLocationOne,
   backSeat,
   travelTime,
   reachTime,
@@ -39,8 +39,8 @@ const Seats = ({
 }) => {
   //* states
   const navigate = useNavigate();
-  const [boardingPoints, setBoardingPoint] = useState([]);
-  const [droppingPoints, setDroppingPoint] = useState([]);
+  // const [boardingPoints, setBoardingPoint] = useState([]);
+  // const [droppingPoints, setDroppingPoint] = useState([]);
   const [bookingDetails, setBookingDetails] = useState({
     boardingPoint: {
       id: "",
@@ -249,28 +249,28 @@ const Seats = ({
     );
   };
 
-  useEffect(() => {
-    const getSeats = async () => {
-      try {
-        const response = await axios.post(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
-          {
-            sourceCity: sourceCity,
-            destinationCity: destinationCity,
-            doj: doj,
-            inventoryType: inventoryType,
-            routeScheduleId: routeScheduleId,
-          }
-        );
-        setBoardingPoint(response.data.boardingPoints);
-        setDroppingPoint(response.data.droppingPoints);
-      } catch (error) {
-        alert("Something went wrong");
-        console.error("Something went wrong:", error);
-      }
-    };
-    getSeats();
-  }, []);
+  // useEffect(() => {
+  //   const getSeats = async () => {
+  //     try {
+  //       const response = await axios.post(
+  //         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
+  //         {
+  //           sourceCity: sourceCity,
+  //           destinationCity: destinationCity,
+  //           doj: doj,
+  //           inventoryType: inventoryType,
+  //           routeScheduleId: routeScheduleId,
+  //         }
+  //       );
+  //       setBoardingPoint(response.data.boardingPoints);
+  //       setDroppingPoint(response.data.droppingPoints);
+  //     } catch (error) {
+  //       alert("Something went wrong");
+  //       console.error("Something went wrong:", error);
+  //     }
+  //   };
+  //   getSeats();
+  // }, []);
 
 
   const handleContinue = () => {
@@ -307,12 +307,11 @@ const Seats = ({
         <h5>Select Pickup and Drop Points</h5>
         <div className="seatsLeftContainer">
           <span className="title">PICKUP POINT</span>
-          {boardingPoints?.map((boardingPoint) => (
+          {pickUpLocationOne?.map((boardingPoint, index) => (
             <PickUpAndDropPoints
               key={boardingPoint.id}
               time={boardingPoint.time}
               locationOne={boardingPoint.location}
-              // locationTwo={boardingPoint.location}
               highlight={bookingDetails.boardingPoint.id === boardingPoint.id}
               onClick={() =>
                 setBookingDetails((prev) => {
@@ -328,7 +327,7 @@ const Seats = ({
 
         <div className="seatsLeftContainer">
           <span className="title">DROP POINT</span>
-          {droppingPoints?.map((droppingPoint, index) => (
+          {dropLocationOne?.map((droppingPoint, index) => (
             <PickUpAndDropPoints
               highlight={bookingDetails.droppingPoint.id === droppingPoint.id}
               key={droppingPoint.id}

@@ -10,6 +10,9 @@ import {
   BusBookingCard,
   Footer,
 } from "../../components";
+// import {
+//   fromto
+// } from "../../assets/homepage";
 import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -57,7 +60,6 @@ const BusBooking = () => {
     localStorage.getItem("destinationCity") || "Bangalore"
   );
   const [selectedDate, setSelectedDate] = useState(currentDate);
-
 
   // useEffect(() => {
   //   const storedSourceCity = localStorage.getItem("sourceCity") || "Mysore";
@@ -116,7 +118,7 @@ const BusBooking = () => {
       );
       setBusDetails(response.data.data);
       setNoOfBuses(response.data.data.length);
-      setLoading(false);      
+      setLoading(false);
     } catch (error) {
       // alert("Something went wrong");
       setBusDetails([]);
@@ -201,9 +203,20 @@ const BusBooking = () => {
         </div>
 
         <div className="right">
+          <div className="mobile-filter">
+            <LeftFilter
+              sourceCity={fromLocation}
+              destinationCity={toLocation}
+              doj={selectedDate}
+              onFilterChange={handleFilter}
+            />
+          </div>
           <div className="dates">
             {dates.map((date) => (
-              <p className="date" onClick={() => handleDateFilter(date)}>
+              <p
+                className={`date ${date === selectedDate ? 'active' : ''}`}
+                onClick={() => handleDateFilter(date)}
+              >
                 {date}
               </p>
             ))}
@@ -275,7 +288,6 @@ const BusBooking = () => {
                     cancellationPolicy={bus.cancellationPolicy}
                   />
                 </div>
-
               ))}
             </div>
           </Spin>

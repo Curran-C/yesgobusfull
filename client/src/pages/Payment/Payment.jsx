@@ -319,7 +319,7 @@ const Payment = () => {
 
   //validation
   const validateUserData = () => {
-    const numberOfTravelers = bookingDetails.selectedSeats.length;
+    const numberOfTravelers = bookingDetails?.selectedSeats?.length;
     const errors = {};
     for (let index = 0; index < numberOfTravelers; index++) {
       const firstNameKey = `firstName_${index}`;
@@ -420,7 +420,7 @@ const Payment = () => {
           <div className="details">
             <span>Enter Traveller Details</span>
 
-            {bookingDetails.selectedSeats.map((seat, index) => (
+            {bookingDetails?.selectedSeats?.map((seat, index) => (
               <div key={index} className="travelerDetails">
                 <h3>Traveler {index + 1}:</h3>
                 <div className="detailsContainer">
