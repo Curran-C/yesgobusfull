@@ -10,6 +10,9 @@ import {
   BusBookingCard,
   Footer,
 } from "../../components";
+// import {
+//   fromto
+// } from "../../assets/homepage";
 import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
 import axios from "axios";
@@ -210,7 +213,10 @@ const BusBooking = () => {
           </div>
           <div className="dates">
             {dates.map((date) => (
-              <p className="date" onClick={() => handleDateFilter(date)}>
+              <p
+                className={`date ${date === selectedDate ? 'active' : ''}`}
+                onClick={() => handleDateFilter(date)}
+              >
                 {date}
               </p>
             ))}

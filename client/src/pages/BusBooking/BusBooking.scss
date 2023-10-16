@@ -29,14 +29,15 @@
         display: flex;
         gap: 10px;
         padding: 30px;
-
         .date {
           border: 1px solid #d0d0d0;
           padding: 20px 20px;
           min-width: 100px;
+          border-radius: 50%;
 
           &:hover {
             cursor: pointer;
+            background-color: rgb(222, 219, 219);
           }
         }
       }
