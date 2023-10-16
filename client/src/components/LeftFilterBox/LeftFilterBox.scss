@@ -1,34 +1,36 @@
 .LeftFilterBox {
-    padding: 15px;
-    border: 0.5px solid #dadada;
-    // border-bottom: none;
-    .leftFilterContainer {
+  padding: 15px;
+  border: 0.5px solid #dadada;
+  // border-bottom: none;
+  .leftFilterContainer {
+    display: flex;
+    flex-direction: column;
+    .title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      p {
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+    ul {
+      padding-left: 0px;
+      max-height: 60vh;
+      overflow-y: auto;
+      .filterTypes {
         display: flex;
-        flex-direction: column;
-        .title {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            p {
-                &:hover {
-                    cursor: pointer;
-                }
-            }
+        color: #918e8e;
+        justify-content: space-between;
+        .types {
+          display: flex;
+          gap: 10px;
         }
-        ul {
-            padding-left: 0px;
-            .filterTypes {
-                display: flex;
-                color: #918e8e;
-                justify-content: space-between;
-                .types {
-                    display: flex;
-                    gap: 10px;
-                }
-            }
-        }
+      }
     }
-    &:hover {
-        cursor: pointer;
-    }
+  }
+  &:hover {
+    cursor: pointer;
+  }
 }
