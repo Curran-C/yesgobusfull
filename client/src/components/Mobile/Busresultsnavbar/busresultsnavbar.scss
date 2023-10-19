@@ -1,0 +1,46 @@
+.mobile_navbar_section{
+    width: 100%;
+// background-color: red;
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+.left_section{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    .back_arrow{
+        h1{
+            margin-top: -25px;
+            font-size: 25px;
+        }
+    }
+    .place{
+      padding: 5px;
+        display: flex;
+        flex-direction: column;
+        h1{
+            font-size: 20px;
+        }
+        p{
+            font-size: 15px;
+        }
+    }
+}
+.right_section{
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    button{
+        color: white;
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 5px;
+        padding-right: 5px;
+    border-radius: 5px;
+    outline: none;
+    border: none;
+    background-color: #ff7d26;
+    }
+}
+}
