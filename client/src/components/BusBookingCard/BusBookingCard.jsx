@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { livelocation } from "../../assets/busbooking";
 import BusBookingCardInfo from "../BusBookingCardInfo/BusBookingCardInfo";
 import DropDown from "../DropDown/DropDown";
@@ -41,7 +41,7 @@ const BusBookingCard = ({
   const fetchSeatData = async () => {
     if (!showSeats === false) {
       setShowSeats(!showSeats);
-      return
+      return;
     }
     setSeatLoading(true);
     let seatData = [];
@@ -89,6 +89,37 @@ const BusBookingCard = ({
               button={true}
               subtitle={seatsLeft || "No seats left"}
             />
+          </div>
+        </div>
+        <div
+          className={`card-wrapper-mobile ${showSeats && "bg-lightgrey"}`}
+          onClick={() => fetchSeatData()}
+        >
+          <h6 className="title">
+            <span className="text-orange">YESGO</span>BUS
+          </h6>
+          <div className="time-and-price">
+            <h4>
+              {pickUpTime} ─ {reachTime}
+            </h4>
+            <span className="price-container">
+              <p>From</p>{" "}
+              <p className="price">₹ {price?.split(".")[0] || price}</p>
+            </span>
+          </div>
+          <div className="duration-and-seats-left">
+            <span className="duration">{travelTime}</span>
+            <span className="seats-left text-orange">{seatsLeft} Seats</span>
+          </div>
+          <div className="bus-details-container">
+            <div className="bus-details">
+              <h4>{busName}</h4>
+              <h4 className="lighter">{busType}</h4>
+            </div>
+            <div className="ratings-container">
+              <span className="rating">★ 5.0</span>
+              <span className="count">609</span>
+            </div>
           </div>
         </div>
         {/* <hr />
