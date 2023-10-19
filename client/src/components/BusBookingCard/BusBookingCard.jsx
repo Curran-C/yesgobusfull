@@ -117,8 +117,12 @@ const BusBookingCard = ({
               <h4 className="lighter">{busType}</h4>
             </div>
             <div className="ratings-container">
-              <span className="rating">★ 5.0</span>
-              <span className="count">609</span>
+              <span className="rating">
+                ★ {(Math.random() * 1 + 4).toFixed(1)}
+              </span>
+              <span className="count">
+                {Math.floor(Math.random() * 101) + 37}
+              </span>
             </div>
           </div>
         </div>
