@@ -225,5 +225,14 @@
     .seatsRight {
       width: 100%;
     }
+
+    .seatsLeft {
+      .pickup-and-drop-container {
+        display: flex;
+        & > div {
+          width: 50%;
+        }
+      }
+    }
   }
 }
