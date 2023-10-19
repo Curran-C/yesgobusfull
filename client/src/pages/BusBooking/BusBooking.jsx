@@ -19,6 +19,7 @@ import axios from "axios";
 import { Spin } from "antd";
 import { useLocation, Navigate } from "react-router-dom";
 import { cityMapping } from "../../utils/cityMapping";
+import { filterIcon } from "../../assets/busbooking";
 
 const BusBooking = () => {
   const loggedInUser = localStorage.getItem("loggedInUser");
@@ -206,12 +207,14 @@ const BusBooking = () => {
 
         <div className="right">
           <div className="mobile-filter">
-            <button
-              className="filter"
-              onClick={() => setShowMobileFilters(!showMobileFilters)}
-            >
-              Filter
-            </button>
+            <div className="filter-buttons">
+              <button
+                className="filter"
+                onClick={() => setShowMobileFilters(!showMobileFilters)}
+              >
+                <img src={filterIcon} alt="" /> <span>Filter</span>
+              </button>
+            </div>
             <div className={`filter-wrapper ${showMobileFilters && "active"}`}>
               <LeftFilter
                 sourceCity={fromLocation}

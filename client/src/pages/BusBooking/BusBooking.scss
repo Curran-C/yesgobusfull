@@ -22,8 +22,7 @@
       width: 80%;
 
       .mobile-filter {
-        position: relative;
-
+        display: none;
         .filter-wrapper {
           display: none;
           overflow: hidden;
@@ -36,13 +35,23 @@
           }
         }
 
-        .filter {
-          background-color: rgb(241, 241, 241);
-          border: 2px solid rgb(202, 202, 202);
-          border-radius: 8px;
-          padding: 10px 20px;
-          cursor: pointer;
-          color: rgb(31, 31, 31);
+        .filter-buttons {
+          .filter {
+            background-color: rgb(241, 241, 241);
+            border: 2px solid rgb(202, 202, 202);
+            border-radius: 8px;
+            padding: 10px 20px;
+            cursor: pointer;
+            color: rgb(31, 31, 31);
+            display: flex;
+            gap: 5px;
+            align-items: center;
+
+            img {
+              width: 15px;
+              object-fit: contain;
+            }
+          }
         }
       }
 
