@@ -22,7 +22,28 @@
       width: 80%;
 
       .mobile-filter {
-        display: none;
+        position: relative;
+
+        .filter-wrapper {
+          display: none;
+          overflow: hidden;
+          max-height: 0;
+          transition: max-height 200ms ease;
+
+          &.active {
+            display: block;
+            max-height: 500px;
+          }
+        }
+
+        .filter {
+          background-color: rgb(241, 241, 241);
+          border: 2px solid rgb(202, 202, 202);
+          border-radius: 8px;
+          padding: 10px 20px;
+          cursor: pointer;
+          color: rgb(31, 31, 31);
+        }
       }
 
       .dates {
@@ -39,6 +60,12 @@
             cursor: pointer;
             background-color: rgb(222, 219, 219);
           }
+        }
+      }
+
+      & > .dates {
+        @media (max-width: 420px) {
+          display: none;
         }
       }
 
