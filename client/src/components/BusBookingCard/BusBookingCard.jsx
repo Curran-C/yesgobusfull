@@ -72,16 +72,19 @@ const BusBookingCard = ({
       <div className="cardContainer">
         <div className="cardWrapper">
           <BusBookingCardInfo
-            title={busName}
-            subtitle={busType}
+            title={busType}
+            // title={busName}
+            // subtitle={busType}
             rating={rating}
             reviews={noOfReviews}
+            subtitleLeft
           />
           <div className="otherCards">
-            <BusBookingCardInfo title={pickUpLocation} subtitle={pickUpTime} />
-            <BusBookingCardInfo img={true} subtitle={travelTime} />
-            <BusBookingCardInfo title={reachLocation} subtitle={reachTime} />
-            <p className="price">₹{price}</p>
+            <BusBookingCardInfo subtitle={pickUpLocation} title={pickUpTime} />
+            {/* <BusBookingCardInfo img={true} title={travelTime} /> */}
+            <BusBookingCardInfo title={travelTime} />
+            <BusBookingCardInfo subtitle={reachLocation} title={reachTime} />
+            <p className="price">₹{price?.split(".")[0] || price}</p>
             <BusBookingCardInfo
               setShowSeats={fetchSeatData}
               buttonText={!seatsLeft || (!seatDetails && "Full")}
