@@ -292,8 +292,8 @@ const BusBooking = () => {
                     title={bus.operatorName}
                     busName={bus.operatorName}
                     busType={bus.busType}
-                    rating={5}
-                    noOfReviews={100}
+                    rating={(Math.random() * 1 + 4).toFixed(1)}
+                    noOfReviews={Math.floor(Math.random() * 101) + 37}
                     pickUpLocation={fromLocation}
                     pickUpTime={bus.departureTime}
                     reachLocation={toLocation}
