@@ -1,4 +1,9 @@
 .leftFilter {
+  & > h4 {
+    @media (max-width: 420px) {
+      display: none;
+    }
+  }
   .filters {
     .priceRange {
       margin-top: 30px;
