@@ -3,6 +3,12 @@
   flex-direction: column;
   border: 1px solid #dadada;
   padding: 30px;
+  background-color: white;
+
+  &.bg-lightgrey {
+    background-color: rgb(248, 248, 248);
+  }
+
   h1 {
     font-size: 18px;
   }
@@ -73,6 +79,7 @@
 @media (max-width: 426px) {
   .BusBookingCard {
     border-radius: 8px;
+
     & > h1 {
       display: none;
     }
@@ -82,6 +89,7 @@
       padding: 0;
       margin: 0;
       border: none;
+
       .cardWrapper {
         display: none;
         flex-direction: column;
@@ -95,9 +103,7 @@
         padding: 10px;
         flex-wrap: wrap;
       }
-      .bg-lightgrey {
-        background-color: rgb(248, 248, 248);
-      }
+
       .card-wrapper-mobile {
         display: flex;
         flex-direction: column;

@@ -37,7 +37,7 @@
 
         .filter-buttons {
           .filter {
-            background-color: rgb(241, 241, 241);
+            background-color: rgb(250, 250, 250);
             border: 2px solid rgb(202, 202, 202);
             border-radius: 8px;
             padding: 10px 20px;
@@ -186,6 +186,7 @@
 @media (max-width: 426px) {
   .busBooking {
     .container {
+      background-color: rgb(241, 241, 241);
       .right {
         .wrapper {
           padding: 0px;

@@ -67,7 +67,7 @@ const BusBookingCard = ({
   };
 
   return (
-    <div className="BusBookingCard">
+    <div className={`BusBookingCard ${showSeats && "bg-lightgrey"}`}>
       <h1>{title}</h1>
       <div className="cardContainer">
         <div className="cardWrapper">
@@ -91,10 +91,7 @@ const BusBookingCard = ({
             />
           </div>
         </div>
-        <div
-          className={`card-wrapper-mobile ${showSeats && "bg-lightgrey"}`}
-          onClick={() => fetchSeatData()}
-        >
+        <div className={`card-wrapper-mobile`} onClick={() => fetchSeatData()}>
           <h6 className="title">
             <span className="text-orange">YESGO</span>BUS
           </h6>
