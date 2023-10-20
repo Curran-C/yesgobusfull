@@ -127,7 +127,6 @@ const Seats = ({
     });
   };
 
-
   const lowerTierSeats = seatDetails.filter((seat) => seat.zIndex === 0);
   const upperTierSeats = seatDetails.filter((seat) => seat.zIndex === 1);
 
@@ -272,9 +271,7 @@ const Seats = ({
   //   getSeats();
   // }, []);
 
-
   const handleContinue = () => {
-
     if (
       bookingDetails.boardingPoint.id &&
       bookingDetails.droppingPoint &&
@@ -299,51 +296,52 @@ const Seats = ({
     } else {
       alert("Please select seats, boarding and droping points");
     }
-  }
+  };
 
   return (
     <div className="seats">
       <div className="seatsLeft">
         <h5>Select Pickup and Drop Points</h5>
-        <div className="seatsLeftContainer">
-          <span className="title">PICKUP POINT</span>
-          {pickUpLocationOne?.map((boardingPoint, index) => (
-            <PickUpAndDropPoints
-              key={boardingPoint.id}
-              time={boardingPoint.time}
-              locationOne={boardingPoint.location}
-              highlight={bookingDetails.boardingPoint.id === boardingPoint.id}
-              onClick={() =>
-                setBookingDetails((prev) => {
-                  return {
-                    ...prev,
-                    boardingPoint,
-                  };
-                })
-              }
-            />
-          ))}
-        </div>
-
-        <div className="seatsLeftContainer">
-          <span className="title">DROP POINT</span>
-          {dropLocationOne?.map((droppingPoint, index) => (
-            <PickUpAndDropPoints
-              highlight={bookingDetails.droppingPoint.id === droppingPoint.id}
-              key={droppingPoint.id}
-              time={droppingPoint.time}
-              locationOne={droppingPoint.location}
-              // locationTwo={droppingPoint.location}
-              onClick={() =>
-                setBookingDetails((prev) => {
-                  return {
-                    ...prev,
-                    droppingPoint,
-                  };
-                })
-              }
-            />
-          ))}
+        <div className="pickup-and-drop-container">
+          <div className="seatsLeftContainer">
+            <span className="title">PICKUP POINT</span>
+            {pickUpLocationOne?.map((boardingPoint, index) => (
+              <PickUpAndDropPoints
+                key={boardingPoint.id}
+                time={boardingPoint.time}
+                locationOne={boardingPoint.location}
+                highlight={bookingDetails.boardingPoint.id === boardingPoint.id}
+                onClick={() =>
+                  setBookingDetails((prev) => {
+                    return {
+                      ...prev,
+                      boardingPoint,
+                    };
+                  })
+                }
+              />
+            ))}
+          </div>
+          <div className="seatsLeftContainer">
+            <span className="title">DROP POINT</span>
+            {dropLocationOne?.map((droppingPoint, index) => (
+              <PickUpAndDropPoints
+                highlight={bookingDetails.droppingPoint.id === droppingPoint.id}
+                key={droppingPoint.id}
+                time={droppingPoint.time}
+                locationOne={droppingPoint.location}
+                // locationTwo={droppingPoint.location}
+                onClick={() =>
+                  setBookingDetails((prev) => {
+                    return {
+                      ...prev,
+                      droppingPoint,
+                    };
+                  })
+                }
+              />
+            ))}
+          </div>
         </div>
       </div>
 
@@ -389,10 +387,7 @@ const Seats = ({
         </div>
 
         <div className="continue">
-          <Button
-            onClicked={() => handleContinue()}
-            text={"Continue"}
-          />
+          <Button onClicked={() => handleContinue()} text={"Continue"} />
         </div>
 
         <div className="price">

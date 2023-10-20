@@ -19,6 +19,7 @@ import axios from "axios";
 import { Spin } from "antd";
 import { useLocation, Navigate } from "react-router-dom";
 import { cityMapping } from "../../utils/cityMapping";
+import { filterIcon } from "../../assets/busbooking";
 
 const BusBooking = () => {
   const loggedInUser = localStorage.getItem("loggedInUser");
@@ -182,6 +183,8 @@ const BusBooking = () => {
     handleSearch(fromLocation, toLocation, date);
   };
 
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
+
   return (
     <div className="busBooking">
       <Navbar />
@@ -204,17 +207,37 @@ const BusBooking = () => {
 
         <div className="right">
           <div className="mobile-filter">
-            <LeftFilter
-              sourceCity={fromLocation}
-              destinationCity={toLocation}
-              doj={selectedDate}
-              onFilterChange={handleFilter}
-            />
+            <div className="filter-buttons">
+              <button
+                className="filter"
+                onClick={() => setShowMobileFilters(!showMobileFilters)}
+              >
+                <img src={filterIcon} alt="" /> <span>Filter</span>
+              </button>
+            </div>
+            <div className={`filter-wrapper ${showMobileFilters && "active"}`}>
+              <LeftFilter
+                sourceCity={fromLocation}
+                destinationCity={toLocation}
+                doj={selectedDate}
+                onFilterChange={handleFilter}
+              />
+              <div className="dates">
+                {dates.map((date) => (
+                  <p
+                    className={`date ${date === selectedDate ? "active" : ""}`}
+                    onClick={() => handleDateFilter(date)}
+                  >
+                    {date}
+                  </p>
+                ))}
+              </div>
+            </div>
           </div>
           <div className="dates">
             {dates.map((date) => (
               <p
-                className={`date ${date === selectedDate ? 'active' : ''}`}
+                className={`date ${date === selectedDate ? "active" : ""}`}
                 onClick={() => handleDateFilter(date)}
               >
                 {date}
@@ -269,8 +292,8 @@ const BusBooking = () => {
                     title={bus.operatorName}
                     busName={bus.operatorName}
                     busType={bus.busType}
-                    rating={5}
-                    noOfReviews={100}
+                    rating={(Math.random() * 1 + 4).toFixed(1)}
+                    noOfReviews={Math.floor(Math.random() * 101) + 37}
                     pickUpLocation={fromLocation}
                     pickUpTime={bus.departureTime}
                     reachLocation={toLocation}
