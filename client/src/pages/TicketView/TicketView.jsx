@@ -10,7 +10,7 @@ import axios from "axios";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useNavigate } from "react-router-dom";
-const contactNumber = "040-22233311";
+const contactNumber = "+919964376733";
 
 export default function TicketView() {
   const [downloaded, setDownloaded] = useState(false);
@@ -19,44 +19,48 @@ export default function TicketView() {
   const bookingId = urlSearchParams.get("bookingId");
   const [bookingDetails, setBookingDetails] = useState(null);
   const downloadParam = urlSearchParams.get("download");
+  const [travellers, setTravellers] = useState("");
+  const [travellersAge, setTravellersAge] = useState("");
 
   const handleDownloadPDF = () => {
-    const element = document.querySelector(".ticket");
-    const buttons = document.querySelectorAll(".action__buttons button");
-    buttons.forEach((button) => {
-      button.style.display = "none";
-    });
-    html2canvas(element, {
-      allowTaint: false,
-      removeContainer: true,
-      backgroundColor: "#ffffff",
-      scale: window.devicePixelRatio,
-      useCORS: false,
-      windowWidth: '1400px'
-    }).then((canvas) => {
-      const contentDataURL = canvas.toDataURL("image/png");
-      const imgWidth = 210;
-      const pageHeight = 295;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
-      let heightLeft = imgHeight;
-      let pdf = new jsPDF("p", "mm", "a4");
-      let position = 5;
+    if (bookingDetails) {
+      const element = document.querySelector(".ticket");
+      const buttons = document.querySelectorAll(".action__buttons button");
+      buttons.forEach((button) => {
+        button.style.display = "none";
+      });
+      html2canvas(element, {
+        allowTaint: false,
+        removeContainer: true,
+        backgroundColor: "#ffffff",
+        scale: window.devicePixelRatio,
+        useCORS: false,
+        windowWidth: '1400px'
+      }).then((canvas) => {
+        const contentDataURL = canvas.toDataURL("image/png");
+        const imgWidth = 210;
+        const pageHeight = 295;
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        let heightLeft = imgHeight;
+        let pdf = new jsPDF("p", "mm", "a4");
+        let position = 5;
 
-      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
-
-      while (heightLeft >= 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
         pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
-      }
-      pdf.save(`${bookingId}.pdf`);
-      buttons.forEach((button) => {
-        button.style.display = "block";
+
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          pdf.addPage();
+          pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        pdf.save(`${bookingId}.pdf`);
+        buttons.forEach((button) => {
+          button.style.display = "block";
+        });
       });
-    });
-    setDownloaded(true);
+      setDownloaded(true);
+    }
   };
 
   useEffect(() => {
@@ -67,6 +71,10 @@ export default function TicketView() {
           }/api/busBooking/getBookingById/${bookingId}`
         );
         setBookingDetails(getBookingDetails.data);
+        const joinedNames = getBookingDetails.data.blockSeatPaxDetails?.map(seat => seat.name).join(", ");
+        const joinedAges = getBookingDetails.data.blockSeatPaxDetails?.map(seat => seat.age).join(", ");
+        setTravellers(joinedNames);
+        setTravellersAge(joinedAges);
         if (downloadParam === "1" && downloaded === false) {
           handleDownloadPDF();
           setTimeout(() => {
@@ -170,13 +178,14 @@ export default function TicketView() {
                   className="font-24"
                   style={{ textAlign: "left", width: "30%", minWidth: "20ch" }}
                 >
-                  {bookingDetails?.customerName} {bookingDetails?.customerLastName}
+                  {/* {bookingDetails?.customerName} {bookingDetails?.customerLastName} */}
+                  {travellers}
                 </td>
                 <td
                   className="font-24"
                   style={{ width: "7.5%", minWidth: "5ch" }}
                 >
-                  {bookingDetails?.blockSeatPaxDetails[0].age}
+                  {travellersAge}
                 </td>
                 <td
                   className="font-24"
@@ -208,7 +217,7 @@ export default function TicketView() {
 
         <CustomerSupport contactNumber={contactNumber} />
 
-        <Terms cancellationPolicy={bookingDetails?.cancellationPolicy}/>
+        <Terms cancellationPolicy={bookingDetails?.cancellationPolicy} />
       </section>
 
       <div className="action__buttons">
