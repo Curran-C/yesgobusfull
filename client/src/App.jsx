@@ -14,6 +14,7 @@ import {
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import KycLandingPage from "./pages/KYC/KycLandingPage/KycLandingPage";
 import KycPayments from "./pages/KYC/KycPayment/KycPayment";
+import MobileNavbar from "./components/Mobile/Busresultsnavbar/busresultsnavbar";
 
 function App() {
   return (
@@ -39,6 +40,9 @@ function App() {
         <Route path="/cabs/kyc/payment" element={<KycPayments />} />
 
         {/* <Route path="/cabs/kyc" element={<KycLandingPage />} /> */}
+
+        <Route path="/mobile_navbar" element={<MobileNavbar />} />
+
       </Routes>
     </BrowserRouter>
   );

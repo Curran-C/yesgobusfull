@@ -89,7 +89,7 @@ const InfoCard = ({
           </ul>
         )}
       </h1>
-      <p className="infosubtitle">{subtitle}</p>
+      {/* <p className="infosubtitle">{subtitle}</p> */}
     </div>
   );
 };
