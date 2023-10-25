@@ -16,31 +16,43 @@ const BusRoute = ({
   const [locationTwoSuggestions, setLocationTwoSuggestions] = useState([]);
   const [sourceCity, setSourceCity] = useState(locationOne);
   const [destinationCity, setDestinationCity] = useState(locationTwo);
-  
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setSourceCity(locationOne);
+    setDestinationCity(locationTwo);
+  }, [locationOne, locationTwo]);
+
   const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
     try {
-      if (query.length > 3) {
+      setLoading(true);
+      // if (query.length > 3) {
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
         );
         console.log(response.data);
         setLocationSuggestions(response.data.data);
-      } else {
-        setLocationSuggestions([]);
-      }
+        setLoading(false);
+      // } else {
+      //   setLocationSuggestions([]);
+      // }
     } catch (error) {
       console.error("Something went wrong:", error);
     }
   };
 
+
+  const [locationOneQuery, setLocationOneQuery] = useState("");
+  const [locationTwoQuery, setLocationTwoQuery] = useState("");
+
   useEffect(() => {
-    if (locationOne) {
-      fetchLocationSuggestions(locationOne, setLocationOneSuggestions);
+    if (locationOneQuery) {
+      fetchLocationSuggestions(locationOneQuery, setLocationOneSuggestions);
     }
-    if (locationTwo) {
-      fetchLocationSuggestions(locationTwo, setLocationTwoSuggestions);
+    if (locationTwoQuery) {
+      fetchLocationSuggestions(locationTwoQuery, setLocationTwoSuggestions);
     }
-  }, [locationOne, locationTwo]);
+  }, [locationOneQuery, locationTwoQuery]);
 
   return (
     <div className="BusRoute">
@@ -49,6 +61,8 @@ const BusRoute = ({
         location={sourceCity}
         setLocation={(value) => onSearch(value, locationTwo, departureDate)}
         suggestions={locationOneSuggestions}
+        loading={loading}
+        setLocationQuery={setLocationOneQuery}
       />
       <img
         src={twowayarrow}
@@ -74,6 +88,8 @@ const BusRoute = ({
         location={destinationCity}
         setLocation={(value) => onSearch(locationOne, value, departureDate)}
         suggestions={locationTwoSuggestions}
+        loading={loading}
+        setLocationQuery={setLocationTwoQuery}
       />
       <BusRouteCard
         title="Select Date"
