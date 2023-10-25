@@ -127,13 +127,11 @@
         flex-direction: column;
         gap: 40px;
 
-        .bus-card-container {
-          margin-bottom: -30px;
-        }
-
         @media (max-width: 768px) {
+          gap: 20px;
+
           .bus-card-container {
-            margin-bottom: -30px;
+            min-height: 150px;
           }
         }
       }
