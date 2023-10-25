@@ -14,7 +14,7 @@ import driverRoutes from "./routes/driver.routes.js";
 import kycRoutes from "./routes/verifykyc.routes.js";
 
 //schedular
-import schedular from "./utils/scheduler.js";
+import { sendReminderJob, checkPaymentJob } from "./utils/scheduler.js";
 
 dotenv.config();
 const app = express();

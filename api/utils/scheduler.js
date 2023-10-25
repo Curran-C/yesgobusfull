@@ -1,6 +1,7 @@
 import schedule from 'node-schedule';
 import { sendMessage } from './helper.js';
 import BusBooking from "../modals/busBooking.modal.js";
+import { checkPaymentStatus, refundPayment } from '../service/payment.service.js';
 
 const sendReminderMessages = async () => {
   try {
@@ -9,7 +10,7 @@ const sendReminderMessages = async () => {
     const bookings = await BusBooking.find({
       doj: { $lte: oneHourFromNow },
       sentBookingRemainer: false,
-      bookingStatus: "paid", 
+      bookingStatus: "paid",
     });
     const templateId = process.env.TEMP;
     for (const booking of bookings) {
@@ -24,9 +25,38 @@ const sendReminderMessages = async () => {
   }
 }
 
+const checkPaymentAndRefund = async () => {
+  try {
+    const bookings = await BusBooking.find({
+      bookingStatus: 'pending',
+    });
+    for (const booking of bookings) {
+      const requestData = {
+        merchantTransactionId: booking.merchantTransactionId,
+      }
+      const paymentStatus = await checkPaymentStatus(requestData);
+      if (paymentStatus.success) {
+        await BusBooking.findByIdAndUpdate(booking._id, {
+          bookingStatus: 'failed',
+        });
+        const refundData = {
+          amount: booking.totalAmount,
+          merchantTransactionId: booking.merchantTransactionId,
+        }
+        await refundPayment(refundData);
+      }
+    }
+  } catch (error) {
+    console.error('Error checking payment status and refunding:', error);
+  }
+}
 
-const job = schedule.scheduleJob('* * * * *', function(){
+const sendReminderJob = schedule.scheduleJob('* * * * * *', function () {
   // sendReminderMessages();
 });
 
-export default job;
+const checkPaymentJob = schedule.scheduleJob('0 0 * * *', function () {
+  checkPaymentAndRefund();
+});
+
+export { sendReminderJob, checkPaymentJob };

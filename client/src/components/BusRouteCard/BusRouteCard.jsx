@@ -1,13 +1,14 @@
 import React, { useState, useEffect, useRef } from "react";
 import "./BusRouteCard.scss";
+import { Spin } from "antd";
 
-const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
+const BusRouteCard = ({ title, location, setLocation, date, suggestions, loading, setLocationQuery }) => {
   const [inputValue, setInputValue] = useState(location);
-  
+
   useEffect(() => {
     setInputValue(location);
   }, [location]);
-  
+
   const [showSuggestions, setShowSuggestions] = useState(false);
   const inputRef = useRef(null);
   const delay = 1000;
@@ -15,6 +16,7 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
   const handleInputChange = (e) => {
     const newInputValue = e.target.value;
     setInputValue(newInputValue);
+    setLocationQuery(newInputValue);
     setShowSuggestions(true);
   };
 
@@ -64,26 +66,28 @@ const BusRouteCard = ({ title, location, setLocation, date, suggestions }) => {
         <input
           type="search"
           value={inputValue}
-          onChange={handleInputChange}
+          onInput={handleInputChange}
           onClick={handleInputClick}
         />
       )}
-
-      {showSuggestions && suggestions.length > 0 && (
+      {showSuggestions && (
         <ul className="suggestion-list">
-          {suggestions
-            .filter(
-              ({ city_name }) =>
-                !/\d/.test(city_name) && !city_name.includes(" ")
-            )
-            .map((suggestion) => (
-              <li
-                key={suggestion._id}
-                onClick={() => handleSuggestionClick(suggestion.city_name)}
-              >
-                {suggestion.city_name}
-              </li>
-            ))}
+          {loading ? (
+            <li className="loading-spinner">
+              <Spin size="small" />
+            </li>
+          ) : (
+            suggestions
+              .filter(({ city_name }) => !/\d/.test(city_name) && !city_name.includes(" "))
+              .map((suggestion) => (
+                <li
+                  key={suggestion._id}
+                  onClick={() => handleSuggestionClick(suggestion.city_name)}
+                >
+                  {suggestion.city_name}
+                </li>
+              ))
+          )}
         </ul>
       )}
     </div>
