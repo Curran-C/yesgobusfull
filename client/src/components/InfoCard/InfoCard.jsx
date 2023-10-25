@@ -63,7 +63,7 @@ const InfoCard = ({
             <input
               type="search"
               value={title}
-              onChange={handleInputChange}
+              onInput={handleInputChange}
               onClick={handleInputClick}
               placeholder={placeholder}
             />
