@@ -13,7 +13,6 @@ const PaymentSuccess = () => {
   const navigate = useNavigate();
 
   const [bookingDetails, setBookingDetails] = useState(null);
-  console.log(bookingId);
   useEffect(() => {
     const getBookingDetails = async () => {
       try {

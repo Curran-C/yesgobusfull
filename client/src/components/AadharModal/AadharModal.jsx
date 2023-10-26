@@ -24,7 +24,6 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
 
   //send aadhaar otp
   const sendOtp = async () => {
-    console.log("aadhar");
     try {
       // const requestData = {
       //   aadhaar_number: user.aadhar,
@@ -51,7 +50,6 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
   //verify aadhar otp
   const verifyOtp = async () => {
     try {
-      // console.log("aadhar card");
       // const requestData = {
       //   otp: user?.otp,
       //   ref_id: refId,
@@ -117,7 +115,6 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
         `${import.meta.env.VITE_BASE_URL}/api/kyc/drivingLicense/verify`,
         requestData
       );
-      console.log(response.data?.data?.name);
       if (
         response.data?.status === "success" &&
         response.data?.data?.name
@@ -174,7 +171,6 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
                 givenName={"dob"}
                 isKyc={true}
               />
-              {console.log(typeOfDocument)}
               <Button 
               onClicked={typeOfDocument === "Pancard" ? verifyPan : verifyDrivingLicense} 
               text={"Verify"} 
@@ -190,7 +186,6 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
                 givenName={"otp"}
                 isKyc={true}
               />
-              {console.log(typeOfDocument)}
               <Button onClicked={verifyOtp} text={"Verify"} />
             </div>
           )}

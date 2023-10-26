@@ -128,7 +128,6 @@ const Login = () => {
 
   const handleSubmit = async () => {
     if (showLogin) {
-      console.log(loginData);
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/user/signin`,
@@ -140,7 +139,6 @@ const Login = () => {
         if (response.status === 200) {
           const token = response.data.token;
           const loggedInUser = response.data.data;
-          console.log(loggedInUser);
           localStorage.setItem("token", token);
           localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
           alert("Login Successfull");

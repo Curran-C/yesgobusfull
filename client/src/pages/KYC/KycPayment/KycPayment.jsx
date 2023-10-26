@@ -38,7 +38,6 @@ const KycPayments = () => {
             paymentAmount: 2000,
           }
         );
-        console.log(response);
         if (updatePaymentDetails.status === 200) {
           window.open(
             response.data.data.instrumentResponse.redirectInfo.url,
@@ -67,7 +66,6 @@ const KycPayments = () => {
             import.meta.env.VITE_BASE_URL
           }/api/payment/checkPaymentStatus/${merchantTransactionId}`
         );
-        console.log(checkPaymentStatus);
         if (checkPaymentStatus.data.code === "PAYMENT_SUCCESS") {
           const updatePaymentDetails = await axios.patch(
             `${

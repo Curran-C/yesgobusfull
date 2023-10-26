@@ -54,27 +54,19 @@ const BusBooking = () => {
   const day = String(currentDate.getDate()).padStart(2, "0");
   currentDate = `${year}-${month}-${day}`;
 
-  const [fromLocation, setFromLocation] = useState(
-    localStorage.getItem("sourceCity") || "Mysore"
-  );
-  const [toLocation, setToLocation] = useState(
-    localStorage.getItem("destinationCity") || "Bangalore"
-  );
+  const [fromLocation, setFromLocation] = useState("Mysore");
+  const [toLocation, setToLocation] = useState("Bangalore");
   const [selectedDate, setSelectedDate] = useState(currentDate);
-
-  // useEffect(() => {
-  //   const storedSourceCity = localStorage.getItem("sourceCity") || "Mysore";
-  //   const storedDestinationCity = localStorage.getItem("destinationCity") || "Bangalore";
-  //   setFromLocation(storedSourceCity);
-  //   setToLocation(storedDestinationCity);
-  // }, []);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    const sourceCity = queryParams.get("from");
-    const destinationCity = queryParams.get("to");
+    const sourceCity =
+      queryParams.get("from") || localStorage.getItem("sourceCity");
+    const destinationCity =
+      queryParams.get("to") || localStorage.getItem("destinationCity");
     const doj = queryParams.get("date");
     if (sourceCity && destinationCity && doj) {
+      console.log(sourceCity, destinationCity, doj);
       // the below three set functions of useState are not working
       setFromLocation(sourceCity);
       setToLocation(destinationCity);
@@ -225,6 +217,7 @@ const BusBooking = () => {
               <div className="dates">
                 {dates.map((date) => (
                   <p
+                    key={date}
                     className={`date ${date === selectedDate ? "active" : ""}`}
                     onClick={() => handleDateFilter(date)}
                   >
@@ -237,6 +230,7 @@ const BusBooking = () => {
           <div className="dates">
             {dates.map((date) => (
               <p
+                key={date}
                 className={`date ${date === selectedDate ? "active" : ""}`}
                 onClick={() => handleDateFilter(date)}
               >
@@ -281,7 +275,7 @@ const BusBooking = () => {
               <ColumnNames noOfBuses={noOfBuses} />
 
               {busDetails?.map((bus) => (
-                <div className="bus-card-container">
+                <div className="bus-card-container" key={bus.routeScheduleId}>
                   <BusBookingCard
                     key={bus.routeScheduleId}
                     routeScheduleId={bus.routeScheduleId}

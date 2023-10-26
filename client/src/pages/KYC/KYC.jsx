@@ -31,7 +31,6 @@ const KYC = () => {
         `${import.meta.env.VITE_BASE_URL}/api/driver/signup`,
         user
       );
-      console.log(response.data);
       setDriverId(response.data.data._id);
       // navigate(`/cabs/kyc/payment`, {
       //   state: {

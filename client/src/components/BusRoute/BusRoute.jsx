@@ -30,7 +30,6 @@ const BusRoute = ({
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
         );
-        console.log(response.data);
         setLocationSuggestions(response.data.data);
         setLoading(false);
       // } else {

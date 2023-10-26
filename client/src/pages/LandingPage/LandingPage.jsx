@@ -109,11 +109,10 @@ const LandingPage = () => {
   const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
     try {
       // if (query.length > 3) {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
-        );
-        console.log(response.data);
-        setLocationSuggestions(response.data.data);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
+      );
+      setLocationSuggestions(response.data.data);
       // } else {
       //   setLocationSuggestions([]);
       // }
@@ -308,7 +307,11 @@ const LandingPage = () => {
             title={"30 SEC"}
             subtitle={"routeINSTANT E-TICKET & REFUND"}
           />
-          <InfoCard img={smile} title={"1 million"} subtitle={"HAPPY CUSTOMERS"} />
+          <InfoCard
+            img={smile}
+            title={"1 million"}
+            subtitle={"HAPPY CUSTOMERS"}
+          />
           <InfoCard
             img={custcare}
             title={"24/7"}
