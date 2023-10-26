@@ -22,7 +22,6 @@ export default function MyProfile() {
 
   const handleSubmit = async(e) => {
     e.preventDefault();
-    console.log(formData);
     try {
       const { data: updatedUser } = await axios.patch(
         `${
