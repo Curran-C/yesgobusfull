@@ -21,7 +21,6 @@ export default function MyBookings() {
 
         getBookingDetails.data.forEach(booking => {
           const doj = new Date(booking.doj);
-          console.log(doj < currentDate);
           if (doj > currentDate && booking.bookingStatus === "paid") {
             upcomingBookings.push(booking);
           } else if (doj < currentDate && booking.bookingStatus === "paid") {

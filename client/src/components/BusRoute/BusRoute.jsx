@@ -27,12 +27,11 @@ const BusRoute = ({
     try {
       setLoading(true);
       // if (query.length > 3) {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
-        );
-        console.log(response.data);
-        setLocationSuggestions(response.data.data);
-        setLoading(false);
+      const response = await axios.get(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
+      );
+      setLocationSuggestions(response.data.data);
+      setLoading(false);
       // } else {
       //   setLocationSuggestions([]);
       // }
@@ -41,17 +40,29 @@ const BusRoute = ({
     }
   };
 
-
   const [locationOneQuery, setLocationOneQuery] = useState("");
   const [locationTwoQuery, setLocationTwoQuery] = useState("");
 
   useEffect(() => {
-    if (locationOneQuery) {
-      fetchLocationSuggestions(locationOneQuery, setLocationOneSuggestions);
-    }
-    if (locationTwoQuery) {
-      fetchLocationSuggestions(locationTwoQuery, setLocationTwoSuggestions);
-    }
+    let debounceTimer;
+
+    const handleQueryChange = () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        if (locationOneQuery) {
+          fetchLocationSuggestions(locationOneQuery, setLocationOneSuggestions);
+        }
+        if (locationTwoQuery) {
+          fetchLocationSuggestions(locationTwoQuery, setLocationTwoSuggestions);
+        }
+      }, 500);
+    };
+
+    handleQueryChange();
+
+    return () => {
+      clearTimeout(debounceTimer);
+    };
   }, [locationOneQuery, locationTwoQuery]);
 
   return (

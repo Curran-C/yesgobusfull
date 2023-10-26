@@ -15,7 +15,6 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
 
   const handleSliderChangeCommitted = (event, newRange) => {
     setRange(newRange);
-    console.log(newRange);
     onFilterChange({
       boardingPoints: boardingPointsFilter,
       droppingPoints: droppingPointsFilter,
@@ -45,7 +44,6 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
           }
         );
         setFilters(response?.data?.data);
-        console.log(response.data.data);
       } catch (error) {
         console.error("Error fetching filters:", error);
       }

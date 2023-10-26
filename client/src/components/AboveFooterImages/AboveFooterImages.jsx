@@ -7,7 +7,7 @@ const AboveFooterImages = ({ title, images, subtitle }) => {
       {subtitle && <p>{subtitle}</p>}
       <div className="images">
         {images?.map((image) => (
-          <img src={image} alt="" />
+          <img src={image} alt={title} key={Math.random()} />
         ))}
       </div>
     </div>

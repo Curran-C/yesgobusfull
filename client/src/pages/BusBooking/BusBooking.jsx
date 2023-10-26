@@ -54,36 +54,26 @@ const BusBooking = () => {
   const day = String(currentDate.getDate()).padStart(2, "0");
   currentDate = `${year}-${month}-${day}`;
 
-  const [fromLocation, setFromLocation] = useState(
-    localStorage.getItem("sourceCity") || "Mysore"
-  );
-  const [toLocation, setToLocation] = useState(
-    localStorage.getItem("destinationCity") || "Bangalore"
-  );
-  const [selectedDate, setSelectedDate] = useState(currentDate);
+  const queryParams = new URLSearchParams(location.search);
+  const sourceCity = queryParams.get("from") || "Mysore";
+  const destinationCity = queryParams.get("to") || "Bangalore";
 
-  // useEffect(() => {
-  //   const storedSourceCity = localStorage.getItem("sourceCity") || "Mysore";
-  //   const storedDestinationCity = localStorage.getItem("destinationCity") || "Bangalore";
-  //   setFromLocation(storedSourceCity);
-  //   setToLocation(storedDestinationCity);
-  // }, []);
+  const [fromLocation, setFromLocation] = useState(sourceCity);
+  const [toLocation, setToLocation] = useState(destinationCity);
+  const [selectedDate, setSelectedDate] = useState(currentDate);
 
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
     const sourceCity = queryParams.get("from");
     const destinationCity = queryParams.get("to");
-    const doj = queryParams.get("date");
-    if (sourceCity && destinationCity && doj) {
-      // the below three set functions of useState are not working
+    const doj = queryParams.get("date") || currentDate;
+
+    if (sourceCity && destinationCity) {
       setFromLocation(sourceCity);
       setToLocation(destinationCity);
       setSelectedDate(doj);
-      handleSearch(sourceCity, destinationCity, doj);
-    } else {
-      handleSearch(fromLocation, toLocation, currentDate);
     }
-  }, []);
+  }, [location]);
 
   const handleSearch = async (
     sourceCity,
@@ -121,7 +111,6 @@ const BusBooking = () => {
       setNoOfBuses(response.data.data.length);
       setLoading(false);
     } catch (error) {
-      // alert("Something went wrong");
       setBusDetails([]);
       setNoOfBuses(0);
       console.error("Something went wrong:", error);
@@ -225,6 +214,7 @@ const BusBooking = () => {
               <div className="dates">
                 {dates.map((date) => (
                   <p
+                    key={date}
                     className={`date ${date === selectedDate ? "active" : ""}`}
                     onClick={() => handleDateFilter(date)}
                   >
@@ -237,6 +227,7 @@ const BusBooking = () => {
           <div className="dates">
             {dates.map((date) => (
               <p
+                key={date}
                 className={`date ${date === selectedDate ? "active" : ""}`}
                 onClick={() => handleDateFilter(date)}
               >
@@ -281,7 +272,7 @@ const BusBooking = () => {
               <ColumnNames noOfBuses={noOfBuses} />
 
               {busDetails?.map((bus) => (
-                <div className="bus-card-container">
+                <div className="bus-card-container" key={bus.routeScheduleId}>
                   <BusBookingCard
                     key={bus.routeScheduleId}
                     routeScheduleId={bus.routeScheduleId}
