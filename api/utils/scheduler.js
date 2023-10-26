@@ -44,6 +44,7 @@ const checkPaymentAndRefund = async () => {
           merchantTransactionId: booking.merchantTransactionId,
         }
         await refundPayment(refundData);
+        console.log("Refunded");
       }
     }
   } catch (error) {
@@ -55,7 +56,7 @@ const sendReminderJob = schedule.scheduleJob('* * * * * *', function () {
   // sendReminderMessages();
 });
 
-const checkPaymentJob = schedule.scheduleJob('0 0 * * *', function () {
+const checkPaymentJob = schedule.scheduleJob('0 * * * *', function () {
   checkPaymentAndRefund();
 });
 
