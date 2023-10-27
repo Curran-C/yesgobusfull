@@ -40,7 +40,7 @@ export default function BookingsList({ bookingData, selectedTab, setCancelled, c
       console.log(error);
     } finally {
       setLoading(false);
-      setIsCancelModalVisible(false); 
+      setIsCancelModalVisible(false);
     }
   };
 
@@ -59,7 +59,14 @@ export default function BookingsList({ bookingData, selectedTab, setCancelled, c
         </>
       );
     } else if (selectedTab === "completed") {
-      return <button className="green-btn">Completed</button>;
+      return (
+        <>
+          <Link to={`/busbooking/ticket?bookingId=${bookingData._id}`}>
+            <button className="orange-btn">Download Ticket</button>
+          </Link>
+          <button className="green-btn">Completed</button>;
+        </>
+      )
     } else if (selectedTab === "cancelled") {
       return <button className="red-btn">Cancelled</button>;
     }
@@ -75,33 +82,34 @@ export default function BookingsList({ bookingData, selectedTab, setCancelled, c
           style={{ width: "100px", margin: "0.5em" }}
         />
       </div>
+      <div className="booking-details-container">
+        {bookingData?.[selectedTab]?.map((booking, index) => (
+          <div key={index}>
+            {/* Journey details */}
+            <div className="journey__details">
+              <h1>
+                {booking.sourceCity} to {booking.destinationCity}
+              </h1>
+              <p>{formatDate(booking.doj)}</p>
+            </div>
 
-      {bookingData?.[selectedTab]?.map((booking, index) => (
-        <div key={index}>
-          {/* Journey details */}
-          <div className="journey__details">
-            <h1>
-              {booking.sourceCity} to {booking.destinationCity}
-            </h1>
-            <p>{formatDate(booking.doj)}</p>
-          </div>
+            {/* Bus class */}
+            <div className="bus__details">
+              <h3>{booking.busOperator}</h3>
+              <p>{booking.busType}</p>
+            </div>
 
-          {/* Bus class */}
-          <div className="bus__details">
-            <h3>{booking.busOperator}</h3>
-            <p>{booking.busType}</p>
+            <div
+              className="ticket__options"
+              style={{
+                justifyContent: `${selectedTab === "upcoming" ? "" : "center"}`,
+              }}
+            >
+              <TicketOptions selectedTab={selectedTab} bookingData={booking} tid={booking.tid} />
+            </div>
           </div>
-
-          <div
-            className="ticket__options"
-            style={{
-              justifyContent: `${selectedTab === "upcoming" ? "" : "center"}`,
-            }}
-          >
-            <TicketOptions selectedTab={selectedTab} bookingData={booking} tid={booking.tid} />
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
       {loading ? (
         <div className="loading-spinner">
           <Spin size="large" />

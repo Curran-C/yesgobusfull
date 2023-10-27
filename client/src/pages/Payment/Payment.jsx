@@ -153,7 +153,7 @@ const Payment = () => {
                 amount: updatePaymentDetails?.data.totalAmount,
                 pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
                 opPNR: updatePaymentDetails?.data.opPNR.split("/")[0],
-                doj: formatDate(updatePaymentDetails?.data.doj),
+                doj: formatDate(updatePaymentDetails?.data.doj) + " " + updatePaymentDetails?.data.pickUpTime,
                 to: updatePaymentDetails?.data.customerPhone,
               }
               const sendMessage = await axios.post(

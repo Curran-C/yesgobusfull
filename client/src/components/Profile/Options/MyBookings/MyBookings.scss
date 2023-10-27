@@ -55,6 +55,11 @@
     margin: 2em;
     border: 1px solid rgba(210, 210, 210, 1);
 
+    .booking-details-container {
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    
     .journey__details {
       background-color: rgba(0, 240, 110, 0.2);
 

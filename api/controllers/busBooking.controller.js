@@ -233,7 +233,7 @@ export const sendBookingConfirmationMessage = async (req, res) => {
 export const sendBookingConfirmationEmail = async (req, res) => {
   try {
     const { fullName, opPNR, doj, sourceCity, destinationCity, seats, amount, pickUpLocation, to } = req.body;
-    const message =`Dear ${fullName},
+    const message = `Dear ${fullName},
       Your PNR: ${opPNR}
       Journey: ${sourceCity} to  ${destinationCity}
       Seat: ${seats}
@@ -244,6 +244,20 @@ export const sendBookingConfirmationEmail = async (req, res) => {
       Thank You, Shine Gobus`;
     const subject = "Booking Confirmation";
     await sendMail(to, subject, message);
+
+    //send mail to yesgobus
+    const adminMailMessage = `New Bus Booking:
+      Name: ${fullName},
+      PNR: ${opPNR}
+      Journey: ${sourceCity} to  ${destinationCity}
+      Seat: ${seats}
+      Amount Rs.${amount}
+      Date: ${doj}
+      Email: ${to}
+      Pickup: ${pickUpLocation} Is Booked.
+      Thank You, Shine Gobus`;
+    const adminSubject = "New Bus Booking";
+    await sendMail("yesgobus99@gmail.com", adminSubject, adminMailMessage);
     res.status(200).send({
       status: 200,
       message: "Email Sent",
@@ -277,12 +291,22 @@ export const sendCancelTicketMessage = async (req, res) => {
 export const sendCancelTicketEmail = async (req, res) => {
   try {
     const { fullName, opPNR, sourceCity, destinationCity, to } = req.body;
-    const messageBody =`Dear ${fullName} 
+    const messageBody = `Dear ${fullName} 
       Your PNR: ${opPNR} 
       Journey: ${sourceCity} to  ${destinationCity} is Cancelled. 
       Thank You, Shine Gobus`;
     const subject = "Booking Cancelled";
     await sendMail(to, subject, messageBody);
+
+    //send mail to yesgobus
+    const adminMessageBody =
+      `Name: ${fullName} 
+      PNR: ${opPNR} 
+      Journey: ${sourceCity} to  ${destinationCity} is Cancelled. 
+      Thank You, Shine Gobus`;
+    const adminSubject = "Booking Cancelled";
+    await sendMail("yesgobus99@gmail.com", adminSubject, adminMessageBody);
+
     res.status(200).send({
       status: 200,
       message: "Email Sent",
