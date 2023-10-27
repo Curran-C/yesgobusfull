@@ -2,13 +2,17 @@ import React, { useState, useEffect } from "react";
 import "./MyBookings.scss";
 import BookingsList from "./BookingsList";
 import axios from "axios";
+import { Spin } from "antd";
 
 export default function MyBookings() {
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   const [bookingDetails, setBookingDetails] = useState(null);
   const [cancelled, setCancelled] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const getBookingDetails = async () => {
+      setLoading(true);
       try {
         const { data: getBookingDetails } = await axios.get(
           `${import.meta.env.VITE_BASE_URL
@@ -37,6 +41,8 @@ export default function MyBookings() {
         });
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     getBookingDetails();
@@ -69,8 +75,13 @@ export default function MyBookings() {
         </button>
       </div>
 
+      {loading ? (
+        <div className="loading-spinner">
+          <Spin size="large" />
+        </div>
+      ) : null}
       {/* data container */}
-      <BookingsList bookingData={bookingDetails} selectedTab={selectedTab} setCancelled={setCancelled} cancelled={cancelled}/>
+      <BookingsList bookingData={bookingDetails} selectedTab={selectedTab} setCancelled={setCancelled} cancelled={cancelled} />
     </div>
   );
 }
