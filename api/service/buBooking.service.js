@@ -108,7 +108,7 @@ export const getBusDetails = async (searchArgs, filters) => {
     let searchResponse = await searchBus(searchArgs);
     // let searchResponse = await axios.post("https://api.yesgobus.com/api/busBooking/searchBus", searchArgs);
     // searchResponse = searchResponse.data;
-    
+
     searchResponse = searchResponse.apiAvailableBuses;
     searchResponse.sort((a, b) => a.inventoryType - b.inventoryType);
 
@@ -177,11 +177,11 @@ export const bookBus = async (bookingDetails) => {
 export const searchCity = async (searchParam) => {
   try {
     const cities = await City.find({
-      city_name: { $regex: searchParam, $options: 'i' }
+      city_name: { $regex: `^${searchParam}`, $options: 'i' }
     })
     return {
       status: 200,
-      message: "City details retrived",
+      message: "City details retrieved",
       data: cities
     }
   } catch (error) {
