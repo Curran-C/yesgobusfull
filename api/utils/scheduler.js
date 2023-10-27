@@ -7,19 +7,32 @@ const sendReminderMessages = async () => {
   try {
     const oneHourFromNow = new Date();
     oneHourFromNow.setHours(oneHourFromNow.getHours() + 1);
-    const bookings = await BusBooking.find({
-      doj: { $lte: oneHourFromNow },
-      sentBookingRemainer: false,
+    const allBookings = await BusBooking.find({
+      sentBookingRemainer: "false",
       bookingStatus: "paid",
     });
-    const templateId = process.env.TEMP;
-    for (const booking of bookings) {
-      await sendMessage(`Your bus booking is in 1 hour!`, booking.customerPhone, templateId);
-      await BusBooking.findByIdAndUpdate(booking._id, {
-        sentBookingRemainer: true,
-      })
+    const templateId = process.env.BOOKING_REMAINDER_TEMPLATE_ID;
+    for (const booking of allBookings) {
+      const combinedTime = new Date(booking.doj);
+      const timeComponents = booking.pickUpTime.split(' ');
+      let [hours, minutes] = timeComponents[0].split(':');
+      const isPM = timeComponents[1] === 'PM';
+      if (isPM && hours !== '12') {
+        hours = parseInt(hours, 10) + 12;
+      }
+      combinedTime.setHours(hours, minutes);
+      const reminderTime = new Date(combinedTime.getTime() - 60 * 60 * 1000);
+      if (reminderTime <= oneHourFromNow) {
+        const opPNR = booking.opPNR.split('/')[0];
+        const doj = combinedTime.toISOString().split('T')[0];
+        const message = `Dear ${booking.customerName} Your PNR: ${opPNR} Date: ${doj} Journey: ${booking.sourceCity} to ${booking.destinationCity} Seat: ${booking.selectedSeats} Pickup: ${booking.boardingPoint.location} ${booking.boardingPoint.time} Drop: ${booking.droppingPoint.location} ${booking.droppingPoint.time} Operator: ${booking.busOperator} Happy comfortable and safe journey. Thank You, Shine Gobus`;
+        await sendMessage(message, booking.customerPhone, templateId);
+        await BusBooking.findByIdAndUpdate(booking._id, {
+          sentBookingRemainer: "true",
+        });
+        console.log(`Reminder messages sent successfully to . ${booking.customerName}`);
+      }
     }
-    console.log('Reminder messages sent successfully.');
   } catch (error) {
     console.error('Error sending reminder messages:', error);
   }
@@ -52,8 +65,8 @@ const checkPaymentAndRefund = async () => {
   }
 }
 
-const sendReminderJob = schedule.scheduleJob('* * * * * *', function () {
-  // sendReminderMessages();
+const sendReminderJob = schedule.scheduleJob('*/10 * * * *', function () {
+  sendReminderMessages();
 });
 
 const checkPaymentJob = schedule.scheduleJob('0 * * * *', function () {
