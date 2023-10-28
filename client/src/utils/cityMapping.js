@@ -23,4 +23,20 @@ export const cityMapping = {
     sourceCity: "Vijayapura",
     boardingPoints: ["Nidgundi", "Nidagundi", "nidgundi", "nidugundi", "Nidugundi"]
   },
+  "shimoga": {
+    sourceCity: "shivamogga",
+    // boardingPoints: [""]
+  },
+  "Shimoga": {
+    sourceCity: "shivamogga",
+    // boardingPoints: [""]
+  },
+  "shivmoga": {
+    sourceCity: "shivamogga",
+    // boardingPoints: [""]
+  },
+  "Shivmoga": {
+    sourceCity: "shivamogga",
+    // boardingPoints: [""]
+  },
 };
