@@ -92,13 +92,13 @@ const BusBooking = () => {
 
     let boardingPoints = [];
     let droppingPoints = [];
-    if (sourceCity.trim() in cityMapping) {
-      const mapping = cityMapping[sourceCity.trim()];
+    if (sourceCity.trim().toLowerCase() in cityMapping) {
+      const mapping = cityMapping[sourceCity.trim().toLowerCase()];
       sourceCity = mapping.sourceCity;
       boardingPoints = mapping.boardingPoints;
     }
-    if (destinationCity.trim() in cityMapping) {
-      const mapping = cityMapping[destinationCity.trim()];
+    if (destinationCity.trim().toLowerCase() in cityMapping) {
+      const mapping = cityMapping[destinationCity.trim().toLowerCase()];
       destinationCity = mapping.sourceCity;
       droppingPoints = mapping.boardingPoints;
     }
