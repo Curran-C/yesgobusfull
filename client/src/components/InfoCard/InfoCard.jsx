@@ -10,7 +10,8 @@ const InfoCard = ({
   subtitle,
   onChanged,
   suggestions,
-  placeholder
+  placeholder,
+  label,
 }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const infoCardRef = useRef(null);
@@ -54,11 +55,17 @@ const InfoCard = ({
 
   return (
     <div className="infoCard" ref={infoCardRef}>
-      <img src={img} alt="" />
+      {label && <h4 className="label">{label}</h4>}
+      {img && <img src={img} alt="" />}
       <h1 className="infotitle">
         {inputField ? (
           date ? (
-            <input type="date" className="date" value={title} onChange={handleDateChange} />
+            <input
+              type="date"
+              className="date"
+              value={title}
+              onChange={handleDateChange}
+            />
           ) : (
             <input
               type="search"

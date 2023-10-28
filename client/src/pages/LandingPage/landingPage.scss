@@ -16,6 +16,7 @@
       top: 0px;
       z-index: -10;
       width: 100%;
+
       filter: brightness(30%);
       // height: 90vh;
       object-fit: cover;
@@ -24,7 +25,7 @@
     .heroContainer {
       margin-left: 100px;
       display: flex;
-      gap: 20px;
+      gap: 40px;
       flex-direction: column;
 
       .title {
@@ -46,25 +47,47 @@
         width: 40%;
       }
 
-      .border {
+      .bus-search-container {
         display: flex;
         align-items: center;
         border: 2px solid #fd5901;
-        background: white;
+        background: rgba(0, 0, 0, 0.69);
+        backdrop-filter: blur(10px);
         padding: 0px 30px;
         justify-content: space-evenly;
         border-radius: 25px;
         min-height: 200px;
         width: 90%;
 
-
         .reverse-image {
           transition: transform 0.5s ease;
-          // filter: brightness(0.2); 
+          // filter: brightness(0.2);
         }
         .infoCard {
+          background-color: rgba(253, 89, 1, 0.15);
+          border-radius: 20px;
+          padding: 20px 5px;
+          width: 90%;
+          min-height: 50px;
+          margin: 5px 0;
+
           .infotitle {
-            color: #448fff;
+            // color: #448fff;
+            margin-bottom: 0;
+
+            input {
+              width: 90%;
+              &::placeholder {
+                color: rgba(255, 255, 255, 0.384);
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+                font-weight: 100;
+              }
+            }
+          }
+          input[type="search"]::-webkit-search-cancel-button {
+            width: 1rem;
+            backdrop-filter: blur(10px);
           }
         }
 
@@ -78,6 +101,7 @@
             padding: 5px 30px;
             border: none;
             font-weight: 700;
+            border-radius: 5px;
             color: #7c7c7c;
           }
 
@@ -85,6 +109,11 @@
             background-color: #fd5901;
             color: white;
           }
+        }
+
+        .search-btn {
+          min-width: 150px;
+          margin: 15px;
         }
       }
     }
@@ -269,6 +298,9 @@
     .hero {
       height: 90vh;
     }
+    .heroImg {
+      height: 90vh;
+    }
   }
 }
 
@@ -313,7 +345,7 @@
         text-align: center;
         align-items: center;
 
-        .border {
+        .bus-search-container {
           display: flex;
           margin-top: 20px;
           padding: 30px 10px;
@@ -348,8 +380,7 @@
 @media (max-width: 426px) {
   .landingPage {
     .hero {
-      height: 700px;
-
+      // height: 700px;
       .heroImg {
         height: 500px;
       }
@@ -366,7 +397,7 @@
           width: 100%;
         }
 
-        .border {
+        .bus-search-container {
           display: flex;
           flex-wrap: wrap;
           margin-top: 20px;
@@ -375,7 +406,7 @@
             width: 40%;
           }
           .infoCard:nth-child(4) {
-            width: 40%;
+            width: 50%;
           }
           .infoCard {
             h1 {

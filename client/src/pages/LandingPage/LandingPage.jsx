@@ -133,8 +133,13 @@ const LandingPage = () => {
   return (
     <div className="landingPage">
       <Navbar page={"home"} />
-      <div className="hero">
-        <img src={heroimage} alt="" className="heroImg" />
+      <div className="hero" style={{ maxHeight: "90vh" }}>
+        <img
+          src={heroimage}
+          alt=""
+          className="heroImg"
+          style={{ maxHeight: "90vh" }}
+        />
         <div className="heroContainer">
           <div className="title">
             <h1>PROVIDING QUALITY SERVICES AT</h1>
@@ -145,15 +150,16 @@ const LandingPage = () => {
             India’s largest online bus ticketing platform, trusted by over 6
             million Indians.
           </h2>
-          <div className="border">
+          <div className="bus-search-container">
             <InfoCard
-              img={office}
+              // img={office}
               title={fromLocation}
               // subtitle={"From"}
+              label="From"
               inputField={true}
               onChanged={setFromLocation}
               suggestions={locationOneSuggestions}
-              placeholder={"From"}
+              placeholder={"Departure"}
             />
             <img
               src={fromto}
@@ -173,20 +179,22 @@ const LandingPage = () => {
               }}
             />
             <InfoCard
-              img={office}
+              // img={office}
               title={toLocation}
+              label="To"
               // subtitle={"Destination"}
               inputField={true}
               onChanged={setToLocation}
               suggestions={locationTwoSuggestions}
-              placeholder={"To"}
+              placeholder={"Destination"}
             />
             {/* <img src={mic} alt="" /> */}
             <InfoCard
-              img={calender}
+              // img={calender}
               title={selectedDate}
               // subtitle={"Select Date"}
               date={true}
+              label="Date"
               inputField={true}
               onChanged={handleDateInputChange}
             />
@@ -195,7 +203,7 @@ const LandingPage = () => {
               title={"- - -"}
               subtitle={"Return Optional"}
             /> */}
-            <div className="buttons">
+            {/* <div className="buttons">
               <button
                 onClick={handleTodayButtonClick}
                 className={
@@ -212,8 +220,12 @@ const LandingPage = () => {
               >
                 Tomorrow
               </button>
-            </div>
-            <Button text={"Search"} onClicked={handleSearchClick} />
+            </div> */}
+            <Button
+              className="search-btn"
+              text={"Search"}
+              onClicked={handleSearchClick}
+            />
           </div>
         </div>
       </div>
