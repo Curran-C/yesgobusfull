@@ -1,12 +1,4 @@
 export const cityMapping = {
-  "Nidgundi": {
-    sourceCity: "Vijayapura",
-    boardingPoints: ["Nidgundi", "Nidagundi", "nidgundi", "nidugundi", "Nidugundi"]
-  },
-  "Nidagundi": {
-    sourceCity: "Vijayapura",
-    boardingPoints: ["Nidgundi", "Nidagundi", "nidgundi", "nidugundi", "Nidugundi"]
-  },
   "nidagundi": {
     sourceCity: "Vijayapura",
     boardingPoints: ["Nidgundi", "Nidagundi", "nidgundi", "nidugundi", "Nidugundi"]
@@ -15,12 +7,28 @@ export const cityMapping = {
     sourceCity: "Vijayapura",
     boardingPoints: ["Nidgundi", "Nidagundi", "nidgundi", "nidugundi", "Nidugundi"]
   },
-  "Nidugundi": {
-    sourceCity: "Vijayapura",
-    boardingPoints: ["Nidgundi", "Nidagundi", "nidgundi", "nidugundi", "Nidugundi"]
-  },
   "nidugundi": {
     sourceCity: "Vijayapura",
     boardingPoints: ["Nidgundi", "Nidagundi", "nidgundi", "nidugundi", "Nidugundi"]
+  },
+  "shimoga": {
+    sourceCity: "shivamogga",
+    // boardingPoints: [""]
+  },
+  "shivmoga": {
+    sourceCity: "shivamogga",
+    // boardingPoints: [""]
+  },
+  "jamakandi": {
+    sourceCity: "jamkhandi",
+    // boardingPoints: [""]
+  },
+  "cochin": {
+    sourceCity: "Kochi",
+    // boardingPoints: [""]
+  },
+  "hubbali": {
+    sourceCity: "hubli",
+    // boardingPoints: [""]
   },
 };

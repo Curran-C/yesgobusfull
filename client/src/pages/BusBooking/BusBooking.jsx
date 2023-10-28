@@ -91,19 +91,26 @@ const BusBooking = () => {
     setNoOfBuses(0);
 
     let boardingPoints = [];
-    if (sourceCity in cityMapping) {
-      const mapping = cityMapping[sourceCity];
+    let droppingPoints = [];
+    if (sourceCity.trim().toLowerCase() in cityMapping) {
+      const mapping = cityMapping[sourceCity.trim().toLowerCase()];
       sourceCity = mapping.sourceCity;
       boardingPoints = mapping.boardingPoints;
+    }
+    if (destinationCity.trim().toLowerCase() in cityMapping) {
+      const mapping = cityMapping[destinationCity.trim().toLowerCase()];
+      destinationCity = mapping.sourceCity;
+      droppingPoints = mapping.boardingPoints;
     }
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBusDetails`,
         {
-          sourceCity: sourceCity,
-          destinationCity: destinationCity,
+          sourceCity: sourceCity.trim(),
+          destinationCity: destinationCity.trim(),
           doj: doj,
           boardingPoints,
+          droppingPoints,
           ...filters,
         }
       );
