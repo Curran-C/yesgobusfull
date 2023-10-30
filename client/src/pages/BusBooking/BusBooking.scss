@@ -23,6 +23,7 @@
 
       .mobile-filter {
         display: none;
+
         .filter-wrapper {
           display: none;
           overflow: hidden;
@@ -59,6 +60,7 @@
         display: flex;
         gap: 10px;
         padding: 30px;
+
         .date {
           border: 1px solid #d0d0d0;
           padding: 20px 20px;
@@ -72,9 +74,11 @@
         }
       }
 
-      & > .dates {
+      &>.dates {
         @media (max-width: 420px) {
-          display: none;
+          display: flex;
+          gap: 10px;
+          padding: 30px;
         }
       }
 
@@ -153,10 +157,12 @@
 
         .mobile-filter {
           display: block;
+
           .leftFilter {
             .filters {
               display: flex;
               flex-direction: column;
+
               .priceRange {
                 flex-grow: 1;
               }
@@ -185,9 +191,21 @@
   .busBooking {
     .container {
       background-color: rgb(241, 241, 241);
+
       .right {
         .wrapper {
           padding: 0px;
+        }
+
+        .dates {
+          .date {
+            border: 1px solid #d0d0d0;
+            padding: 10px 20px;
+            min-width: 70px;
+            border-radius: 50%;
+            font-size: 14px;
+            text-align: center;
+          }
         }
       }
     }
