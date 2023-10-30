@@ -23,6 +23,7 @@ import { Spin } from "antd";
 import { Modal } from "antd";
 
 const Payment = () => {
+
   const [loading, setLoading] = useState(false);
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
   if (!loggedInUser) {
@@ -84,6 +85,12 @@ const Payment = () => {
   const paymentVerify = new URLSearchParams(location.search).has(
     "paymentVerify"
   );
+
+  useEffect(() => {
+    setTimeout(() => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }, 100);
+  }, []);
 
   //verify payment and book ticket
   useEffect(() => {
@@ -192,6 +199,11 @@ const Payment = () => {
 
     //validate input
     const errors = validateUserData();
+    if (errors.femaleReserved === true) {
+      setErrorMessage("Seat is reserved for ladies");
+      return;
+    }
+
     if (Object.keys(errors).length > 0) {
       alert("Please fill in all the traveler details.");
       return;
@@ -317,6 +329,7 @@ const Payment = () => {
     });
   };
 
+
   //validation
   const validateUserData = () => {
     const numberOfTravelers = bookingDetails?.selectedSeats?.length;
@@ -338,6 +351,9 @@ const Payment = () => {
       }
       if (!userData[genderKey]?.trim()) {
         errors[genderKey] = `Gender for Traveler ${index + 1} is required`;
+      }
+      if (bookingDetails.ladiesSeat[index] === true && userData[genderKey] === "M") {
+        errors.femaleReserved = true;
       }
     }
 
