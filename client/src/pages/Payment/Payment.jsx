@@ -212,6 +212,8 @@ const Payment = () => {
     setLoadingModalVisible(true);
     //seats data
     const seatObjects = bookingDetails?.selectedSeats?.map((seatId, index) => {
+      const isPrimary = index === 0;
+      const title = userData[`gender_${index}`] === 'M' ? "Mr" : "Ms";
       return {
         seatNbr: seatId,
         ladiesSeat: bookingDetails?.ladiesSeat[index],
@@ -224,15 +226,14 @@ const Payment = () => {
         sex: userData[`gender_${index}`],
         lastName: userData[`lastName_${index}`],
         mobile: userData.mobile,
-        title: " ",
+        title: title,
         email: userData.email,
-        idType: userData.idType,
+        idType: "3456",
         idNumber: userData.idNumber,
         nameOnId: userData[`firstName_${index}`],
-        primary: true,
+        primary: isPrimary,
       };
     });
-
     try {
       // block seat request body
       const blockSeatRequestBody = {
