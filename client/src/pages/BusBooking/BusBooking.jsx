@@ -55,8 +55,8 @@ const BusBooking = () => {
   currentDate = `${year}-${month}-${day}`;
 
   const queryParams = new URLSearchParams(location.search);
-  const sourceCity = queryParams.get("from") || "Mysore";
-  const destinationCity = queryParams.get("to") || "Bangalore";
+  const sourceCity = queryParams.get("from") || localStorage.getItem("sourceCity");
+  const destinationCity = queryParams.get("to") || localStorage.getItem("destinationCity");
 
   const [fromLocation, setFromLocation] = useState(sourceCity);
   const [toLocation, setToLocation] = useState(destinationCity);
@@ -120,7 +120,7 @@ const BusBooking = () => {
     } catch (error) {
       setBusDetails([]);
       setNoOfBuses(0);
-      console.error("Something went wrong:", error);
+      // console.error("Something went wrong:", error);
       setLoading(false);
     } finally {
       setLoading(false);
