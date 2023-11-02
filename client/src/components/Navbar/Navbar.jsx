@@ -11,19 +11,21 @@ const Navbar = ({ page }) => {
   const googleTranslateElementInit = () => {
     new window.google.translate.TranslateElement(
       {
-        pageLanguage: "en",
         includedLanguages: 'en,kn',
         layout: window.google.translate.TranslateElement.InlineLayout.TOP_RIGHT,
       },
       "google_translate_element"
     );
+    const select = document.querySelector('.goog-te-combo');
+    select.value = 'en';
+    select.dispatchEvent(new Event('change'));
   };
 
   useEffect(() => {
-  const translateElement = document.getElementById("google_translate_element");
-  if (translateElement) { 
-    translateElement.innerHTML = "";
-  }
+    const translateElement = document.getElementById("google_translate_element");
+    if (translateElement) {
+      translateElement.innerHTML = "";
+    }
     const script = document.createElement("script");
     script.src =
       "//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit";
@@ -31,7 +33,7 @@ const Navbar = ({ page }) => {
     document.body.appendChild(script);
     window.googleTranslateElementInit = googleTranslateElementInit;
   }, []);
-  
+
 
   const [showMenu, setShowMenu] = useState(false);
   const navigate = useNavigate();
@@ -100,7 +102,7 @@ const Navbar = ({ page }) => {
             <Button text="Login / Signup" />
           </a>
         )}
-         {/* <div id="google_translate_element"></div> */}
+        {/* <div id="google_translate_element"></div> */}
       </div>
       <div id="google_translate_element"></div>
       {page === "home" ? (

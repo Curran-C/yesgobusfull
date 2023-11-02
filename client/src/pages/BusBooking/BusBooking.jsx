@@ -34,19 +34,22 @@ const BusBooking = () => {
 
   //dates
   const date = new Date();
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
   const dates = [];
 
   for (let i = 0; i <= 6; i++) {
     const nextDate = new Date(date);
     nextDate.setDate(date.getDate() + i);
-    dates.push(
-      nextDate.toLocaleString("en-US", {
-        month: "short",
-        day: "numeric",
-        weekday: "short",
-      })
-    );
+    const formattedDate = `${daysOfWeek[nextDate.getDay()]},${months[nextDate.getMonth()]}-${nextDate.getDate()}`;
+    dates.push(formattedDate);
   }
+
+  console.log(dates);
+
 
   let currentDate = new Date();
   const year = currentDate.getFullYear();
@@ -57,6 +60,7 @@ const BusBooking = () => {
   const queryParams = new URLSearchParams(location.search);
   const sourceCity = queryParams.get("from") || localStorage.getItem("sourceCity");
   const destinationCity = queryParams.get("to") || localStorage.getItem("destinationCity");
+  currentDate = queryParams.get("date") || currentDate;
 
   const [fromLocation, setFromLocation] = useState(sourceCity);
   const [toLocation, setToLocation] = useState(destinationCity);
@@ -142,10 +146,10 @@ const BusBooking = () => {
       Nov: 10,
       Dec: 11,
     };
-    const parts = date.split(", ");
-    const dayMonthYear = parts[1].split(" ");
-    const day = parseInt(dayMonthYear[1]);
-    const month = monthMap[dayMonthYear[0]];
+    const parts = date.split(",");
+    const dateParts = parts[1].split("-");
+    const day = parseInt(dateParts[1]);
+    const month = monthMap[dateParts[0]];
     const year = parseInt(new Date().getFullYear());
     const newDate = new Date(Date.UTC(year, month, day));
     const formattedDateString = newDate.toISOString().split("T")[0];

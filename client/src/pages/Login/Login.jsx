@@ -12,6 +12,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { facebookLoginAPI, googleLoginAPI } from "../../api/authentication";
 import { LoginSocialFacebook } from "reactjs-social-login";
+import toast, { Toaster } from 'react-hot-toast';
 
 const Login = () => {
   const loggedInUser = localStorage.getItem("loggedInUser");
@@ -25,6 +26,7 @@ const Login = () => {
   const [loginData, setLoginData] = useState({});
   const [createAccountData, setCreateAccountData] = useState({});
   const [showOTP, setShowOTP] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // functions
   const isMobilenumber = (num) => {
@@ -125,9 +127,10 @@ const Login = () => {
       />
     </>
   );
-
   const handleSubmit = async () => {
     if (showLogin) {
+      setLoading(true);
+      const loadingToast = toast.loading('Logging in...');
       try {
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/user/signin`,
@@ -137,35 +140,92 @@ const Login = () => {
           }
         );
         if (response.status === 200) {
+          toast.dismiss(loadingToast);
           const token = response.data.token;
           const loggedInUser = response.data.data;
           localStorage.setItem("token", token);
           localStorage.setItem("loggedInUser", JSON.stringify(loggedInUser));
-          alert("Login Successfull");
-          navigate("/");
+          toast.success('Login Successful', {
+            duration: 2000,
+            position: 'top-center',
+            style: {
+              background: 'green',
+              color: 'white',
+            },
+          });
+          setTimeout(() => {
+            navigate('/');
+          }, 2000);
         } else {
-          alert("Invalid credentials");
+          toast.error('Invalid credentials', {
+            duration: 2000,
+            position: 'top-center',
+            style: {
+              background: 'red',
+              color: 'white',
+            },
+          });
         }
       } catch (error) {
-        alert("Something went wrong");
-        console.error("Error registering user:", error);
+        toast.error('Invalid credentials', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: 'red',
+            color: 'white',
+          },
+        });
+        console.error("Error logining user:", error);
+      } finally {
+        setLoading(false);
+        toast.dismiss(loadingToast);
+
       }
     } else {
       try {
+        setLoading(true);
+        const loadingToast = toast.loading('Creating account...');
         const response = await axios.post(
           `${import.meta.env.VITE_BASE_URL}/api/user/signup`,
           createAccountData
         );
         if (response.status === 200) {
-          alert("Account created");
+          toast.dismiss(loadingToast);
+          toast.success('Account Created', {
+            duration: 2000,
+            position: 'top-center',
+            style: {
+              background: 'green',
+              color: 'white',
+            },
+          });
           setShowLogin(!showLogin);
           setShowCreateAccount(!showCreateAccount);
         } else if (response.status === 406) {
-          console.log("User already exists");
+          toast.dismiss(loadingToast);
+          toast.error('User already exists', {
+            duration: 2000,
+            position: 'top-center',
+            style: {
+              background: 'red',
+              color: 'white',
+            },
+          });
         }
       } catch (error) {
-        alert("Something went wrong");
+        toast.dismiss(loadingToast);
+        toast.error('Error', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: 'red',
+            color: 'white',
+          },
+        });
         console.error("Error registering user:", error);
+      } finally {
+        toast.dismiss(loadingToast);
+        setLoading(false);
       }
     }
   };
@@ -247,12 +307,37 @@ const Login = () => {
 
   const googleUserVerifyHandler = async ({ credential }) => {
     try {
+      setLoading(true);
+      const loadingToast = toast.loading('Logging in...');
       const { data, token } = await googleLoginAPI(credential);
       localStorage.setItem("token", token);
       localStorage.setItem("loggedInUser", JSON.stringify(data));
-      navigate("/");
+      toast.dismiss(loadingToast);
+
+      toast.success('Login Successful', {
+        duration: 2000,
+        position: 'top-center',
+        style: {
+          background: 'green',
+          color: 'white',
+        },
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (error) {
       console.log(error);
+      toast.error('Error', {
+        duration: 2000,
+        position: 'top-center',
+        style: {
+          background: 'red',
+          color: 'white',
+        },
+      });
+    } finally {
+      setLoading(false);
+      toast.dismiss(loadingToast);
     }
   };
 
@@ -261,9 +346,27 @@ const Login = () => {
       const { data, token } = await facebookLoginAPI(fbResponse);
       localStorage.setItem("token", token);
       localStorage.setItem("loggedInUser", JSON.stringify(data));
-      navigate("/");
+      toast.success('Login Successful', {
+        duration: 2000,
+        position: 'top-center',
+        style: {
+          background: 'green',
+          color: 'white',
+        },
+      });
+      setTimeout(() => {
+        navigate('/');
+      }, 2000);
     } catch (error) {
       console.log("Error login in using facebook: ", error);
+      toast.error('Error', {
+        duration: 2000,
+        position: 'top-center',
+        style: {
+          background: 'red',
+          color: 'white',
+        },
+      });
     }
   };
 
@@ -365,7 +468,8 @@ const Login = () => {
             <span> Privacy Policy</span>
           </p>
 
-          <Button text={"Continue"} onClicked={handleSubmit} />
+          <Button text={"Continue"} onClicked={handleSubmit} disable={loading} />
+          <Toaster />
         </div>
       </div>
     </div>

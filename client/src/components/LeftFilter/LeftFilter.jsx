@@ -5,6 +5,7 @@ import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { cityMapping } from "../../utils/cityMapping";
+import { map } from "../../assets/homepage";
 
 const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
   const [range, setRange] = useState([100, 3000]);
@@ -12,6 +13,8 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
   const [boardingPointsFilter, setBoardingPointsFilter] = useState([]);
   const [droppingPointsFilter, setDroppingPointsFilter] = useState([]);
   const [busPartnerFilter, setBusPartnerFilter] = useState([]);
+  const [selectedBoardingPoints, setSelectedBoardingPoints] = useState([]);
+  const [selectedDroppingPoints, setSelectedDroppingPoints] = useState([]);
 
   const handleSliderChangeCommitted = (event, newRange) => {
     setRange(newRange);
@@ -26,12 +29,18 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
 
   useEffect(() => {
     const getFilters = async () => {
-      // let boardingPoints = [];
-      if (sourceCity in cityMapping) {
-        const mapping = cityMapping[sourceCity];
+
+      if (sourceCity.trim().toLowerCase() in cityMapping) {
+        const mapping = cityMapping[sourceCity.trim().toLowerCase()];
         sourceCity = mapping.sourceCity;
-        // boardingPoints = mapping.boardingPoints;
+        setSelectedBoardingPoints(mapping.boardingPoints);
       }
+      if (destinationCity.trim().toLowerCase() in cityMapping) {
+        const mapping = cityMapping[destinationCity.trim().toLowerCase()];
+        destinationCity = mapping.sourceCity;
+        setSelectedDroppingPoints(mapping.boardingPoints);
+      }
+
       try {
         const response = await axios.get(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/getFilters`,
@@ -85,6 +94,7 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
           count={[12, 16, 78]}
           name={"boardingPoints"}
           onFilterChange={handleFilterChange}
+          filters={selectedBoardingPoints}
         />
         <LeftFilterBox
           title={"Drop Points"}
@@ -92,6 +102,9 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
           count={[12, 16, 78]}
           name={"droppingPoints"}
           onFilterChange={handleFilterChange}
+          filters={selectedDroppingPoints}
+          sourceCity={sourceCity}
+          destinationCity={destinationCity}
         />
         <LeftFilterBox
           title={"Bus Partner"}
