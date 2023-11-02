@@ -2,9 +2,13 @@ import { useEffect, useState } from "react";
 import { downarrow } from "../../assets/busbooking";
 import "./LeftFilterBox.scss";
 
-const LeftFilterBox = ({ title, points, count, name, onFilterChange }) => {
+const LeftFilterBox = ({ title, points, count, name, onFilterChange, filters, sourceCity, destinationCity }) => {
   const [showPoints, setShowPoints] = useState(false);
   const [selectedPoints, setSelectedPoints] = useState([]);
+
+  useEffect(() => {
+    setSelectedPoints(filters || []);
+  }, [filters]);
 
   const displayLocation = (location) => {
     const maxLength = 30;
