@@ -37,6 +37,7 @@ const BusBookingCard = ({
   const [showSeats, setShowSeats] = useState(false);
   const [seatDetails, setSeatDetails] = useState([]);
   const [seatLoading, setSeatLoading] = useState(false);
+  const [availableSeats, setAvailableSeats] = useState(seatsLeft);
 
   const fetchSeatData = async () => {
     if (!showSeats === false) {
@@ -57,6 +58,9 @@ const BusBookingCard = ({
         }
       );
       seatData = response.data.seats;
+      const availableSeats = seatData.filter(seat => seat.available === true);
+      console.log("Available seats count:", availableSeats.length);
+      setAvailableSeats(availableSeats.length);
     } catch (error) {
       alert("Something went wrong");
       console.error("Something went wrong:", error);
@@ -87,10 +91,10 @@ const BusBookingCard = ({
             <p className="price">₹{price?.split(".")[0] || price}</p>
             <BusBookingCardInfo
               setShowSeats={fetchSeatData}
-              buttonText={!seatsLeft || (!seatDetails && "Full")}
+              buttonText={!availableSeats || (!seatDetails && "Full")}
               showSeats={showSeats}
               button={true}
-              subtitle={seatsLeft || "No seats left"}
+              subtitle={availableSeats || "No seats left"}
             />
           </div>
         </div>
@@ -109,7 +113,7 @@ const BusBookingCard = ({
           </div>
           <div className="duration-and-seats-left">
             <span className="duration">{travelTime}</span>
-            <span className="seats-left text-orange">{seatsLeft} Seats</span>
+            <span className="seats-left text-orange">{availableSeats} Seats</span>
           </div>
           <div className="bus-details-container">
             <div className="bus-details">
