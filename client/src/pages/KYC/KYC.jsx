@@ -1,6 +1,6 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { back, front } from "../../assets/KYC";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import {
   AadharModal,
   Button,
@@ -27,7 +27,7 @@ const KYC = () => {
   const [driverId, setDriverId] = useState(null);
   const handleRegister = async () => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/driver/signup`,
         user
       );
@@ -47,7 +47,7 @@ const KYC = () => {
   // useEffect(() => {
   //   const authenticateAndGetToken = async () => {
   //     try {
-  //       const response = await axios.get(
+  //       const response = await axiosInstance.get(
   //         `${import.meta.env.VITE_BASE_URL}/api/kyc/authenticate`
   //       );
   //       setAccessToken(response.data.access_token);
@@ -65,7 +65,7 @@ const KYC = () => {
         account_number: user.bankAccNum,
         ifsc: user.ifsc,
       };
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/bank/verify`,
         requestData
       );

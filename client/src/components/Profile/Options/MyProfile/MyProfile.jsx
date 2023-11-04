@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "./MyProfile.scss";
-import axios from "axios";
+import axiosInstance from "../../../../utils/service";
 
 export default function MyProfile() {
   const loggedInUser = JSON.parse(localStorage.getItem("loggedInUser"));
@@ -20,17 +20,16 @@ export default function MyProfile() {
     });
   }
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const { data: updatedUser } = await axios.patch(
-        `${
-          import.meta.env.VITE_BASE_URL
+      const { data: updatedUser } = await axiosInstance.patch(
+        `${import.meta.env.VITE_BASE_URL
         }/api/user/updateProfile/${loggedInUser._id}`, formData
       );
-      if(updatedUser.status === 200) {
+      if (updatedUser.status === 200) {
         localStorage.setItem("loggedInUser", JSON.stringify(updatedUser.data));
-        alert("Profile Updated"); 
+        alert("Profile Updated");
       }
     } catch (error) {
       console.log(error);

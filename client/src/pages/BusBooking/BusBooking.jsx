@@ -15,7 +15,8 @@ import {
 // } from "../../assets/homepage";
 import { offer1 } from "../../assets/homepage";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
+
 import { Spin } from "antd";
 import { useLocation, Navigate } from "react-router-dom";
 import { cityMapping } from "../../utils/cityMapping";
@@ -86,6 +87,20 @@ const BusBooking = () => {
     filters,
     returnDate
   ) => {
+    if (sourceCity === null ||
+      sourceCity === undefined ||
+      sourceCity === "" ||
+      sourceCity === "null"
+    ) {
+      sourceCity = "Mysore";
+    }
+    if (destinationCity === null ||
+      destinationCity === undefined ||
+      destinationCity === "" ||
+      destinationCity === "null"
+    ) {
+      destinationCity = "Bangalore";
+    }
     localStorage.setItem("sourceCity", sourceCity);
     localStorage.setItem("destinationCity", destinationCity);
     setFromLocation(sourceCity);
@@ -107,7 +122,7 @@ const BusBooking = () => {
       droppingPoints = mapping.boardingPoints;
     }
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBusDetails`,
         {
           sourceCity: sourceCity.trim(),

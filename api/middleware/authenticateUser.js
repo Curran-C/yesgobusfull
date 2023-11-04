@@ -1,10 +1,10 @@
 import jwt from "jsonwebtoken";
 
 export const authenticateUser = (req, res, next) => {
-  const token = req.headers.authorization;
+  const token = req.headers?.authorization?.replace("Bearer ", "");
 
   if (!token) {
-    return res.status(401).send({ message: "Authorization token missing" });
+    return res.status(401).send({ message: "Bearer token missing" });
   }
 
   try {
@@ -12,7 +12,6 @@ export const authenticateUser = (req, res, next) => {
     req.body.userId = decoded.userId;
     next();
   } catch (error) {
-    return res.status(401).send({ message: "Invalid token" });
+    return res.status(401).send({ status: 401, message: "Invalid token" });
   }
 };
-

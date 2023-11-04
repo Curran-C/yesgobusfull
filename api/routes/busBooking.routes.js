@@ -22,7 +22,9 @@ import { authenticateUser } from "../middleware/authenticateUser.js";
 
 const router = express.Router();
 
-// router.use(authenticateUser);
+router.get("/searchCity/:searchParam", searchCityController);
+
+router.use(authenticateUser);
 
 //Zuelpay API routes
 router.get("/getCityList", getCityListController);
@@ -32,9 +34,9 @@ router.post("/blockSeat", blockSeatController);
 router.get("/bookSeat/:ticketKey", bookSeatController);
 router.post("/cancelTicket", cancelTicketController);
 
+
 router.get("/getFilters", getBusFiltersController);
 router.post("/getBusDetails", getBusDetailsController);
-router.get("/searchCity/:searchParam", searchCityController);
 
 //booking routes
 router.post("/bookBus", bookBusController);

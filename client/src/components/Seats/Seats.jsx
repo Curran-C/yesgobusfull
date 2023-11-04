@@ -13,7 +13,7 @@ import PickUpAndDropPoints from "../PickUpAndDropPoints/PickUpAndDropPoints";
 import SeatLegend from "../SeatLegend/SeatLegend";
 import "./Seats.scss";
 import Button from "../Button/Button";
-import axios from "axios";
+// import axiosInstance from "../../utils/service";
 import SingleSeat from "../SinlgeSeat/SingleSeat";
 
 const Seats = ({
@@ -251,7 +251,7 @@ const Seats = ({
   // useEffect(() => {
   //   const getSeats = async () => {
   //     try {
-  //       const response = await axios.post(
+  //       const response = await axiosInstance.post(
   //         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
   //         {
   //           sourceCity: sourceCity,

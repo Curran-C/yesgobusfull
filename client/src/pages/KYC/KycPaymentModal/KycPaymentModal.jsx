@@ -2,13 +2,13 @@ import Button from "../../../components/Button/Button";
 import CardWithText from "../CardWithText/CardWithText";
 import "./KycPaymentModal.scss";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../../utils/service";
 
 const KycPaymentModal = ({ onCancel, driverId }) => {
   const [driver, setDriver] = useState("");
   useEffect(() => {
     const getDriverById = async () => {
-      const getDriverDetails = await axios.get(
+      const getDriverDetails = await axiosInstance.get(
         `${import.meta.env.VITE_BASE_URL}/api/driver/getDriverById/${driverId}`,
       );
       if (getDriverDetails.status === 200) {
