@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./MyBookings.scss";
 import BookingsList from "./BookingsList";
-import axios from "axios";
+import axiosInstance from "../../../../utils/service";
 import { Spin } from "antd";
 
 export default function MyBookings() {
@@ -14,7 +14,7 @@ export default function MyBookings() {
     const getBookingDetails = async () => {
       setLoading(true);
       try {
-        const { data: getBookingDetails } = await axios.get(
+        const { data: getBookingDetails } = await axiosInstance.get(
           `${import.meta.env.VITE_BASE_URL
           }/api/busBooking/getAllBookings/${loggedInUser._id}`
         );

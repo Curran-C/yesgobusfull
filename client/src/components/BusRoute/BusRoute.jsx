@@ -3,7 +3,7 @@ import { twowayarrow } from "../../assets/busbooking";
 import BusRouteCard from "../BusRouteCard/BusRouteCard";
 import Button from "../Button/Button";
 import "./BusRoute.scss";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 
 const BusRoute = ({
   locationOne,
@@ -27,7 +27,7 @@ const BusRoute = ({
     try {
       setLoading(true);
       // if (query.length > 3) {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
       );
       setLocationSuggestions(response.data.data);

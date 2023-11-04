@@ -6,7 +6,7 @@ import Terms from "../../components/TicketView/Terms";
 import CustomerSupport from "../../components/TicketView/CustomerSupport";
 import TicketHead from "../../components/TicketView/TicketHead";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import html2canvas from 'html2canvas';
 import jsPDF from 'jspdf';
 import { useNavigate } from "react-router-dom";
@@ -66,7 +66,7 @@ export default function TicketView() {
   useEffect(() => {
     const getBookingDetails = async () => {
       try {
-        const { data: getBookingDetails } = await axios.get(
+        const { data: getBookingDetails } = await axiosInstance.get(
           `${import.meta.env.VITE_BASE_URL
           }/api/busBooking/getBookingById/${bookingId}`
         );

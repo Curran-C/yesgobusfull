@@ -109,7 +109,11 @@ export const getBusDetails = async (searchArgs, filters) => {
     // let searchResponse = await axios.post("https://api.yesgobus.com/api/busBooking/searchBus", searchArgs);
     // searchResponse = searchResponse.data;
 
-    searchResponse = searchResponse.apiAvailableBuses;
+    //uncomment this for getting back inventory type 130
+    // searchResponse = searchResponse.apiAvailableBuses;
+
+    //comment this for getting back inventory type 130
+    searchResponse = searchResponse.apiAvailableBuses.filter(bus => bus.inventoryType !== 130);
     searchResponse.sort((a, b) => a.inventoryType - b.inventoryType);
 
     if (!hasFilters(filters)) {

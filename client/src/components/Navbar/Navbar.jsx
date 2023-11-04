@@ -8,18 +8,31 @@ import UserIcon from "../SvgIcons/UserIcon";
 
 const Navbar = ({ page }) => {
 
+  let translateElement;
+
   const googleTranslateElementInit = () => {
-    new window.google.translate.TranslateElement(
+    translateElement = new window.google.translate.TranslateElement(
       {
+        pageLanguage: 'en',
         includedLanguages: 'en,kn',
         layout: window.google.translate.TranslateElement.InlineLayout.TOP_RIGHT,
       },
       "google_translate_element"
     );
-    const select = document.querySelector('.goog-te-combo');
-    select.value = 'en';
-    select.dispatchEvent(new Event('change'));
+
+    google.elements.transliteration.LanguageDetect.events.listen(translateElement, 'pageTranslated', (e) => {
+      const detectedLanguage = e.detectedLanguage.toLowerCase();
+      if (detectedLanguage !== 'en') {
+        translateElement.showInvisible();
+        translateElement.selectLanguage('en');
+      }
+    });
   };
+
+  function changeLanguage(languageCode) {
+    translateElement.showInvisible();
+    translateElement.selectLanguage(languageCode);
+  }
 
   useEffect(() => {
     const translateElement = document.getElementById("google_translate_element");

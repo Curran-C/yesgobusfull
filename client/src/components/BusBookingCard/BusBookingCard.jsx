@@ -4,7 +4,7 @@ import BusBookingCardInfo from "../BusBookingCardInfo/BusBookingCardInfo";
 import DropDown from "../DropDown/DropDown";
 import "./BusBookingCard.scss";
 import Seats from "../Seats/Seats";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import { Spin } from "antd";
 
 const BusBookingCard = ({
@@ -47,7 +47,7 @@ const BusBookingCard = ({
     setSeatLoading(true);
     let seatData = [];
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
         {
           sourceCity: sourceCity,
