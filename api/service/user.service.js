@@ -54,9 +54,7 @@ export const signIn = async (emailMobile, password) => {
         message: "Invalid password",
       };
     }
-    const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_KEY, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ userId: existingUser._id }, process.env.JWT_KEY);
     existingUser.password = undefined;
     return {
       status: 200,
@@ -89,9 +87,7 @@ export const googleSignUp = async (jwtToken) => {
         upsert: true,
       }
     );
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_KEY, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_KEY);
 
     return {
       status: 200,
@@ -123,9 +119,7 @@ export const facebookSignUp = async ({ name, email }) => {
         upsert: true,
       }
     );
-    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_KEY, {
-      expiresIn: "1h",
-    });
+    const token = jwt.sign({ userId: newUser._id }, process.env.JWT_KEY);
 
     return {
       status: 200,
