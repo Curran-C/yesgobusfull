@@ -19,14 +19,14 @@ jobs:
           node-version: 14
 
       - name: Install Dependencies
-        run: cd /client && npm install
+        run: cd client && npm install
 
       - name: Run Production Build
-        run: cd /client && npm run prod
+        run: cd client && npm run prod
 
       - name: Upload to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
-          aws s3 cp /client/build/ s3://yesgobus.com/ --recursive
+          aws s3 cp client/build/ s3://yesgobus.com/ --recursive
