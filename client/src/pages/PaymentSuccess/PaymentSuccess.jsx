@@ -3,7 +3,7 @@ import { successful } from "../../assets/payment";
 import { Button, Navbar } from "../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import html2canvas from "html2canvas";
 import jsPDF from "jspdf";
 
@@ -16,22 +16,12 @@ const PaymentSuccess = () => {
   useEffect(() => {
     const getBookingDetails = async () => {
       try {
-        const { data: getBookingDetails } = await axios.get(
+        const { data: getBookingDetails } = await axiosInstance.get(
           `${
             import.meta.env.VITE_BASE_URL
           }/api/busBooking/getBookingById/${bookingId}`
         );
         setBookingDetails(getBookingDetails.data);
-        // const {data: sendMessageResponse} = await axios.post(
-        //   `${
-        //     import.meta.env.VITE_BASE_URL
-        //   }/api/busBooking/sendBookingConfirmationMessage`, {
-        //     tid: getBookingDetails.data.tid,
-        //     opPNR: getBookingDetails.data.opPNR,
-        //     doj: getBookingDetails.data.doj,
-        //     toNumber: getBookingDetails.data.customerPhone,
-        //   }
-        // );
       } catch (error) {
         console.log(error);
       }

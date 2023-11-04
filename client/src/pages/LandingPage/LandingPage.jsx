@@ -47,7 +47,7 @@ import {
 import AboveFooterImages from "../../components/AboveFooterImages/AboveFooterImages";
 import "./landingPage.scss";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
@@ -109,7 +109,7 @@ const LandingPage = () => {
   const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
     try {
       // if (query.length > 3) {
-      const response = await axios.get(
+      const response = await axiosInstance.get(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
       );
       setLocationSuggestions(response.data.data);

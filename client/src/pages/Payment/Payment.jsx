@@ -15,7 +15,7 @@ import {
 import { livelocation } from "../../assets/busbooking";
 import AboveFooterImages from "../../components/AboveFooterImages/AboveFooterImages";
 import { offer } from "../../assets/payment";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import { useLocation, useNavigate, Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { bookSeat } from "../../../../api/service/buBooking.service";
@@ -97,14 +97,14 @@ const Payment = () => {
     const paymentVerification = async () => {
       setLoading(true);
       // get bookings
-      const getBookingDetails = await axios.get(
+      const getBookingDetails = await axiosInstance.get(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBookingById/${bookingId}`
       );
       if (getBookingDetails.status === 200) {
         const merchantTransactionId = getBookingDetails?.data?.data.merchantTransactionId;
 
         // check payment status
-        const checkPaymentStatus = await axios.get(
+        const checkPaymentStatus = await axiosInstance.get(
           `${import.meta.env.VITE_BASE_URL
           }/api/payment/checkPaymentStatus/${merchantTransactionId}`
         );
@@ -113,7 +113,7 @@ const Payment = () => {
           console.log(`Block Ticket ID: ${blockTicketId}`);
 
           // book seat
-          const bookSeat = await axios.get(
+          const bookSeat = await axiosInstance.get(
             `${import.meta.env.VITE_BASE_URL
             }/api/busBooking/bookSeat/${blockTicketId}`
           );
@@ -122,7 +122,7 @@ const Payment = () => {
           if (bookSeat.data.status === "success") {
 
             // update booking in the db
-            const { data: updatePaymentDetails } = await axios.patch(
+            const { data: updatePaymentDetails } = await axiosInstance.patch(
               `${import.meta.env.VITE_BASE_URL
               }/api/busBooking/updateBooking/${bookingId}`,
               {
@@ -145,7 +145,7 @@ const Payment = () => {
                 doj: formatDate(updatePaymentDetails?.data.doj),
                 to: updatePaymentDetails?.data.customerEmail,
               }
-              const sendMail = await axios.post(
+              const sendMail = await axiosInstance.post(
                 `${import.meta.env.VITE_BASE_URL
                 }/api/busBooking/sendBookingConfirmationEmail`,
                 mailBody
@@ -163,7 +163,7 @@ const Payment = () => {
                 doj: formatDate(updatePaymentDetails?.data.doj) + " " + updatePaymentDetails?.data.pickUpTime,
                 to: updatePaymentDetails?.data.customerPhone,
               }
-              const sendMessage = await axios.post(
+              const sendMessage = await axiosInstance.post(
                 `${import.meta.env.VITE_BASE_URL
                 }/api/busBooking/sendBookingConfirmationMessage`,
                 messageBody,
@@ -252,14 +252,14 @@ const Payment = () => {
         inventoryType: inventoryType,
       };
       // block seat
-      const blockSeat = await axios.post(
+      const blockSeat = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/busBooking/blockSeat`,
         blockSeatRequestBody
       );
       if (blockSeat?.data?.apiStatus?.success === true) {
         // setLoading(false);
         setLoadingModalVisible(true);
-        const { data: bookResponse } = await axios.post(
+        const { data: bookResponse } = await axiosInstance.post(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/bookBus`,
           {
             ...blockSeatRequestBody,
@@ -276,7 +276,7 @@ const Payment = () => {
         );
 
         //initiate payment
-        const response = await axios.post(
+        const response = await axiosInstance.post(
           `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
           {
             amount: bookingDetails?.totalFare,
@@ -286,7 +286,7 @@ const Payment = () => {
 
         if (response.status === 200) {
           // update merchantTransactionId
-          const updatePaymentDetails = await axios.patch(
+          const updatePaymentDetails = await axiosInstance.patch(
             `${import.meta.env.VITE_BASE_URL
             }/api/busBooking/updateBooking/${bookResponse.data._id}`,
             {

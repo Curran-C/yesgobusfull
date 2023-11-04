@@ -1,11 +1,10 @@
-import axios from "axios";
+// import axios from "axios";
+import axiosInstance from "../utils/service";
 
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = import.meta.env.VITE_BASE_URL;
 
 export const googleLoginAPI = async (jwtToken) => {
   try {
-    const { data } = await axios.post("/api/user/googleSignIn", { jwtToken });
+    const { data } = await axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/api/user/googleSignIn`, { jwtToken });
     return data;
   } catch (error) {
     console.error("Error logging in using google : ", error);
@@ -14,7 +13,7 @@ export const googleLoginAPI = async (jwtToken) => {
 
 export const facebookLoginAPI = async (fbResponse) => {
   try {
-    const { data } = await axios.post("/api/user/facebooksignin", fbResponse);
+    const { data } = await axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/api/user/facebooksignin`, fbResponse);
     return data;
   } catch (error) {
     console.error("Error logging in using facebook : ", error);
@@ -28,10 +27,10 @@ function formatDate(dateString) {
 
 export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
   try {
-    const { data: cancelTicketResponse } = await axios.post("/api/busBooking/cancelTicket", cancelTicketData);
+    const { data: cancelTicketResponse } = await axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/api/busBooking/cancelTicket`, cancelTicketData);
     if (cancelTicketResponse.apiStatus?.success) {
       refundData.amount = parseFloat(cancelTicketResponse.totalRefundAmount);
-      const { data: refundResponse } = await axios.post("/api/payment/refundPayment", refundData);
+      const { data: refundResponse } = await axiosInstance.post(`${import.meta.env.VITE_BASE_URL}/api/payment/refundPayment`, refundData);
       if (refundResponse) {
         const updateDetails = {
           bookingStatus: "cancelled",
@@ -39,7 +38,7 @@ export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
           cancelChargesPercentage: cancelTicketResponse.cancelChargesPercentage,
           cancellationCharges: cancelTicketResponse.cancellationCharges,
         }
-        const { data: updateBookingResponse } = await axios.patch(`/api/busBooking/updateBooking/${bookingId}`, updateDetails);
+        const { data: updateBookingResponse } = await axiosInstance.patch(`${import.meta.env.VITE_BASE_URL}/api/busBooking/updateBooking/${bookingId}`, updateDetails);
         // send mail
         const mailBody = {
           fullName: updateBookingResponse?.data.customerName,
@@ -52,7 +51,7 @@ export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
           doj: formatDate(updateBookingResponse?.data.doj),
           to: updateBookingResponse?.data.customerEmail,
         }
-        const sendMail = await axios.post(
+        const sendMail = await axiosInstance.post(
           `${import.meta.env.VITE_BASE_URL
           }/api/busBooking/sendCancelTicketEmail`,
           mailBody
@@ -70,7 +69,7 @@ export const cancelTicket = async (refundData, cancelTicketData, bookingId) => {
           doj: formatDate(updateBookingResponse?.data.doj),
           to: updateBookingResponse?.data.customerPhone,
         }
-        const sendMessage = await axios.post(
+        const sendMessage = await axiosInstance.post(
           `${import.meta.env.VITE_BASE_URL
           }/api/busBooking/sendCancelTicketMessage`,
           messageBody,

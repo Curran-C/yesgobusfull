@@ -9,7 +9,7 @@ import "./Login.scss";
 import { Button, Input } from "../../components";
 import { useNavigate, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import { facebookLoginAPI, googleLoginAPI } from "../../api/authentication";
 import { LoginSocialFacebook } from "reactjs-social-login";
 import toast, { Toaster } from 'react-hot-toast';
@@ -132,7 +132,7 @@ const Login = () => {
       setLoading(true);
       const loadingToast = toast.loading('Logging in...');
       try {
-        const response = await axios.post(
+        const response = await axiosInstance.post(
           `${import.meta.env.VITE_BASE_URL}/api/user/signin`,
           {
             emailMobile: loginData.emailMobile,
@@ -185,7 +185,7 @@ const Login = () => {
       try {
         setLoading(true);
         const loadingToast = toast.loading('Creating account...');
-        const response = await axios.post(
+        const response = await axiosInstance.post(
           `${import.meta.env.VITE_BASE_URL}/api/user/signup`,
           createAccountData
         );

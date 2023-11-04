@@ -1,7 +1,7 @@
 import Button from "../Button/Button";
 import Input from "../Input/Input";
 import "./AadharModal.scss";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import { useState, useEffect } from "react";
 
 const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
@@ -10,7 +10,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
   // useEffect(() => {
   //   const authenticateAndGetToken = async () => {
   //     try {
-  //       const response = await axios.get(
+  //       const response = await axiosInstance.get(
   //         `${import.meta.env.VITE_BASE_URL}/api/kyc/authenticate`
   //       );
   //       setAccessToken(response.data.access_token);
@@ -32,7 +32,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
       const requestData = {
         aadhaar_number: user?.aadhar,
       };
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/aadhaar/generateOtp`,
         requestData
       );
@@ -59,7 +59,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
         otp: user?.otp,
         client_id: clientId,
       };
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/aadhaar/verifyOtp`,
         requestData
       );
@@ -87,7 +87,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
         dob: user?.dob,
         fullName: user.fullName,
       };
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/pan/verify`,
         requestData
       );
@@ -111,7 +111,7 @@ const AadharModal = ({ onCancel, typeOfDocument, user, setUser }) => {
         id_number: user?.drivinglicense,
         dob: user?.dob,
       };
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/kyc/drivingLicense/verify`,
         requestData
       );

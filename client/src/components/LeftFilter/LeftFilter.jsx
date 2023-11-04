@@ -3,7 +3,7 @@ import LeftFilterBox from "../LeftFilterBox/LeftFilterBox";
 import Slider from "@mui/material/Slider";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/service";
 import { cityMapping } from "../../utils/cityMapping";
 import { map } from "../../assets/homepage";
 
@@ -42,7 +42,7 @@ const LeftFilter = ({ sourceCity, destinationCity, doj, onFilterChange }) => {
       }
 
       try {
-        const response = await axios.get(
+        const response = await axiosInstance.get(
           `${import.meta.env.VITE_BASE_URL}/api/busBooking/getFilters`,
           {
             params: {

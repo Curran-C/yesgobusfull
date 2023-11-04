@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { netbanking, paytm, phonepe, upi } from "../../../assets/kycpayment";
 import { Button } from "../../../components";
 import "./KycPayment.scss";
-import axios from "axios";
+import axiosInstance from "../../../utils/service";
 import { KycNavbar } from "../../../components";
 import KycPaymentModal from "../KycPaymentModal/KycPaymentModal";
 import KycAmount from "../KycAmount/KycAmount";
@@ -21,7 +21,7 @@ const KycPayments = () => {
   );
   const handlePayment = async () => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
         `${import.meta.env.VITE_BASE_URL}/api/payment/initiatePayment`,
         {
           amount: 2000,
@@ -29,7 +29,7 @@ const KycPayments = () => {
         }
       );
       if (response.status === 200) {
-        const updatePaymentDetails = await axios.patch(
+        const updatePaymentDetails = await axiosInstance.patch(
           `${
             import.meta.env.VITE_BASE_URL
           }/api/driver/updateDriver/${driverId}`,
@@ -55,19 +55,19 @@ const KycPayments = () => {
   };
   useEffect(() => {
     const paymentVerification = async () => {
-      const getDriverDetails = await axios.get(
+      const getDriverDetails = await axiosInstance.get(
         `${import.meta.env.VITE_BASE_URL}/api/driver/getDriverById/${driverId}`
       );
       if (getDriverDetails.status === 200) {
         const merchantTransactionId =
           getDriverDetails?.data?.data.merchantTransactionId;
-        const checkPaymentStatus = await axios.get(
+        const checkPaymentStatus = await axiosInstance.get(
           `${
             import.meta.env.VITE_BASE_URL
           }/api/payment/checkPaymentStatus/${merchantTransactionId}`
         );
         if (checkPaymentStatus.data.code === "PAYMENT_SUCCESS") {
-          const updatePaymentDetails = await axios.patch(
+          const updatePaymentDetails = await axiosInstance.patch(
             `${
               import.meta.env.VITE_BASE_URL
             }/api/driver/updateDriver/${driverId}`,
