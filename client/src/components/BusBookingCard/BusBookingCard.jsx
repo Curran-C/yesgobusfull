@@ -6,6 +6,7 @@ import "./BusBookingCard.scss";
 import Seats from "../Seats/Seats";
 import axiosInstance from "../../utils/service";
 import { Spin } from "antd";
+import toast, { Toaster } from 'react-hot-toast';
 
 const BusBookingCard = ({
   routeScheduleId,
@@ -59,10 +60,18 @@ const BusBookingCard = ({
       );
       seatData = response.data.seats;
       const availableSeats = seatData.filter(seat => seat.available === true);
-      console.log("Available seats count:", availableSeats.length);
       setAvailableSeats(availableSeats.length);
     } catch (error) {
-      alert("Something went wrong");
+      // alert("Something went wrong");
+      // to
+      toast.error('No Seats Left', {
+        duration: 2000,
+        position: 'top-center',
+        style: {
+          background: 'red',
+          color: 'white',
+        },
+      });
       console.error("Something went wrong:", error);
     }
     setSeatDetails(seatData);
@@ -173,7 +182,9 @@ const BusBookingCard = ({
           cancellationPolicy={cancellationPolicy}
         />
       )}
+      <Toaster />
     </div>
+
   );
 };
 
