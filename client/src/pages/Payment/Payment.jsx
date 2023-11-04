@@ -94,97 +94,104 @@ const Payment = () => {
 
   //verify payment and book ticket
   useEffect(() => {
-    const paymentVerification = async () => {
-      setLoading(true);
-      // get bookings
-      const getBookingDetails = await axiosInstance.get(
-        `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBookingById/${bookingId}`
-      );
-      if (getBookingDetails.status === 200) {
-        const merchantTransactionId = getBookingDetails?.data?.data.merchantTransactionId;
-
-        // check payment status
-        const checkPaymentStatus = await axiosInstance.get(
-          `${import.meta.env.VITE_BASE_URL
-          }/api/payment/checkPaymentStatus/${merchantTransactionId}`
+    try {
+      const paymentVerification = async () => {
+        setLoading(true);
+        // get bookings
+        const getBookingDetails = await axiosInstance.get(
+          `${import.meta.env.VITE_BASE_URL}/api/busBooking/getBookingById/${bookingId}`
         );
+        if (getBookingDetails.status === 200) {
+          const merchantTransactionId = getBookingDetails?.data?.data.merchantTransactionId;
 
-        if (checkPaymentStatus.data.code === "PAYMENT_SUCCESS") {
-          console.log(`Block Ticket ID: ${blockTicketId}`);
-
-          // book seat
-          const bookSeat = await axiosInstance.get(
+          // check payment status
+          const checkPaymentStatus = await axiosInstance.get(
             `${import.meta.env.VITE_BASE_URL
-            }/api/busBooking/bookSeat/${blockTicketId}`
+            }/api/payment/checkPaymentStatus/${merchantTransactionId}`
           );
 
-          // if booking is successfull
-          if (bookSeat.data.status === "success") {
+          if (checkPaymentStatus.data.code === "PAYMENT_SUCCESS") {
+            console.log(`Block Ticket ID: ${blockTicketId}`);
 
-            // update booking in the db
-            const { data: updatePaymentDetails } = await axiosInstance.patch(
+            // book seat
+            const bookSeat = await axiosInstance.get(
               `${import.meta.env.VITE_BASE_URL
-              }/api/busBooking/updateBooking/${bookingId}`,
-              {
-                bookingStatus: "paid",
-                tid: bookSeat?.data.BookingDetail.etstnumber,
-                buspnr: bookSeat?.data.buspnr,
-                opPNR: bookSeat?.data.BookingDetail.opPNR,
-              }
+              }/api/busBooking/bookSeat/${blockTicketId}`
             );
-            if (updatePaymentDetails) {
-              // send mail
-              const mailBody = {
-                fullName: updatePaymentDetails?.data.customerName,
-                sourceCity: updatePaymentDetails?.data.sourceCity,
-                destinationCity: updatePaymentDetails?.data.destinationCity,
-                seats: updatePaymentDetails?.data.selectedSeats,
-                amount: updatePaymentDetails?.data.totalAmount,
-                pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
-                opPNR: updatePaymentDetails?.data.opPNR,
-                doj: formatDate(updatePaymentDetails?.data.doj),
-                to: updatePaymentDetails?.data.customerEmail,
-              }
-              const sendMail = await axiosInstance.post(
-                `${import.meta.env.VITE_BASE_URL
-                }/api/busBooking/sendBookingConfirmationEmail`,
-                mailBody
-              );
 
-              //send sms
-              const messageBody = {
-                fullName: updatePaymentDetails?.data.customerName,
-                sourceCity: updatePaymentDetails?.data.sourceCity,
-                destinationCity: updatePaymentDetails?.data.destinationCity,
-                seats: updatePaymentDetails?.data.selectedSeats,
-                amount: updatePaymentDetails?.data.totalAmount,
-                pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
-                opPNR: updatePaymentDetails?.data.opPNR.split("/")[0],
-                doj: formatDate(updatePaymentDetails?.data.doj) + " " + updatePaymentDetails?.data.pickUpTime,
-                to: updatePaymentDetails?.data.customerPhone,
-              }
-              const sendMessage = await axiosInstance.post(
+            // if booking is successfull
+            if (bookSeat.data.status === "success") {
+
+              // update booking in the db
+              const { data: updatePaymentDetails } = await axiosInstance.patch(
                 `${import.meta.env.VITE_BASE_URL
-                }/api/busBooking/sendBookingConfirmationMessage`,
-                messageBody,
+                }/api/busBooking/updateBooking/${bookingId}`,
+                {
+                  bookingStatus: "paid",
+                  tid: bookSeat?.data.BookingDetail.etstnumber,
+                  buspnr: bookSeat?.data.buspnr,
+                  opPNR: bookSeat?.data.BookingDetail.opPNR,
+                }
               );
+              if (updatePaymentDetails) {
+                // send mail
+                const mailBody = {
+                  fullName: updatePaymentDetails?.data.customerName,
+                  sourceCity: updatePaymentDetails?.data.sourceCity,
+                  destinationCity: updatePaymentDetails?.data.destinationCity,
+                  seats: updatePaymentDetails?.data.selectedSeats,
+                  amount: updatePaymentDetails?.data.totalAmount,
+                  pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
+                  opPNR: updatePaymentDetails?.data.opPNR,
+                  doj: formatDate(updatePaymentDetails?.data.doj),
+                  to: updatePaymentDetails?.data.customerEmail,
+                }
+                const sendMail = await axiosInstance.post(
+                  `${import.meta.env.VITE_BASE_URL
+                  }/api/busBooking/sendBookingConfirmationEmail`,
+                  mailBody
+                );
+
+                //send sms
+                const messageBody = {
+                  fullName: updatePaymentDetails?.data.customerName,
+                  sourceCity: updatePaymentDetails?.data.sourceCity,
+                  destinationCity: updatePaymentDetails?.data.destinationCity,
+                  seats: updatePaymentDetails?.data.selectedSeats,
+                  amount: updatePaymentDetails?.data.totalAmount,
+                  pickUpLocation: updatePaymentDetails?.data.boardingPoint.location,
+                  opPNR: updatePaymentDetails?.data.opPNR.split("/")[0],
+                  doj: formatDate(updatePaymentDetails?.data.doj) + " " + updatePaymentDetails?.data.pickUpTime,
+                  to: updatePaymentDetails?.data.customerPhone,
+                }
+                const sendMessage = await axiosInstance.post(
+                  `${import.meta.env.VITE_BASE_URL
+                  }/api/busBooking/sendBookingConfirmationMessage`,
+                  messageBody,
+                );
+              }
+              // navigate to payment successfull page
+              setLoading(false);
+              navigate(`/busbooking/payment/success?bookingId=${bookingId}`);
+            } else {
+              setLoading(false);
+              navigate("/busbooking/payment/failure");
             }
-            // navigate to payment successfull page
-            setLoading(false);
-            navigate(`/busbooking/payment/success?bookingId=${bookingId}`);
           } else {
-            setLoading(false);
             navigate("/busbooking/payment/failure");
+            setLoading(false);
+            // alert("Payment Failed");
           }
-        } else {
-          setLoading(false);
-          alert("Payment Failed");
         }
+      };
+      if (paymentVerify) {
+        paymentVerification();
       }
-    };
-    if (paymentVerify) {
-      paymentVerification();
+    } catch (error) {
+      console.log(error);
+      navigate("/busbooking/payment/failure");
     }
+
   }, [paymentVerify]);
 
   const date = new Date();
