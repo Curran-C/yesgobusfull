@@ -10,7 +10,7 @@ const Input = ({ title, type, placeholder, onChanged, givenName, isKyc, value })
   const handleOnChange = isKyc ? handleChange : onChanged;  
   return (
     <div className="Input">
-      <span className="title">{title}</span>
+      <span >{title}</span>
       <input
         name={givenName}
         onChange={handleOnChange}
