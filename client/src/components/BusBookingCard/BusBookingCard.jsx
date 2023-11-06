@@ -34,11 +34,13 @@ const BusBookingCard = ({
   dropLocationOne,
   // dropLocationTwo,
   backSeat,
+  fare,
 }) => {
   const [showSeats, setShowSeats] = useState(false);
   const [seatDetails, setSeatDetails] = useState([]);
   const [seatLoading, setSeatLoading] = useState(false);
   const [availableSeats, setAvailableSeats] = useState(seatsLeft);
+
 
   const fetchSeatData = async () => {
     if (!showSeats === false) {
@@ -59,25 +61,50 @@ const BusBookingCard = ({
         }
       );
       seatData = response.data.seats;
-      const availableSeats = seatData.filter(seat => seat.available === true);
-      setAvailableSeats(availableSeats.length);
+      const availableSeats = seatData?.filter(seat => seat.available === true);
+      setAvailableSeats(availableSeats?.length);
+      setSeatDetails(seatData);
+      setSeatLoading(false);
+      setShowSeats(!showSeats);
     } catch (error) {
-      // alert("Something went wrong");
-      // to
-      toast.error('No Seats Left', {
-        duration: 2000,
-        position: 'top-center',
-        style: {
-          background: 'red',
-          color: 'white',
-        },
-      });
-      console.error("Something went wrong:", error);
+      if (error.response) {
+        toast.error(`Server Error: ${error.response.status}`, {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: 'red',
+            color: 'white',
+          },
+        });
+        console.error("Server Error:", error.response.data);
+        setSeatLoading(false);
+      } else if (error.request) {
+        toast.error('Network Error: Unable to connect to the server', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: 'red',
+            color: 'white',
+          },
+        });
+        setSeatLoading(false);
+        console.error("Network Error:", error.request);
+      } else {
+        toast.error('An unexpected error occurred', {
+          duration: 2000,
+          position: 'top-center',
+          style: {
+            background: 'red',
+            color: 'white',
+          },
+        });
+        setSeatLoading(false);
+        console.error("Something went wrong:", error);
+      }
     }
-    setSeatDetails(seatData);
-    setSeatLoading(false);
-    setShowSeats(!showSeats);
+
   };
+
 
   return (
     <div className={`BusBookingCard ${showSeats && "bg-lightgrey"}`}>
@@ -97,7 +124,7 @@ const BusBookingCard = ({
             {/* <BusBookingCardInfo img={true} title={travelTime} /> */}
             <BusBookingCardInfo title={travelTime} />
             <BusBookingCardInfo subtitle={reachLocation} title={reachTime} />
-            <p className="price">₹{price?.split(".")[0] || price}</p>
+            <p className="price">₹{price}</p>
             <BusBookingCardInfo
               setShowSeats={fetchSeatData}
               buttonText={!availableSeats || (!seatDetails && "Full")}
@@ -117,7 +144,7 @@ const BusBookingCard = ({
             </h4>
             <span className="price-container">
               <p>From</p>{" "}
-              <p className="price">₹ {price?.split(".")[0] || price}</p>
+              <p className="price">₹ {price}</p>
             </span>
           </div>
           <div className="duration-and-seats-left">
@@ -180,6 +207,7 @@ const BusBookingCard = ({
           price={price}
           seatDetails={seatDetails}
           cancellationPolicy={cancellationPolicy}
+          fare={fare}
         />
       )}
       <Toaster />

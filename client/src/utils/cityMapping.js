@@ -19,6 +19,9 @@ export const cityMapping = {
     sourceCity: "shivamogga",
     // boardingPoints: [""]
   },
+  "shimogga": {
+    sourceCity: "shivamogga",
+  },
   "jamakandi": {
     sourceCity: "jamkhandi",
     // boardingPoints: [""]
