@@ -141,15 +141,31 @@
           .genderContainer {
             display: flex;
             flex-direction: column;
-            gap: 3px;
+            gap: 10px;
+
+            label {
+              font-size: 22px;
+              font-weight: 500;
+              font-weight: bold !important;
+
+            }
 
             select {
-              width: 300px;
-              padding: 15px 20px;
-              border: 1px solid #dadada;
+              width: 230px;
+              padding: 12px;
+              border: 1px solid #ccc;
+              border-radius: 8px;
               outline: none;
+              transition: border-color 0.2s ease-in-out;
+              font-size: 14px;
+
+              &:focus {
+                border-color: #007BFF;
+                box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+              }
             }
           }
+
         }
       }
 
@@ -351,6 +367,7 @@ label.optional {
   font-size: 18px;
   margin-bottom: 10px;
 }
+
 .modal {
   position: fixed;
   top: 0;
