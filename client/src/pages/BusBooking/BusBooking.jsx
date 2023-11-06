@@ -326,6 +326,7 @@ const BusBooking = () => {
                     // dropLocationTwo={dropLocationTwo}
                     backSeat={true}
                     cancellationPolicy={bus.cancellationPolicy}
+                    fare={bus.fare}
                   />
                 </div>
               ))}

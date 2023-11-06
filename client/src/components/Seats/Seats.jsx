@@ -8,6 +8,11 @@ import {
   ladiesbooked,
   selected,
   selectedFill,
+  singleavailable,
+  singlebooked,
+  singleladiesavailable,
+  singleladiesbooked,
+  singleselected,
 } from "../../assets/busbooking";
 import PickUpAndDropPoints from "../PickUpAndDropPoints/PickUpAndDropPoints";
 import SeatLegend from "../SeatLegend/SeatLegend";
@@ -36,11 +41,20 @@ const Seats = ({
   price,
   seatDetails,
   cancellationPolicy,
+  fare,
 }) => {
   //* states
   const navigate = useNavigate();
   // const [boardingPoints, setBoardingPoint] = useState([]);
   // const [droppingPoints, setDroppingPoint] = useState([]);
+  const [selectedPriceFilter, setSelectedPriceFilter] = useState(null);
+
+  const [prices, setPrices] = useState([]);
+  useEffect(() => {
+    console.log("prices", fare)
+    setPrices(fare.split(",").map(parseFloat));
+  }, [fare])
+
   const [bookingDetails, setBookingDetails] = useState({
     boardingPoint: {
       id: "",
@@ -131,8 +145,12 @@ const Seats = ({
   const upperTierSeats = seatDetails.filter((seat) => seat.zIndex === 1);
 
   const renderSeatTable = (seats, selectedSeats) => {
-    const numRows = Math.max(...seats?.map((seat) => seat.row)) + 1;
-    const numCols = Math.max(...seats?.map((seat) => seat.column)) + 1;
+    const filteredSeats = selectedPriceFilter
+      ? seats.filter(seat => seat.fare === selectedPriceFilter)
+      : seats;
+
+    const numRows = Math.max(...filteredSeats?.map((seat) => seat.row)) + 1;
+    const numCols = Math.max(...filteredSeats?.map((seat) => seat.column)) + 1;
 
     const seatTable = [];
 
@@ -140,7 +158,7 @@ const Seats = ({
       const seatRow = [];
 
       for (let col = 0; col < numCols; col++) {
-        const seat = seats.find((s) => s.row === row && s.column === col);
+        const seat = filteredSeats.find((s) => s.row === row && s.column === col);
 
         if (seat) {
           if (seat.available) {
@@ -160,8 +178,9 @@ const Seats = ({
                       )
                     }
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
-                    src={selectedFill}
+                    src={(seat.width !== 2 && seat.length !== 2) ? singleselected : selectedFill}
                     alt="selected seat"
+                    className={(seat.width == 2) && "vertical"}
                   />
                 </td>
               );
@@ -182,8 +201,9 @@ const Seats = ({
                         )
                       }
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
-                      src={ladiesavailable}
+                      src={(seat.width !== 2 && seat.length !== 2) ? singleladiesavailable : ladiesavailable}
                       alt="available ladies"
+                      className={(seat.width == 2) && "vertical"}
                     />
                   </td>
                 );
@@ -203,8 +223,9 @@ const Seats = ({
                         )
                       }
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
-                      src={available}
+                      src={(seat.width !== 2 && seat.length !== 2) ? singleavailable : available}
                       alt="available"
+                      className={(seat.width == 2) && "vertical"}
                     />
                   </td>
                 );
@@ -216,8 +237,9 @@ const Seats = ({
                 <td key={seat.id}>
                   <img
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
-                    src={ladiesbooked}
+                    src={(seat.width !== 2 && seat.length !== 2) ? singleladiesbooked : ladiesbooked}
                     alt="ladiesbooked"
+                    className={(seat.width == 2) && "vertical"}
                   />
                 </td>
               );
@@ -226,8 +248,9 @@ const Seats = ({
                 <td key={seat.id}>
                   <img
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
-                    src={booked}
+                    src={(seat.width !== 2 && seat.length !== 2) ? singlebooked : booked}
                     alt="booked"
+                    className={(seat.width == 2) && "vertical"}
                   />
                 </td>
               );
@@ -361,12 +384,45 @@ const Seats = ({
             subtitle={"(Booked)"}
             img={ladiesbooked}
           />
+
         </div>
-        <div className="filters">
-          <p className="filter">All</p>
-          <p className="filter">₹700</p>
-          <p className="filter">₹800</p>
-        </div>
+        {/* <div className="legend">
+          <SeatLegend  img={singlebooked} single={}/>
+          <SeatLegend  img={singleavailable} />
+          <SeatLegend img={singleselected} />
+          <SeatLegend
+            // title={"Ladies"}
+            // subtitle={"(Available)"}
+            img={singleladiesavailable}
+          />
+          <SeatLegend
+            // title={"Ladies"}
+            // subtitle={"(Booked)"}
+            img={singleladiesbooked}
+          />
+          
+        </div> */}
+        {prices.length > 1 && (
+          <div className="filters">
+            {/* <p className="tag">Seat Price:</p> */}
+            <p
+              className={`filter ${selectedPriceFilter === null ? 'highlighted' : ''}`}
+              onClick={() => setSelectedPriceFilter(null)}
+            >
+              All
+            </p>
+            {prices.map(price => (
+              <p
+                key={price}
+                className={`filter ${selectedPriceFilter === price ? 'highlighted' : ''}`}
+                onClick={() => setSelectedPriceFilter(price)}
+              >
+                ₹{price}
+              </p>
+            ))}
+          </div>
+        )}
+
 
         <div className="bus">
           <div className="driver">

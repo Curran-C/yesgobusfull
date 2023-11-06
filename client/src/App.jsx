@@ -16,6 +16,7 @@ import KycLandingPage from "./pages/KYC/KycLandingPage/KycLandingPage";
 import KycPayments from "./pages/KYC/KycPayment/KycPayment";
 import MobileNavbar from "./components/Mobile/Busresultsnavbar/busresultsnavbar";
 import { useEffect } from "react";
+import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   // Remove already saved cache
