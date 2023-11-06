@@ -52,6 +52,16 @@
       margin-top: 30px;
       font-size: 12px;
 
+      .highlighted {
+        background: #fd5901;
+        color: white;
+        font-weight: 600;
+      }
+
+      // .tag {
+      //   padding: 5px;
+      // }
+
       .filter {
         padding: 5px 20px;
         background: rgba(225, 225, 225, 0.59);
@@ -113,6 +123,11 @@
         display: flex;
         flex-direction: column;
         align-items: stretch;
+
+        .vertical {
+          transform: rotate(90deg);
+          margin-bottom: 20px;
+        }
 
         h4 {
           text-align: center;
