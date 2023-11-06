@@ -442,11 +442,10 @@ const Payment = () => {
 
           {/* Traveller details */}
           <div className="details">
-            <span>Enter Traveller Details</span>
-
+            <h4>Enter Traveller Details:</h4>
             {bookingDetails?.selectedSeats?.map((seat, index) => (
               <div key={index} className="travelerDetails">
-                <h3>Traveler {index + 1}:</h3>
+                <h3 style={{ textAlign: "center" }}>Traveler {index + 1} | Seat {seat}</h3><br />
                 <div className="detailsContainer">
 
                   <Input
