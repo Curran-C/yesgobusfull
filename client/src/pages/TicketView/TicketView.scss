@@ -3,6 +3,7 @@
   --orange: rgba(253, 89, 1, 1);
   --px-ticket: 30px;
   --border-color: rgba(163, 163, 163, 1);
+
   h1,
   h2,
   h3,
@@ -12,6 +13,7 @@
   p {
     margin: 0;
   }
+
   max-width: 1920px;
   margin-inline: auto;
   padding-bottom: 4em;
@@ -20,6 +22,7 @@
   .navbar {
     padding: 0px 50px;
     height: 130px;
+
     .left {
       a {
         color: black;
@@ -147,6 +150,7 @@
         img {
           width: 100%;
         }
+
         .line {
           width: 98%;
           margin-inline: auto;
@@ -256,5 +260,144 @@
     width: fit-content;
     border: 1px solid black;
     padding: 0.5em 2em;
+  }
+
+  @media (max-width: 767px) {
+    padding: 1em;
+    max-width: 100%;
+
+    .navbar {
+      padding: 0 1em;
+    }
+
+    .ticket {
+      margin: 0 1em;
+
+      .ticket__header {
+        .helpline {
+          img {
+            width: 60px !important;
+          }
+        }
+
+        .helpline__details {
+          img {
+            width: 15px !important;
+          }
+
+          .helpline__number {
+            p {
+              font-size: 12px;
+            }
+          }
+        }
+      }
+    }
+
+    .ticket::before {
+      background-size: 50%;
+    }
+
+    .ticket .journey__details {
+      gap: 1em;
+      padding: 1em;
+      flex-direction: column;
+
+      h1 {
+        font-size: 24px;
+      }
+    }
+
+    .ticket .bus__details {
+      padding: 0.5em;
+
+      h3 {
+        font-weight: 400;
+      }
+    }
+
+    .ticket .pick__drop {
+      padding: 0.5em;
+
+      .boarding__details,
+      .dropping__details {
+        gap: 1em;
+
+        .location,
+        .sub-location {
+          font-size: 16px;
+        }
+      }
+    }
+
+    .ticket .time__line {
+      padding: 1em;
+      width: auto;
+
+      .time__line__image .line {
+        width: 95%;
+      }
+
+      .schedule {
+        flex-direction: row;
+      }
+    }
+
+    .ticket .table {
+      padding: 1em;
+    }
+
+    .action__buttons {
+      margin: 1em;
+      flex-direction: column;
+      gap: 1em;
+
+      .home,
+      .download {
+        padding: 0.5em 1.5em;
+      }
+    }
+
+    .font-24 {
+      font-size: 20px;
+    }
+
+    .customer__support {
+      h2 {
+        font-size: 20px;
+      }
+
+      .support__contact {
+
+        // size: 10px;
+        img {
+          width: 20px;
+        }
+
+        .support__number {
+          h3 {
+            font-size: 20px;
+          }
+
+          p {
+            font-size: 10px;
+          }
+        }
+      }
+    }
+
+    .terms {
+      h2 {
+        font-size: 20px;
+      }
+
+      ul {
+        li {
+          p {
+            font-size: 15px;
+          }
+        }
+      }
+    }
   }
 }
