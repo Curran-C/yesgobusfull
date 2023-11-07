@@ -40,7 +40,7 @@ const BusBookingCard = ({
   const [seatDetails, setSeatDetails] = useState([]);
   const [seatLoading, setSeatLoading] = useState(false);
   const [availableSeats, setAvailableSeats] = useState(seatsLeft);
-
+  const [hasFetchedData, setHasFetchedData] = useState(false); 
 
   const fetchSeatData = async () => {
     if (!showSeats === false) {
@@ -49,18 +49,32 @@ const BusBookingCard = ({
     }
     setSeatLoading(true);
     let seatData = [];
+    const requestBody = {
+      sourceCity: sourceCity,
+      destinationCity: destinationCity,
+      doj: doj,
+      inventoryType: inventoryType,
+      routeScheduleId: routeScheduleId,
+    }
     try {
-      const response = await axiosInstance.post(
-        `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
-        {
-          sourceCity: sourceCity,
-          destinationCity: destinationCity,
-          doj: doj,
-          inventoryType: inventoryType,
-          routeScheduleId: routeScheduleId,
-        }
-      );
-      seatData = response.data.seats;
+      const response = await fetch(`${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`, {
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestBody),
+      });
+      if (!response.ok) {
+        throw new Error(`Request failed with status: ${response.status}`);
+      }
+      const data = await response.json();
+
+      // const response = await axiosInstance.post(
+      //   `${import.meta.env.VITE_BASE_URL}/api/busBooking/getSeatLayout`,
+      //   requestBody,
+      // );
+      seatData = data?.seats;
       const availableSeats = seatData?.filter(seat => seat.available === true);
       setAvailableSeats(availableSeats?.length);
       setSeatDetails(seatData);
@@ -102,7 +116,6 @@ const BusBookingCard = ({
         console.error("Something went wrong:", error);
       }
     }
-
   };
 
 

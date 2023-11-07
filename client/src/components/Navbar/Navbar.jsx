@@ -20,13 +20,13 @@ const Navbar = ({ page }) => {
       "google_translate_element"
     );
 
-    google.elements.transliteration.LanguageDetect.events.listen(translateElement, 'pageTranslated', (e) => {
-      const detectedLanguage = e.detectedLanguage.toLowerCase();
-      if (detectedLanguage !== 'en') {
-        translateElement.showInvisible();
-        translateElement.selectLanguage('en');
-      }
-    });
+    // google.elements.transliteration.LanguageDetect.events.listen(translateElement, 'pageTranslated', (e) => {
+    //   const detectedLanguage = e.detectedLanguage.toLowerCase();
+    //   if (detectedLanguage !== 'en') {
+    //     translateElement.showInvisible();
+    //     translateElement.selectLanguage('en');
+    //   }
+    // });
   };
 
   function changeLanguage(languageCode) {
