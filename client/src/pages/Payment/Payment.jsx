@@ -381,13 +381,13 @@ const Payment = () => {
   return (
     <div className="Payment">
       <Navbar />
-      <BusRoute
+      {/* <BusRoute
         locationOne={sourceCity}
         locationTwo={destinationCity}
         departureDate={doj}
         returnDate={"- - -"}
-      />
-
+      /> */}
+      <hr />
       <div className="container">
         <div className="containerleft">
           <h5>Review your booking</h5>
@@ -494,7 +494,7 @@ const Payment = () => {
 
           {/* Contact Details */}
           <div className="details">
-            <span>Enter Contact Details</span>
+            <h4>Enter Contact Details</h4>
             <div className="detailsContainer">
               <Input
                 title={"Email"}
@@ -645,6 +645,7 @@ const Payment = () => {
           />
         </div>
       </div> */}
+      
       <Footer />
       {loading ? (
         <div className="loading-spinner">
@@ -652,7 +653,7 @@ const Payment = () => {
         </div>
       ) : null}
       <Modal
-        visible={loadingModalVisible}
+        open={loadingModalVisible}
         closable={false}
         footer={null}
         centered
@@ -669,6 +670,7 @@ const Payment = () => {
           </div>
         </div>
       )}
+
     </div>
   );
 };

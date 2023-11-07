@@ -49,7 +49,6 @@ const BusBooking = () => {
     dates.push(formattedDate);
   }
 
-  console.log(dates);
 
 
   let currentDate = new Date();

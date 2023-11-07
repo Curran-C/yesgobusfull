@@ -1,4 +1,10 @@
 .Payment {
+  hr {
+    border: none;
+    border-top: 2px dashed #a5a9ae;
+  }
+  
+  
   .loading-spinner {
     position: fixed;
     top: 0;
