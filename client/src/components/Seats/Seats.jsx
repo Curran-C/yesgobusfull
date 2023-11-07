@@ -51,7 +51,6 @@ const Seats = ({
 
   const [prices, setPrices] = useState([]);
   useEffect(() => {
-    console.log("prices", fare)
     setPrices(fare.split(",").map(parseFloat));
   }, [fare])
 
@@ -180,7 +179,7 @@ const Seats = ({
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                     src={(seat.width !== 2 && seat.length !== 2) ? singleselected : selectedFill}
                     alt="selected seat"
-                    className={(seat.width == 2) && "vertical"}
+                    className={(seat.width == 2) ? "vertical" : ""}
                   />
                 </td>
               );
@@ -203,7 +202,7 @@ const Seats = ({
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                       src={(seat.width !== 2 && seat.length !== 2) ? singleladiesavailable : ladiesavailable}
                       alt="available ladies"
-                      className={(seat.width == 2) && "vertical"}
+                      className={(seat.width == 2) ? "vertical" : ""}
                     />
                   </td>
                 );
@@ -225,7 +224,7 @@ const Seats = ({
                       title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                       src={(seat.width !== 2 && seat.length !== 2) ? singleavailable : available}
                       alt="available"
-                      className={(seat.width == 2) && "vertical"}
+                      className={(seat.width == 2) ? "vertical" : ""}
                     />
                   </td>
                 );
@@ -239,7 +238,7 @@ const Seats = ({
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                     src={(seat.width !== 2 && seat.length !== 2) ? singleladiesbooked : ladiesbooked}
                     alt="ladiesbooked"
-                    className={(seat.width == 2) && "vertical"}
+                    className={(seat.width == 2) ? "vertical" : ""}
                   />
                 </td>
               );
@@ -250,7 +249,7 @@ const Seats = ({
                     title={`ID: ${seat.id}\nFare: ₹${seat.fare}`}
                     src={(seat.width !== 2 && seat.length !== 2) ? singlebooked : booked}
                     alt="booked"
-                    className={(seat.width == 2) && "vertical"}
+                    className={(seat.width == 2) ? "vertical" : ""}
                   />
                 </td>
               );

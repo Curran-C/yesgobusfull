@@ -20,13 +20,13 @@ import toast, { Toaster } from 'react-hot-toast';
 
 function App() {
   // Remove already saved cache
-  useEffect(() => {
-    caches.keys().then((names) => {
-      names.forEach((name) => {
-        caches.delete(name);
-      });
-    });
-  }, []);
+  // useEffect(() => {
+  //   caches.keys().then((names) => {
+  //     names.forEach((name) => {
+  //       caches.delete(name);
+  //     });
+  //   });
+  // }, []);
 
   return (
     <BrowserRouter>
