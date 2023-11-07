@@ -23,20 +23,21 @@ import { authenticateUser } from "../middleware/authenticateUser.js";
 const router = express.Router();
 
 router.get("/searchCity/:searchParam", searchCityController);
+router.post("/searchBus", searchBusController);
+router.post("/getSeatLayout", getSeatLayoutController);
+router.get("/getFilters", getBusFiltersController);
+router.post("/getBusDetails", getBusDetailsController);
 
 router.use(authenticateUser);
 
 //Zuelpay API routes
 router.get("/getCityList", getCityListController);
-router.post("/searchBus", searchBusController);
-router.post("/getSeatLayout", getSeatLayoutController);
+
 router.post("/blockSeat", blockSeatController);
 router.get("/bookSeat/:ticketKey", bookSeatController);
 router.post("/cancelTicket", cancelTicketController);
 
 
-router.get("/getFilters", getBusFiltersController);
-router.post("/getBusDetails", getBusDetailsController);
 
 //booking routes
 router.post("/bookBus", bookBusController);
