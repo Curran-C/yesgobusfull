@@ -22,16 +22,16 @@ export const cityMapping = {
   "shimogga": {
     sourceCity: "shivamogga",
   },
-  "jamakandi": {
-    sourceCity: "jamkhandi",
-    // boardingPoints: [""]
-  },
-  "cochin": {
-    sourceCity: "Kochi",
-    // boardingPoints: [""]
-  },
-  "hubbali": {
-    sourceCity: "hubli",
-    // boardingPoints: [""]
-  },
+  // "jamakandi": {
+  //   sourceCity: "jamkhandi",
+  //   // boardingPoints: [""]
+  // },
+  // "cochin": {
+  //   sourceCity: "Kochi",
+  //   // boardingPoints: [""]
+  // },
+  // "hubbali": {
+  //   sourceCity: "hubli",
+  //   // boardingPoints: [""]
+  // },
 };

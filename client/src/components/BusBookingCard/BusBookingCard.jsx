@@ -40,7 +40,6 @@ const BusBookingCard = ({
   const [seatDetails, setSeatDetails] = useState([]);
   const [seatLoading, setSeatLoading] = useState(false);
   const [availableSeats, setAvailableSeats] = useState(seatsLeft);
-  const [hasFetchedData, setHasFetchedData] = useState(false); 
 
   const fetchSeatData = async () => {
     if (!showSeats === false) {
