@@ -2,65 +2,118 @@
   .left {
     color: white;
   }
+
+  .right {
+    color: white;
+  }
+
   .hero {
     height: 75vh;
     width: 100%;
+
     .heroImg {
       position: absolute;
       top: 0px;
       z-index: -10;
       width: 100%;
+
       filter: brightness(30%);
       // height: 90vh;
       object-fit: cover;
     }
+
     .heroContainer {
       margin-left: 100px;
       display: flex;
-      gap: 20px;
+      gap: 40px;
       flex-direction: column;
+
       .title {
         h1 {
           color: white;
           font-size: 40px;
           margin-top: 40px;
         }
+
         h1:nth-child(2) {
           margin-top: 2px;
           color: #fd5901;
         }
       }
+
       h2 {
         color: white;
         font-weight: 400;
         width: 40%;
       }
-      .border {
+
+      .bus-search-container {
         display: flex;
         align-items: center;
         border: 2px solid #fd5901;
-        background: white;
+        background: rgba(0, 0, 0, 0.69);
+        backdrop-filter: blur(10px);
         padding: 0px 30px;
         justify-content: space-evenly;
         border-radius: 25px;
         min-height: 200px;
         width: 90%;
+
+        .reverse-image {
+          transition: transform 0.5s ease;
+          // filter: brightness(0.2);
+        }
         .infoCard {
+          background-color: rgba(253, 89, 1, 0.15);
+          border-radius: 20px;
+          padding: 20px 5px;
+          width: 90%;
+          min-height: 50px;
+          margin: 5px 0;
+
           .infotitle {
-            color: #448fff;
+            // color: #448fff;
+            margin-bottom: 0;
+
+            input {
+              width: 90%;
+              &::placeholder {
+                color: rgba(255, 255, 255, 0.384);
+                font-size: 0.8rem;
+                letter-spacing: 1px;
+                font-weight: 100;
+              }
+            }
+          }
+          input[type="search"]::-webkit-search-cancel-button {
+            width: 1rem;
+            backdrop-filter: blur(10px);
           }
         }
+
         .buttons {
           display: flex;
           flex-direction: column;
           gap: 20px;
-          button {
-            border-radius: 0px;
+          display: flex;
+
+          .dayButton {
+            padding: 5px 30px;
+            border: none;
+            font-weight: 700;
+            border-radius: 5px;
+            color: #7c7c7c;
           }
-          button:nth-child(2) {
-            background: #d1d1d1;
-            color: black;
+
+          .highlighted {
+            background-color: #fd5901;
+            color: white;
           }
+        }
+
+        .search-btn {
+          min-width: 150px;
+          margin: 15px;
         }
       }
     }
@@ -75,18 +128,23 @@
       display: flex;
       justify-content: space-evenly;
       width: 90%;
+
       .titleContainer {
         justify-content: center;
       }
+
       .infoCard {
         width: 200px;
+
         img {
           height: 60px;
           margin-bottom: 20px;
         }
+
         .infotitle {
           font-size: 20px;
         }
+
         .infosubtitle {
           font-size: 12px;
 
@@ -98,6 +156,7 @@
 
   .exclusiveOffers {
     padding: 50px;
+
     .offers {
       margin-top: 30px;
       display: flex;
@@ -109,6 +168,7 @@
 
   .govBuses {
     padding: 50px;
+
     .govBusesContainer {
       display: flex;
       flex-wrap: wrap;
@@ -118,11 +178,14 @@
       align-items: center;
       margin-top: 30px;
       padding: 30px 20px;
+
       .infoCard {
         width: 200px;
+
         img {
           height: 150px;
         }
+
         .infosubtitle {
           font-size: 15px;
           font-weight: 500;
@@ -133,6 +196,7 @@
 
   .popularBusRoutes {
     padding: 50px;
+
     .popularBusRoutesContainer {
       justify-content: center;
       display: flex;
@@ -148,26 +212,32 @@
   .whyChooseYesGoBus {
     background: #f6f6f6;
     padding: 50px;
+
     .titleContainer {
       justify-content: center;
     }
+
     .whyChooseYesGoBusContainer {
       display: flex;
       justify-content: space-evenly;
       flex-wrap: wrap;
       align-items: start;
       margin-top: 30px;
+
       .infoCard {
         width: 120px;
+
         img {
           box-shadow: 1px 1px 5px lightgray;
           height: 50px;
           padding: 30px;
           background-color: white;
         }
+
         .infotitle {
           font-size: 25px;
         }
+
         .infosubtitle {
           font-size: 11px;
           font-weight: 300;
@@ -178,6 +248,7 @@
 
   .customerReviews {
     padding: 50px;
+
     .customerReviewsContainer {
       display: flex;
       gap: 20px;
@@ -199,18 +270,22 @@
     justify-content: space-evenly;
     background: #ebebeb;
     padding: 50px;
+
     .reachUs {
       display: flex;
       flex-direction: column;
       gap: 5px;
+
       span {
         font-weight: 600;
         font-size: 18px;
       }
+
       p {
         font-weight: 300;
         font-size: 12px;
       }
+
       a {
         color: #fd5901;
       }
@@ -223,6 +298,9 @@
     .hero {
       height: 90vh;
     }
+    .heroImg {
+      height: 90vh;
+    }
   }
 }
 
@@ -232,6 +310,7 @@
       flex-direction: column;
       align-items: center;
       gap: 50px;
+
       hr {
         display: none;
       }
@@ -246,6 +325,7 @@
         height: 500px;
       }
     }
+
     .popularBusTicket {
       .wrapper {
         flex-wrap: wrap;
@@ -259,13 +339,38 @@
     .hero {
       height: auto;
       margin-bottom: 50px;
+
       .heroContainer {
         margin-left: 0px;
         text-align: center;
         align-items: center;
-        .border {
-          flex-wrap: wrap;
-          gap: 10px;
+
+        .bus-search-container {
+          display: flex;
+          margin-top: 20px;
+          padding: 30px 10px;
+          .infoCard {
+            h1 {
+              input {
+                width: 100%;
+                min-width: 150px;
+                font-size: 0.8rem;
+              }
+            }
+            .infosubtitle {
+              font-size: 0.8rem;
+            }
+          }
+          .buttons {
+            .dayButton {
+              padding: 5px 10px;
+            }
+
+            .highlighted {
+              background-color: #fd5901;
+              color: white;
+            }
+          }
         }
       }
     }
@@ -275,26 +380,62 @@
 @media (max-width: 426px) {
   .landingPage {
     .hero {
-      height: 700px;
+      // height: 700px;
       .heroImg {
         height: 500px;
       }
+
       .heroContainer {
         .title {
           h1 {
             font-size: 25px;
           }
         }
+
         h2 {
           font-size: 20px;
           width: 100%;
         }
-        .border {
+
+        .bus-search-container {
+          display: flex;
+          flex-wrap: wrap;
           margin-top: 20px;
           padding: 30px 10px;
+          .infoCard:nth-child(2n + 1) {
+            width: 40%;
+          }
+          .infoCard:nth-child(4) {
+            width: 50%;
+          }
+          .infoCard {
+            h1 {
+              input {
+                font-size: 0.75rem;
+              }
+            }
+            .infosubtitle {
+              font-size: 0.7rem;
+            }
+          }
+          .buttons {
+            display: none;
+            .dayButton {
+              padding: 5px 10px;
+            }
+
+            .highlighted {
+              background-color: #fd5901;
+              color: white;
+            }
+          }
+          button {
+            width: 35%;
+          }
         }
       }
     }
+
     .popularBusTicket,
     .exclusiveOffers,
     .govBuses,

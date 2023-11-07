@@ -2,11 +2,17 @@ import express from "express";
 import {
   initiatePaymentController,
   checkPaymentStatusController,
+  refundPaymentController,
 } from "../controllers/payment.controller.js";
+import { authenticateUser } from "../middleware/authenticateUser.js";
 
-const routes = express.Router();
+const router = express.Router();
 
-routes.post("/initiatePayment", initiatePaymentController);
-routes.get("/checkPaymentStatus/:merchantTransactionId", checkPaymentStatusController);
+router.post("/initiatePayment", initiatePaymentController);
+router.get("/checkPaymentStatus/:merchantTransactionId", checkPaymentStatusController);
 
-export default routes;
+router.use(authenticateUser);
+
+router.post("/refundPayment", refundPaymentController);
+
+export default router;

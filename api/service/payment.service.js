@@ -11,6 +11,7 @@ const sendRequest = async (url, method, headers, data) => {
     });
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.message;
   }
 };
@@ -34,9 +35,9 @@ export const initiatePayment = async (args) => {
     "merchantId": process.env.MERCHANT_ID,
     "merchantTransactionId": merchantTransactionId,
     "merchantUserId": merchantUserId,
-    "amount": amount,
+    "amount": amount * 100,
     "redirectUrl": redirectUrl,
-    "redirectMode": "POST",
+    "redirectMode": "GET",
     "callbackUrl": "https://webhook.site/callback-url",
     "paymentInstrument": {
       "type": "PAY_PAGE"
@@ -44,7 +45,7 @@ export const initiatePayment = async (args) => {
   };
 
   const payloadString = JSON.stringify(payload);
-  const base64Payload = btoa(payloadString);
+  const base64Payload = Buffer.from(payloadString).toString('base64');
   const requestData = {
     request: base64Payload
   }
@@ -62,8 +63,8 @@ export const initiatePayment = async (args) => {
     'Content-Type': 'application/json',
     'X-VERIFY': xVerify,
   };
-  const url = "https://api-preprod.phonepe.com/apis/hermes/pg/v1/pay";
-  // const url = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+  // const url = "https://api-preprod.phonepe.com/apis/hermes/pg/v1/pay";
+  const url = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
 
   return sendRequest(url, "POST", headers, requestData);
 };
@@ -86,8 +87,45 @@ export const checkPaymentStatus = async (args) => {
     'X-VERIFY': xVerify,
     'X-MERCHANT-ID': process.env.MERCHANT_ID,
   };
-  const url = `https://api-preprod.phonepe.com/apis/hermes${apiEndpoint}`;
-  // const url = "https://api.phonepe.com/apis/hermes/pg/v1/pay";
+  // const url = `https://api-preprod.phonepe.com/apis/hermes${apiEndpoint}`;
+  const url = `https://api.phonepe.com/apis/hermes${apiEndpoint}`;
 
   return sendRequest(url, "GET", headers, requestData);
+};
+
+//payment refund
+export const refundPayment = async (args) => {
+  const { amount, merchantTransactionId } = args;
+  const newMerchantId = `R${merchantTransactionId}`;
+  const payload = {
+    "merchantId": process.env.MERCHANT_ID,
+    "originalTransactionId": merchantTransactionId,
+    "merchantTransactionId": newMerchantId,
+    "amount": amount * 100,
+    "callbackUrl": "https://webhook.site/callback-url",
+  };
+
+  const payloadString = JSON.stringify(payload);
+  const base64Payload = Buffer.from(payloadString).toString('base64');
+  const requestData = {
+    request: base64Payload
+  }
+
+  const apiEndpoint = "/pg/v1/refund";
+  const saltKey = process.env.SALT_KEY;
+  const saltIndex = process.env.SALT_INDEX;
+
+  const concatenatedData = base64Payload + apiEndpoint + saltKey;
+  const sha256Hash = crypto.createHash('sha256');
+  const checksum = sha256Hash.update(concatenatedData).digest('hex');
+  const xVerify = checksum.toString() + "###" + saltIndex;
+
+  const headers = {
+    'Content-Type': 'application/json',
+    'X-VERIFY': xVerify,
+  };
+  // const url = "https://api-preprod.phonepe.com/apis/pg-sandbox/pg/v1/refund";
+  const url = "https://api.phonepe.com/apis/hermes/pg/v1/refund";
+
+  return sendRequest(url, "POST", headers, requestData);
 };

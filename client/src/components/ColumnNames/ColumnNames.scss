@@ -1,29 +1,50 @@
 .ColumnNames {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  .tableTitles {
     display: flex;
-    flex-direction: column;
-    gap: 10px;
-    .tableTitles {
-        display: flex;
-        gap: 300px;
-        background: rgba(0, 137, 240, 0.11);
-        padding: 30px 10px;
-        div {
-            display: flex;
-            gap: 45px;
-        }
+    background: rgba(0, 137, 240, 0.11);
+    padding: 30px 10px;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      gap: 50px;
+      margin-right: 170px;
     }
+
+    &>p {
+      width: 50%;
+    }
+  }
 }
 
-@media (max-width: 768px) {
-    .ColumnNames {
-        .tableTitles {
-            gap: 10px;
-        }
+@media (max-width: 1200px) {
+  .ColumnNames {
+    .tableTitles {
+      div {
+        margin-right: 140px;
+      }
     }
+  }
+}
+
+@media (max-width: 820px) {
+  .ColumnNames {
+    .tableTitles {
+      div {
+        margin-right: 120px;
+      }
+    }
+  }
 }
 
 @media (max-width: 426px) {
-    .ColumnNames {
-        display: none;
+  .ColumnNames {
+    .tableTitles {
+      display: none;
     }
+  }
 }

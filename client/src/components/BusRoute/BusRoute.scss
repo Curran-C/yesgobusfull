@@ -1,25 +1,54 @@
 .BusRoute {
-    display: flex;
-    background: black;
-    align-items: center;
-    justify-content: space-evenly;
-    padding: 20px 30px;
+  display: flex;
+  background: black;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 20px 30px;
+
+  .reverse-img {
+    transition: transform 0.5s ease;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    background: url("../../assets/busbooking/x-symbol.svg") no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+  }
+
+  input[type="search"]:focus::-webkit-search-cancel-button {
+    opacity: 0.8;
+    pointer-events: all;
+  }
+
+  input[type="search"].dark::-webkit-search-cancel-button {
+    filter: invert(1);
+  }
 }
 
 @media (max-width: 768px) {
-    .BusRoute {
-        flex-wrap: wrap;
-        button {
-            margin-top: 30px;
-        }
+  .BusRoute {
+    flex-wrap: wrap;
+    button {
+      margin-top: 30px;
     }
+  }
 }
 @media (max-width: 426px) {
-    .BusRoute {
-        justify-content: space-between;
-        buttpn {
-            margin-top: 0px;
-            
-        }
+  .BusRoute {
+    flex-direction: column;
+    gap: 25px;
+    justify-content: space-between;
+    button {
+      font-size: 0.9rem;
+      margin: auto;
+      height: 50px;
+      width: 150px;
     }
+  }
 }

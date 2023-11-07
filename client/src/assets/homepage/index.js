@@ -23,9 +23,6 @@ import filledticket from "./ticket.png";
 import smile from "./smile.png";
 import star from "./star.png";
 import blacklogo from "./logoblack.png";
-import visa from "./visa.svg";
-import mastercard from "./mastercard.svg";
-import rupay from "./rupay.png";
 import playstore from "./playstore.png";
 import applestore from "./applestore.png";
 import fb from "./fb.png";
@@ -33,7 +30,23 @@ import insta from "./insta.png";
 import twitter from "./twitter.png";
 import linkedin from "./linkedin.png";
 
+import hero from "./hero.png";
+import air from "./air.svg";
+import longdistance from "./longdistance.svg";
+import map from "./map.svg";
+import taxi from "./taxi.svg";
+import taxionphone from "./taxionphone.png";
+import gplay from "./gplay.png";
+import appstore from "./applestore.png";
+import whitecar from "./whitecar.png";
+import visa from "./visa.svg";
+import mastercard from "./mastercard.svg";
+import rupay from "./rupay.png";
+import tick from "./tick.svg";
+import logoblack from "./logoblack.png";
+
 export {
+  tick,
   heroimage,
   office,
   calender,
@@ -59,7 +72,6 @@ export {
   smile,
   star,
   blacklogo,
-  insta,
   twitter,
   linkedin,
   visa,
@@ -68,4 +80,14 @@ export {
   playstore,
   applestore,
   fb,
+  gplay,
+  air,
+  appstore,
+  hero,
+  insta,
+  longdistance,
+  map,
+  taxi,
+  taxionphone,
+  logoblack,
 };

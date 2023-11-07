@@ -1,0 +1,50 @@
+.my__profile {
+  padding: 2em;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+
+  h1 {
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 36px;
+  }
+
+  .info__grid {
+    display: grid;
+    grid-template-columns: 100%;
+    gap: 2.5em;
+
+    @media (min-width: 1200px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .profile__input {
+      border: 1px solid rgba(215, 215, 215, 1);
+      border-radius: 10px;
+      outline: none;
+
+      background-color: #fafafa;
+      color: rgba(121, 121, 121, 1);
+      padding: 1em 1.5em;
+      font-size: 1rem;
+    }
+
+    .select {
+      appearance: none;
+      font-size: inherit;
+      font-family: inherit;
+      color: rgba(121, 121, 121, 1);
+
+      option {
+        color: black;
+      }
+    }
+
+    .save-btn {
+      grid-column: 1/2;
+      padding-inline: 1em;
+    }
+  }
+}

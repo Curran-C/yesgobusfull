@@ -1,0 +1,41 @@
+.CardWithText {
+    border: 1px solid lightgray;
+    box-shadow: 1px 1px 5px lightgray;
+    padding: 30px;
+    .hidden {
+        display: none;
+    }
+    .billing {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        h1 {
+            margin: 0;
+        }
+        .text {
+            display: flex;
+            gap: 20px;
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .CardWithText {
+        .billing,
+        .address {
+            gap: 3px;
+            h1 {
+                font-size: 30px;
+            }
+            p {
+                font-size: 13px;
+            }
+            .text {
+                gap: 8px;
+            }
+        }
+    }
+}
+
+

@@ -1,0 +1,165 @@
+.KYC {
+  .details {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    gap: 30px;
+    p {
+      color: #fd5901;
+    }
+    .detailsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px;
+      border: 1px solid lightgray;
+      border-radius: 25px;
+      .inputs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        // width: 1000px;
+      }
+    }
+  }
+
+  .id {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    gap: 30px;
+    p {
+      color: #fd5901;
+    }
+    .idContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px;
+      border: 1px solid lightgray;
+      border-radius: 25px;
+      .idWrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        .left {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 30px;
+          .buttons {
+            display: flex;
+            gap: 20px;
+          }
+        }
+        .right {
+          img {
+            height: 180px;
+          }
+        }
+      }
+    }
+  }
+
+  .bankingDetails {
+    display: flex;
+    flex-direction: column;
+    padding: 50px;
+    gap: 30px;
+    p {
+      color: #fd5901;
+    }
+    .bankingDetailsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      padding: 30px;
+      border: 1px solid lightgray;
+      border-radius: 25px;
+      .inputs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+        // width: 1200px;
+      }
+    }
+  }
+  .nextButton {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+    .button {
+      width: 200px;
+    }
+  }
+}
+
+@media (max-width: 1024px) {
+  .KYC {
+    .details,
+    .bankingDetails,
+    .id {
+      width: 800px;
+      .detailsContainer,
+      .bankingDetailsContainer,
+      .idContainer {
+        .inputs {
+          flex-direction: column;
+        }
+        .idWrapper {
+          flex-direction: column;
+        }
+      }
+    }
+  }
+}
+@media (max-width: 768px) {
+  .KYC {
+    .details,
+    .bankingDetails,
+    .id {
+      width: 600px;
+    }
+  }
+}
+
+@media (max-width: 426px) {
+  .KYC {
+    .details,
+    .bankingDetails,
+    .id {
+      gap: 20px;
+      h1 {
+        font-size: 20px;
+      }
+      p {
+        font-size: 13px;
+      }
+      width: 280px;
+      padding: 20px;
+      .detailsContainer,
+      .bankingDetailsContainer,
+      .idContainer {
+        .inputs {
+          flex-direction: column;
+        }
+        .idWrapper {
+          flex-direction: column;
+          .left {
+            .buttons {
+              flex-direction: column;
+            }
+          }
+          .right {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            img {
+              height: 150px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,30 +1,133 @@
 .infoCard {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100px;
-    gap: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  max-width: 200px;
+  width: max-content;
+  gap: 5px;
+  text-align: center;
+  min-height: 100px;
+
+  .label {
+    // width: 85%;
+    // text-align: start;
+    color: white;
+  }
+
+  input {
+    width: 50%;
+    color: #fd5901;
+    font-size: 20px;
+    font-weight: 500;
+    background: none;
+    border: none;
+    outline: none;
+  }
+  ::-webkit-calendar-picker-indicator {
+    background-color: #fd5901;
+    padding: 5px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+
+  input[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 1em;
+    width: 1em;
+    border-radius: 50em;
+    position: absolute;
+    right: 20px;
+    background: url("../../assets/busbooking/x-symbol.svg") no-repeat 50% 50%;
+    background-size: contain;
+    opacity: 0;
+    pointer-events: none;
+    cursor: pointer;
+  }
+
+  input[type="search"]:focus::-webkit-search-cancel-button {
+    opacity: 0.8;
+    pointer-events: all;
+  }
+
+  input[type="search"].dark::-webkit-search-cancel-button {
+    filter: invert(1);
+  }
+
+  .date {
     text-align: center;
-    img {
-        height: 30px;
-    }
-    .infotitle {
-        font-size: 15px;
-        letter-spacing: 1px;
-    }
-    .infosubtitle {
-        font-weight: 800;
-        font-size: 13px;
-        letter-spacing: 1px;
-    }
+  }
+
+  img {
+    height: 30px;
+  }
+  .infotitle {
+    font-size: 15px;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
+  }
+  .infosubtitle {
+    font-weight: 800;
+    font-size: 13px;
+    letter-spacing: 1px;
+  }
+}
+
+.infotitle {
+  position: relative;
+  font-size: 15px;
+  letter-spacing: 1px;
+  input {
+    border: none;
+    font-weight: bold;
+    font-size: 18px;
+    text-align: center;
+    width: 200px;
+  }
+  input:focus {
+    outline: none;
+  }
+}
+
+.suggestion-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 0 0 25px 25px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  max-height: 150px;
+  overflow-y: auto;
+  z-index: 1;
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.suggestion-list li {
+  padding: 10px 20px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.suggestion-list li:hover {
+  background-color: #f5f5f5;
 }
 
 @media (max-width: 426px) {
-    .infotitle {
-        font-size: 13px;
-    }
-    .infosubtitle {
-        font-size: 12px;
-    }
+  .infotitle {
+    font-size: 13px;
+  }
+  .infosubtitle {
+    font-size: 12px;
+  }
+  input {
+    font-size: 16px;
+  }
 }

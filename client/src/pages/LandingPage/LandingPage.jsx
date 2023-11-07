@@ -46,13 +46,100 @@ import {
 } from "../../components";
 import AboveFooterImages from "../../components/AboveFooterImages/AboveFooterImages";
 import "./landingPage.scss";
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../utils/service";
+import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
+  const navigate = useNavigate();
+
+  let currentDate = new Date();
+  const year = currentDate.getFullYear();
+  const month = String(currentDate.getMonth() + 1).padStart(2, "0");
+  const day = String(currentDate.getDate()).padStart(2, "0");
+  currentDate = `${year}-${month}-${day}`;
+
+  const [fromLocation, setFromLocation] = useState("");
+  const [toLocation, setToLocation] = useState("");
+  const [selectedDate, setSelectedDate] = useState(currentDate);
+
+  const [locationOneSuggestions, setLocationOneSuggestions] = useState([]);
+  const [locationTwoSuggestions, setLocationTwoSuggestions] = useState([]);
+
+  const [dateSource, setDateSource] = useState("input");
+  const [todayHighlighted, setTodayHighlighted] = useState(false);
+  const [tomorrowHighlighted, setTomorrowHighlighted] = useState(false);
+
+  const handleDateInputChange = (date) => {
+    setSelectedDate(date);
+    setDateSource("input");
+    setTodayHighlighted(false);
+    setTomorrowHighlighted(false);
+  };
+
+  const handleTodayButtonClick = () => {
+    const today = new Date();
+    const todayFormatted = `${today.getFullYear()}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}-${String(today.getDate()).padStart(2, "0")}`;
+    setSelectedDate(todayFormatted);
+    setDateSource("today");
+    setTodayHighlighted(true);
+    setTomorrowHighlighted(false);
+  };
+
+  const handleTomorrowButtonClick = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    const tomorrowFormatted = `${tomorrow.getFullYear()}-${String(
+      tomorrow.getMonth() + 1
+    ).padStart(2, "0")}-${String(tomorrow.getDate()).padStart(2, "0")}`;
+    setSelectedDate(tomorrowFormatted);
+    setDateSource("tomorrow");
+    setTomorrowHighlighted(true);
+    setTodayHighlighted(false);
+  };
+
+  const handleSearchClick = () => {
+    navigate(
+      `/busbooking?from=${fromLocation}&to=${toLocation}&date=${selectedDate}`
+    );
+  };
+
+  const fetchLocationSuggestions = async (query, setLocationSuggestions) => {
+    try {
+      // if (query.length > 3) {
+      const response = await axiosInstance.get(
+        `${import.meta.env.VITE_BASE_URL}/api/busBooking/searchCity/${query}`
+      );
+      setLocationSuggestions(response.data.data);
+      // } else {
+      //   setLocationSuggestions([]);
+      // }
+    } catch (error) {
+      console.error("omething went wrong:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (fromLocation) {
+      fetchLocationSuggestions(fromLocation, setLocationOneSuggestions);
+    }
+    if (toLocation) {
+      fetchLocationSuggestions(toLocation, setLocationTwoSuggestions);
+    }
+  }, [fromLocation, toLocation]);
+
   return (
     <div className="landingPage">
       <Navbar page={"home"} />
-      <div className="hero">
-        <img src={heroimage} alt="" className="heroImg" />
+      <div className="hero" style={{ maxHeight: "90vh" }}>
+        <img
+          src={heroimage}
+          alt=""
+          className="heroImg"
+          style={{ maxHeight: "90vh" }}
+        />
         <div className="heroContainer">
           <div className="title">
             <h1>PROVIDING QUALITY SERVICES AT</h1>
@@ -63,32 +150,82 @@ const LandingPage = () => {
             India’s largest online bus ticketing platform, trusted by over 6
             million Indians.
           </h2>
-          <div className="border">
-            <InfoCard img={office} title={"Mysore"} subtitle={"From"} />
-            <img src={fromto} alt="" />
+          <div className="bus-search-container">
             <InfoCard
-              img={office}
-              title={"Bangalore"}
-              subtitle={"Destination"}
+              // img={office}
+              title={fromLocation}
+              // subtitle={"From"}
+              label="From"
+              inputField={true}
+              onChanged={setFromLocation}
+              suggestions={locationOneSuggestions}
+              placeholder={"Departure"}
             />
-            <img src={mic} alt="" />
-            <InfoCard
-              img={calender}
-              title={"02 Jun"}
-              subtitle={"Select Date"}
+            <img
+              src={fromto}
+              alt="reverse route"
+              className="reverse-image"
+              onClick={({ target: image }) => {
+                const currentRotation =
+                  getComputedStyle(image).getPropertyValue("transform");
+
+                if (currentRotation === "none") {
+                  image.style.transform = "rotate(180deg)";
+                } else {
+                  image.style.transform = "";
+                }
+                setFromLocation(toLocation);
+                setToLocation(fromLocation);
+              }}
             />
             <InfoCard
+              // img={office}
+              title={toLocation}
+              label="To"
+              // subtitle={"Destination"}
+              inputField={true}
+              onChanged={setToLocation}
+              suggestions={locationTwoSuggestions}
+              placeholder={"Destination"}
+            />
+            {/* <img src={mic} alt="" /> */}
+            <InfoCard
+              // img={calender}
+              title={selectedDate}
+              // subtitle={"Select Date"}
+              date={true}
+              label="Date"
+              inputField={true}
+              onChanged={handleDateInputChange}
+            />
+            {/* <InfoCard
               img={calender}
               title={"- - -"}
               subtitle={"Return Optional"}
+            /> */}
+            {/* <div className="buttons">
+              <button
+                onClick={handleTodayButtonClick}
+                className={
+                  todayHighlighted ? "dayButton highlighted" : "dayButton"
+                }
+              >
+                Today
+              </button>
+              <button
+                onClick={handleTomorrowButtonClick}
+                className={
+                  tomorrowHighlighted ? "dayButton highlighted" : "dayButton"
+                }
+              >
+                Tomorrow
+              </button>
+            </div> */}
+            <Button
+              className="search-btn"
+              text={"Search"}
+              onClicked={handleSearchClick}
             />
-
-            <div className="buttons">
-              <Button text={"Today"} />
-              <Button text={"Tomorrow"} />
-            </div>
-
-            <Button text={"Search"} />
           </div>
         </div>
       </div>
@@ -96,14 +233,14 @@ const LandingPage = () => {
       <div className="popularBusTicket">
         <Title title={"Popular Bus Ticket"} />
         <div className="wrapper">
-          <InfoCard
+          {/* <InfoCard
             img={wifi}
-            title={"Free Wifi"}
-            subtitle={"All buses are  equipped with WI-FI and sockets"}
-          />
+            title={"FREE WIFI"}
+            subtitle={"We have buses equipped with Wi-Fi and sockets"}
+          /> */}
           <InfoCard
             img={bus}
-            title={"SHUTTLE TO THE BUS"}
+            title={"CONVENIENT Booking"}
             subtitle={"Free Taxi On The Bus"}
           />
           <InfoCard
@@ -116,7 +253,7 @@ const LandingPage = () => {
           <InfoCard
             img={ticket}
             title={"BUY TICKETS EASILY"}
-            subtitle={"Cash, visa, Master card"}
+            subtitle={"UPI, Bank Payments, Visa, MasterCards, etc..."}
           />
         </div>
       </div>
@@ -148,7 +285,7 @@ const LandingPage = () => {
         </div>
       </div> */}
 
-      <div className="govBuses">
+      {/* <div className="govBuses">
         <Title title={"Government Buses"} subtitle={"view more"} />
         <div className="govBusesContainer">
           <InfoCard img={bus1} subtitle={"APSRTC"} />
@@ -158,9 +295,9 @@ const LandingPage = () => {
           <InfoCard img={bus5} subtitle={"MSRTC"} />
           <InfoCard img={bus6} subtitle={"KSRTC"} />
         </div>
-      </div>
+      </div> */}
 
-      <div className="popularBusRoutes">
+      {/* <div className="popularBusRoutes">
         <Title title={"Popular Bus Routes"} subtitle={"View More"} />
 
         <div className="popularBusRoutesContainer">
@@ -170,19 +307,23 @@ const LandingPage = () => {
           <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
           <PopularRoutes busname={"Mumbai Bus"} to={"Goa, Pune, Bangalore"} />
         </div>
-      </div>
+      </div> */}
 
       <div className="whyChooseYesGoBus">
-        <Title title={"Why Yesgobus For Bus Booking"} />
+        <Title title={"Why YesGoBus For Bus Booking"} />
         <div className="whyChooseYesGoBusContainer">
-          <InfoCard img={routes} title={"1000"} subtitle={"Routes"} />
-          <InfoCard img={orangeBus} title={"250"} subtitle={"BUS PARTNERS"} />
+          <InfoCard img={routes} title={"10000+"} subtitle={"Routes"} />
+          <InfoCard img={orangeBus} title={"3500+"} subtitle={"BUS PARTNERS"} />
           <InfoCard
             img={filledticket}
             title={"30 SEC"}
             subtitle={"routeINSTANT E-TICKET & REFUND"}
           />
-          <InfoCard img={smile} title={"1 CR"} subtitle={"HAPPY CUSTOMERS"} />
+          <InfoCard
+            img={smile}
+            title={"1 million"}
+            subtitle={"HAPPY CUSTOMERS"}
+          />
           <InfoCard
             img={custcare}
             title={"24/7"}
@@ -191,14 +332,14 @@ const LandingPage = () => {
         </div>
       </div>
 
-      <div className="customerReviews">
+      {/* <div className="customerReviews">
         <Title title={"Customer Reviews"} subtitle={"View More"} />
         <div className="customerReviewsContainer">
           <ReviewCard />
           <ReviewCard />
           <ReviewCard />
         </div>
-      </div>
+      </div> */}
 
       <div className="about">
         <TitleAndText
@@ -221,7 +362,7 @@ const LandingPage = () => {
           }
         />
 
-        <TitleAndText
+        {/* <TitleAndText
           title={"Online Bus Ticket Booking at Lowest Price"}
           textOne={
             "Experience the joy of online bus ticket booking at the lowest price with us. We understand the importance of stretching your travel budget, and that's why we're dedicated to offering you the best deals without compromising on quality. Our platform showcases a range of options that cater to different budgets, allowing you to find the perfect balance between affordability and comfort. With our user-friendly interface, you can easily compare prices, routes, and amenities, ensuring you secure the most cost-effective journey for your needs."
@@ -230,7 +371,7 @@ const LandingPage = () => {
             "When you choose us for online bus ticket booking, you're choosing a partner committed to delivering value. Our partnerships with a wide network of bus operators enable us to negotiate competitive prices that you won't find elsewhere. Through our transparent pricing model, you can be confident that the price you see is the price you pay – no hidden fees or surprises. Your quest for the lowest price doesn't mean compromising on quality; we collaborate with reputable bus providers to ensure your safety and comfort throughout your voyage. Experience the satisfaction of making smart travel decisions by booking your bus tickets at the lowest price through our platform."
           }
           seen={"seen"}
-        />
+        /> */}
       </div>
 
       {/* <div className="aboveFooter">

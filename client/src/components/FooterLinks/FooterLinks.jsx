@@ -6,7 +6,11 @@ const FooterLinks = ({ title, links }) => {
       <h1>{title}</h1>
       <div className="links">
         {links?.map((link) => (
-          <a href="">{link}</a>
+          link === "About Us" ? (
+            <a href="" key={link}>{link}</a>
+          ) : (
+            <a key={link}>{link}</a>
+          )
         ))}
       </div>
     </div>

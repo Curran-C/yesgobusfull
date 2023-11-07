@@ -1,4 +1,6 @@
 import axios from "axios";
+import BusBooking from "../modals/busBooking.modal.js";
+import City from "../modals/cities.modal.js";
 
 const sendRequest = async (url, method, data) => {
   try {
@@ -15,6 +17,7 @@ const sendRequest = async (url, method, data) => {
     });
     return response.data;
   } catch (error) {
+    console.log(error);
     throw error.message;
   }
 };
@@ -54,6 +57,8 @@ export const cancelTicket = async (args) => {
 export const getBusFilters = async (args) => {
   try {
     const searchResponse = await searchBus(args);
+    // let searchResponse = await axios.post("https://api.yesgobus.com/api/busBooking/searchBus", args);
+    // searchResponse = searchResponse.data;
     const filters = {
       boardingPoints: [],
       droppingPoints: [],
@@ -87,43 +92,166 @@ export const getBusFilters = async (args) => {
   }
 };
 
+function hasFilters(filters) {
+  return (
+    filters.boardingPoints ||
+    filters.droppingPoints ||
+    filters.busPartners ||
+    filters.minPrice ||
+    filters.maxPrice
+  );
+}
+
+
 export const getBusDetails = async (searchArgs, filters) => {
   try {
-    const searchResponse = await searchBus(searchArgs);
-    if (!filters.boardingPoint && !filters.droppingPoint && !filters.busPartner) {
+    let searchResponse = await searchBus(searchArgs);
+    // let searchResponse = await axios.post("https://api.yesgobus.com/api/busBooking/searchBus", searchArgs);
+    // searchResponse = searchResponse.data;
+
+    //uncomment this for getting back inventory type 130
+    // searchResponse = searchResponse.apiAvailableBuses;
+
+    //comment this for getting back inventory type 130
+    searchResponse = searchResponse.apiAvailableBuses.filter(bus => bus.inventoryType !== 130);
+    searchResponse.sort((a, b) => a.inventoryType - b.inventoryType);
+
+    if (!hasFilters(filters)) {
       return {
         status: 200,
-        data: searchResponse.apiAvailableBuses,
+        data: searchResponse,
       };
     }
-    const filteredBuses = searchResponse.apiAvailableBuses.filter((bus) => {
-      if (
-        filters.boardingPoint &&
-        bus.boardingPoints.some(
-          (point) => point.location === filters.boardingPoint
+    const filteredBuses = searchResponse.filter((bus) => {
+
+      const fareValues = bus.fare.split(",").map(parseFloat);
+      const matchingPrice =
+        (!filters.minPrice || fareValues.some((fare) => fare >= filters.minPrice)) &&
+        (!filters.maxPrice || fareValues.some((fare) => fare <= filters.maxPrice));
+
+      const matchingBoardingPoints = filters.boardingPoints
+        ? filters.boardingPoints.some((point) =>
+          bus.boardingPoints.some((bPoint) => bPoint.location === point)
         )
-      ) {
-        return true;
-      }
-      if (
-        filters.droppingPoint &&
-        bus.droppingPoints.some(
-          (point) => point.location === filters.droppingPoint
+        : true;
+
+      const matchingDroppingPoints = filters.droppingPoints
+        ? filters.droppingPoints.some((point) =>
+          bus.droppingPoints.some((dPoint) => dPoint.location === point)
         )
-      ) {
-        return true;
-      }
-      if (
-        filters.busPartner &&
-        bus.operatorName === filters.busPartner
-      ) {
-        return true;
-      }
-      return false;
+        : true;
+
+      const matchingBusPartners = filters.busPartners
+        ? filters.busPartners.includes(bus.operatorName)
+        : true;
+
+      return (
+        matchingPrice &&
+        matchingBoardingPoints &&
+        matchingDroppingPoints &&
+        matchingBusPartners
+      );
     });
+
     return {
       status: 200,
       data: filteredBuses,
+    };
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+export const bookBus = async (bookingDetails) => {
+  try {
+    const booking = new BusBooking({
+      ...bookingDetails
+    });
+    await booking.save();
+    return {
+      status: 200,
+      message: "Booked",
+      data: booking
+    }
+  } catch (error) {
+    throw error.message;
+  }
+}
+
+export const searchCity = async (searchParam) => {
+  try {
+    const cities = await City.find({
+      city_name: { $regex: `^${searchParam}`, $options: 'i' }
+    })
+    return {
+      status: 200,
+      message: "City details retrieved",
+      data: cities
+    }
+  } catch (error) {
+    throw error.message;
+  }
+}
+
+export const updateBookings = async (bookingId, bookingDetails) => {
+  try {
+    const updatedBooking = await BusBooking.findOneAndUpdate(
+      { _id: bookingId },
+      { $set: bookingDetails },
+      { new: true }
+    );
+    if (!updatedBooking) {
+      return {
+        status: 404,
+        message: "Booking not found",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Booking updated",
+      data: updatedBooking,
+    };
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+export const getBookingById = async (bookingId) => {
+  try {
+    const booking = await BusBooking.findById(bookingId);
+    if (!booking) {
+      return {
+        status: 404,
+        message: "Booking not found",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Booking retrieved",
+      data: booking,
+    };
+  } catch (error) {
+    throw error.message;
+  }
+};
+
+
+export const getAllBookings = async (userId) => {
+  try {
+    const booking = await BusBooking.find({ userId: userId, bookingStatus: { $ne: "pending" } });
+    if (!booking) {
+      return {
+        status: 404,
+        message: "Booking not found",
+        data: null,
+      };
+    }
+    return {
+      status: 200,
+      message: "Booking retrieved",
+      data: booking,
     };
   } catch (error) {
     throw error.message;

@@ -1,22 +1,22 @@
 import "./Input.scss";
 
-const Input = ({ title, type, placeholder, onChanged, givenName }) => {
-  // const handleChange = (e) => {
-  //   e.preventDefault();
-  //   onChanged((prev) => {
-  //     return { ...prev, [e.target.name]: e.target.value };
-  //   });
-  // };
-
+const Input = ({ title, type, placeholder, onChanged, givenName, isKyc, value }) => {
+  const handleChange = (e) => {
+    e.preventDefault();
+    onChanged((prev) => {
+      return { ...prev, [givenName]: e.target.value };
+    });
+  };
+  const handleOnChange = isKyc ? handleChange : onChanged;  
   return (
     <div className="Input">
-      <label htmlFor="in">{title}</label>
+      <span >{title}</span>
       <input
-        onChange={onChanged}
+        name={givenName}
+        onChange={handleOnChange}
         type={type}
         placeholder={placeholder}
-        name={givenName}
-        id="in"
+        value={value}
       />
     </div>
   );

@@ -1,7 +1,11 @@
 import Button from "../Button/Button";
 import "./Card.scss";
 
-const Card = ({ img, title, subtitle, text }) => {
+const Card = ({ img, title, subtitle, text, link }) => {
+  const send = () => {
+    if (text === "Send Mail") window.location.href = `mailto:${link}`;
+    else if (text === "Call Us") window.location.href = `tel:${link}`;
+  };
   return (
     <div className="card">
       <div className="firstContainer">
@@ -9,8 +13,7 @@ const Card = ({ img, title, subtitle, text }) => {
         <h1>{title}</h1>
         <p>{subtitle}</p>
       </div>
-
-      <Button text={text} />
+      {text && <Button text={text} onClicked={send} />}
     </div>
   );
 };

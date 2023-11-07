@@ -1,0 +1,153 @@
+.profile__wrapper {
+  //   border: 1px solid black;
+  --orange: rgba(253, 89, 1, 1);
+  --px-ticket: 30px;
+  --border-color: rgba(163, 163, 163, 1);
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p {
+    margin: 0;
+  }
+  max-width: 1920px;
+  margin-inline: auto;
+  padding-bottom: 4em;
+
+  .navbar {
+    padding: 0px 50px;
+    height: 130px;
+    border-bottom: 1px solid rgba(182, 182, 182, 1);
+
+    .left {
+      a {
+        color: black;
+      }
+    }
+  }
+
+  .profile {
+    max-width: 1440px;
+    margin-inline: auto;
+
+    // border: 1px solid red;
+    padding: 1em 50px;
+    margin-block: 2em;
+
+    display: flex;
+    flex-direction: column;
+    gap: 3em;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+    }
+
+    &::after {
+      z-index: -100;
+      content: "";
+      position: absolute;
+      top: 200px;
+      right: 0px;
+      bottom: 0px;
+      left: 0px;
+      opacity: 0.025;
+      background: url("../../assets/contact/watermark.svg") no-repeat center;
+      background-size: 70%;
+
+      @media (min-width: 768px) {
+        background-size: 70%;
+      }
+
+      @media (min-width: 1024px) {
+        background-size: 70%;
+      }
+
+      @media (min-width: 1440px) {
+        background-size: 70%;
+        left: 50px;
+      }
+    }
+
+    .profile__sidebar {
+      border: 1px solid rgba(220, 220, 220, 1);
+      border-radius: 20px;
+      padding-block: 1em;
+      flex: 0 0 100%;
+
+      @media (min-width: 768px) {
+        flex: 0 0 14rem;
+        min-height: 450px;
+      }
+
+      @media (min-width: 1200px) {
+        flex: 0 0 18rem;
+      }
+
+      display: flex;
+      flex-direction: column;
+      gap: 1em;
+
+      .sidebar__button {
+        outline: none;
+        background-color: transparent;
+        border: none;
+        padding-block: 1em;
+        padding-inline-start: 1em;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+
+        font-size: 18px;
+        font-weight: 500;
+
+        @media (min-width: 768px) {
+          justify-content: flex-start;
+        }
+      }
+
+      .sidebar__button.active {
+        color: white;
+        background-color: var(--orange);
+      }
+
+      .sidebar__button.user.active {
+        svg {
+          fill: white;
+        }
+      }
+
+      .logout__btn {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        button {
+          font-size: 1rem;
+          border-radius: 0;
+        }
+      }
+    }
+
+    .profile__options {
+      border: 1px solid rgba(220, 220, 220, 1);
+      border-radius: 20px;
+      //   padding: 2em;
+      flex-grow: 1;
+    }
+  }
+
+  .orange__button {
+    background-color: var(--orange);
+    border: 1px solid var(--orange);
+    outline: none;
+    border-radius: 10px;
+    padding: 0.75em 2em;
+    text-align: center;
+    width: 40%;
+    font-size: 1rem;
+    color: white;
+  }
+}

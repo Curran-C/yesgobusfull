@@ -1,0 +1,81 @@
+.Payments {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    .container {
+        padding: 50px;
+        display: flex;
+        flex-direction: column;
+        .wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-top: 50px;
+            .left {
+                width: 40%;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid lightgray;
+                box-shadow: 1px 1px 5px lightgray;
+                padding: 50px;
+                gap: 30px;
+                .amounts {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 10px;
+                }
+            }
+            .right {
+                width: 40%;
+                display: flex;
+                flex-direction: column;
+                border: 1px solid lightgray;
+                box-shadow: 1px 1px 5px lightgray;
+                padding: 50px;
+                gap: 30px;
+                .payments {
+                    display: flex;
+                    flex-direction: column;
+                    gap: 30px;
+                    width: 100%;
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 1024px) {
+    .Payments {
+        .container {
+            align-items: center;
+            .wrapper {
+                flex-direction: column;
+                gap: 40px;
+                .left,
+                .right {
+                    width: 80%;
+                    .amounts {
+                        
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .Payments {
+        .container {
+            align-items: center;
+            .wrapper {
+                flex-direction: column;
+                gap: 40px;
+                .left,
+                .right {
+                    width: 280px;
+                    padding: 50px 10px;
+                }
+            }
+        }
+    }
+}

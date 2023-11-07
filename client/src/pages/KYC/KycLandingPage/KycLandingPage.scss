@@ -1,0 +1,231 @@
+.kyclandingPage {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+    .hero {
+        position: relative;
+        top: 0;
+        left: 0;
+        // height: 800px;
+        .heroimg {
+            z-index: -10;
+            padding: none;
+            // height: 90vh;
+            width: 100%;
+            object-fit: contain;
+        }
+        .left {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            align-items: start;
+            top: 20vh;
+            left: 80px;
+            width: 600px;
+            // height: 100px;
+            h1 {
+                font-size: 50px;
+            }
+            span {
+                color: #fd5901;
+            }
+        }
+    }
+
+    .whatWeOffer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        margin-top: 80px;
+        .wrapper {
+            display: flex;
+            justify-content: space-evenly;
+            width: 90%;
+            .titleContainer {
+                justify-content: center;
+            }
+            .infoCard {
+                width: 200px;
+                img {
+                    height: 60px;
+                    margin-bottom: 20px;
+                }
+                .infotitle {
+                    font-size: 20px;
+                }
+                .infosubtitle {
+                    font-size: 12px;
+
+                    font-weight: 200;
+                }
+            }
+        }
+    }
+
+    .forDrivers {
+        margin-top: 80px;
+        .wrapper {
+            margin-top: 50px;
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            .ticks {
+                display: flex;
+                flex-direction: column;
+                gap: 50px;
+            }
+        }
+    }
+
+    .appOnTheMarket {
+        margin-top: 80px;
+        .wrapper {
+            margin-top: 20px;
+            display: flex;
+            align-items: center;
+            gap: 50px;
+            .right {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 30px;
+                span {
+                    font-size: 30px;
+                    text-align: center;
+                    font-weight: 600;
+                }
+                .downloads {
+                    display: flex;
+                    gap: 40px;
+                    img {
+                        width: 200px;
+                    }
+                }
+            }
+        }
+    }
+    .carClasses {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        margin-top: 80px;
+        .cards {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-evenly;
+        }
+    }
+
+    .aboveFooter {
+        display: flex;
+        align-items: start;
+        justify-content: space-evenly;
+        background: #ebebeb;
+        padding: 50px;
+        .reachUs {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            span {
+                font-weight: 600;
+                font-size: 18px;
+            }
+            p {
+                font-weight: 300;
+                font-size: 12px;
+            }
+            a {
+                color: #fd5901;
+            }
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .kyclandingPage {
+        .hero {
+            .left {
+                width: 200px;
+                h1 {
+                    font-size: 20px;
+                }
+            }
+        }
+        .whatWeOffer {
+            margin-top: 20px;
+        }
+        .appOnTheMarket {
+            .wrapper {
+                flex-direction: column;
+            }
+        }
+        .carClasses {
+            .cards {
+                flex-direction: column;
+                gap: 40px;
+            }
+        }
+        .aboveFooter {
+            flex-direction: column;
+            align-items: center;
+            justify-content: safe;
+            gap: 40px;
+            hr {
+                // width: 100%;
+                display: none;
+            }
+        }
+    }
+}
+
+@media (max-width: 426px) {
+    .kyclandingPage {
+        .hero {
+            margin-top: -30px;
+            .left {
+                top: 5vh;
+                left: 10px;
+                gap: 20px;
+                h1 {
+                    font-size: 15px;
+                }
+                button {
+                    padding: 10px;
+                    font-size: 9px;
+                }
+            }
+            .heroimg {
+                object-fit: cover;
+            }
+        }
+        .whatWeOffer {
+            .wrapper {
+                width: 100%;
+                flex-direction: column;
+                justify-content: center;
+                gap: 40px;
+                align-items: center;
+                .infoCard {
+                    width: 90%;
+                }
+            }
+        }
+        .forDrivers {
+            .wrapper {
+                flex-direction: column;
+                gap: 40px;
+            }
+        }
+        .appOnTheMarket {
+            img {
+                width: 300px;
+            }
+            .downloads {
+                flex-direction: column;
+            }
+        }
+    }
+}
