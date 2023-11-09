@@ -16,7 +16,8 @@ import KycLandingPage from "./pages/KYC/KycLandingPage/KycLandingPage";
 import KycPayments from "./pages/KYC/KycPayment/KycPayment";
 import MobileNavbar from "./components/Mobile/Busresultsnavbar/busresultsnavbar";
 import { useEffect } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+import toast, { Toaster } from "react-hot-toast";
+import UnderMaintenance from "./pages/Error/UnderMaintenance/UnderMaintenance";
 
 function App() {
   // Remove already saved cache
@@ -32,7 +33,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
-        <Route path="/busbooking" element={<BusBooking />} />
+        {/* <Route path="/busbooking" element={<BusBooking />} /> */}
+        <Route path="/busbooking" element={<UnderMaintenance />} />
         <Route path="/busbooking/payment" element={<Payment />} />
         <Route path="/login" element={<Login />} />
         <Route
